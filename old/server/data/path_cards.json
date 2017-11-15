@@ -1,0 +1,215 @@
+{
+  "tickets": [
+    {
+      "cities": [
+        "Toronto",
+        "Miami"
+      ],
+      "points": 10
+    },
+    {
+      "cities": [
+        "Duluth",
+        "Houston"
+      ],
+      "points": 8
+    },
+    {
+      "cities": [
+        "Seattle",
+        "New York"
+      ],
+      "points": 22
+    },
+    {
+      "cities": [
+        "Winnipeg",
+        "Houston"
+      ],
+      "points": 12
+    },
+    {
+      "cities": [
+        "Calgary",
+        "Phoenix"
+      ],
+      "points": 13
+    },
+    {
+      "cities": [
+        "Montreal",
+        "New Orleans"
+      ],
+      "points": 13
+    },
+    {
+      "cities": [
+        "Los Angeles",
+        "New York"
+      ],
+      "points": 21
+    },
+    {
+      "cities": [
+        "San Francisco",
+        "Atlanta"
+      ],
+      "points": 17
+    },
+    {
+      "cities": [
+        "Kansas City",
+        "Houston"
+      ],
+      "points": 5
+    },
+    {
+      "cities": [
+        "Helena",
+        "Los Angeles"
+      ],
+      "points": 8
+    },
+    {
+      "cities": [
+        "Denver",
+        "Pittsburgh"
+      ],
+      "points": 11
+    },
+    {
+      "cities": [
+        "Duluth",
+        "El Paso"
+      ],
+      "points": 10
+    },
+    {
+      "cities": [
+        "Chicago",
+        "Santa Fe"
+      ],
+      "points": 9
+    },
+    {
+      "cities": [
+        "Dallas",
+        "New York"
+      ],
+      "points": 11
+    },
+    {
+      "cities": [
+        "Winnipeg",
+        "Little Rock"
+      ],
+      "points": 11
+    },
+    {
+      "cities": [
+        "Los Angeles",
+        "Miami"
+      ],
+      "points": 20
+    },
+    {
+      "cities": [
+        "Portland",
+        "Phoenix"
+      ],
+      "points": 11
+    },
+    {
+      "cities": [
+        "New York",
+        "Atlanta"
+      ],
+      "points": 6
+    },
+    {
+      "cities": [
+        "Vancouver",
+        "Montreal"
+      ],
+      "points": 20
+    },
+    {
+      "cities": [
+        "Seattle",
+        "Los Angeles"
+      ],
+      "points": 9
+    },
+    {
+      "cities": [
+        "Montreal",
+        "Atlanta"
+      ],
+      "points": 9
+    },
+    {
+      "cities": [
+        "Sault St. Marie",
+        "Oklahoma City"
+      ],
+      "points": 9
+    },
+    {
+      "cities": [
+        "Vancouver",
+        "Santa Fe"
+      ],
+      "points": 13
+    },
+    {
+      "cities": [
+        "Sault St. Marie",
+        "Nashville"
+      ],
+      "points": 8
+    },
+    {
+      "cities": [
+        "Denver",
+        "El Paso"
+      ],
+      "points": 4
+    },
+    {
+      "cities": [
+        "Calgary",
+        "Salt Lake City"
+      ],
+      "points": 7
+    },
+    {
+      "cities": [
+        "Los Angeles",
+        "Chicago"
+      ],
+      "points": 16
+    },
+    {
+      "cities": [
+        "Portland",
+        "Nashville"
+      ],
+      "points": 17
+    },
+    {
+      "cities": [
+        "Boston",
+        "Miami"
+      ],
+      "points": 12
+    },
+    {
+      "cities": [
+        "Chicago",
+        "New Orleans"
+      ],
+      "points": 7
+    }
+  ],
+  "_comment": "Auto Generated using csv_to_json.py. To Reformat JSON data, modify csv_to_json.py and run $ python csv_to_json.py tickets inputfile.csv outputfile.json"
+}

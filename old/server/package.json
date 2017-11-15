@@ -1,0 +1,26 @@
+{
+  "name": "TTR",
+  "version": "1.0.0",
+  "description": "ttr baby",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saellis/TTR.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saellis/TTR/issues"
+  },
+  "homepage": "https://github.com/saellis/TTR#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mocha": "^4.0.1"
+  }
+}

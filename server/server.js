@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
 
 app.post("/games", (req, res) => {
   mongo.createGame((result) => {
-    console.log(result);
-    res.send(result);
+    //console.log(result);
+    res.status(200).send(result);
   })
 });
 
@@ -33,4 +33,4 @@ var server = app.listen(3001, function () {
   console.log('Example app listening at port %s', port);
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};

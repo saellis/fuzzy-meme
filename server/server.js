@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
 const mongo = require('./mongo');
+const bodyParser = require('body-parser');
 
 app.set("port", process.env.PORT || 3001);
+
+
+
+
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === "production") {
@@ -12,7 +17,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/", (req, res) => {
-  console.log(process.env.MLAB_URI);
+  //console.log(process.env.MLAB_URI);
+  res.sendStatus(200);
 });
 
 app.post("/games", (req, res) => {

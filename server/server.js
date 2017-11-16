@@ -30,7 +30,7 @@ app.post("/games", (req, res) => {
 
 var server = app.listen(3001, function () {
   var port = server.address().port;
-  console.log('Example app listening at port %s', port);
+  //console.log('Example app listening at port %s', port);
 });
 
 module.exports = {app: app, server: server};

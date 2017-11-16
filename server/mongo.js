@@ -28,10 +28,10 @@ var mongo = {
     });
     newGame.save((err, newGame) => {
       if (err) {
-        console.log('Error creating new game');
+        //console.log('Error creating new game');
         callback({success: false});
       } else {
-        console.log('Successfully created a new game');
+        //console.log('Successfully created a new game');
         callback({success: true, id: gameId});
       }
     });

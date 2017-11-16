@@ -20,8 +20,8 @@ describe('Server', () => {
  /*
   * Test the /GET route
   */
-  describe('/GET', () => {
-	it('it should GET', (done) => {
+  describe('GET at root', () => {
+	it('Status should be 200', (done) => {
 		chai.request(server)
 		    .get('/')
 		    .end((err, res) => {
@@ -31,15 +31,26 @@ describe('Server', () => {
 	});
   });
 
-  describe('POST', () => {
-  	it('it should post', (done) =>{
-  		chai.request(server)
-		    .post('/games')
-		    .end((err, res) => {
-		        res.should.have.status(200);
-		      	done();
-		    });
-  	})
+  describe('POST /games', () => {
+  	describe('Successfully creates game', () =>{
+  		it('Status should be 200', (done) =>{
+	  		chai.request(server)
+			    .post('/games')
+			    .end((err, res) => {
+			        res.should.have.status(200);
+			      	done();
+			    });
+		});
+	  	it('Should return a new game id', (done) =>{
+	  		chai.request(server)
+			    .post('/games')
+			    .end((err, res) => {
+			        res.body.success.should.be.true;
+			        res.body.id.should.be.a('string');
+			      	done();
+			    });
+	  	});
+  	});
   })
 
 });

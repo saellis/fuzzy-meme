@@ -5,8 +5,14 @@ if (process.env.NODE_ENV !== "production") {
   require('dotenv').load();
 }
 const uri = process.env.MLAB_URI;
-console.log(uri);
-mongoose.connect(uri);
+
+//added params because w/o params is deprecated or something?
+mongoose.connect(uri, {
+  useMongoClient: true
+});
+
+//mongoose's promise is deprecated so this is weird code that for some reason is necessitous
+mongoose.Promise = global.Promise;
 
 var GameSchema = mongoose.Schema({
   id: String

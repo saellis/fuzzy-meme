@@ -9,7 +9,7 @@ var controller = {
     }
 
     var game = new Game({
-      users: [],
+      users: [req.body.creator],
       creator: req.body.creator,
       currentPlayer: req.body.creator
     });
@@ -24,7 +24,7 @@ var controller = {
   get: (req, res) => {
     Game.find((err, games) => {
       if (err) res.status(500).send(err);
-      res.status(200).send(games);
+      res.status(200).send({games: games});
     });
   }
 

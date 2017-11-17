@@ -62,6 +62,17 @@ describe('Server', () => {
             done();
           });
       });
+
+      it('Should add creator to list of users', (done) => {
+        chai.request(server)
+          .post('/games')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({'creator': 'jnsdfb87hg345ghso89745b'})
+          .end((err, res) => {
+            res.body.users.should.contain('jnsdfb87hg345ghso89745b');
+            done();
+          });
+      });
   	});
 
     describe('GET /games', () => {
@@ -75,7 +86,7 @@ describe('Server', () => {
               chai.request(server)
                 .get('/games')
                 .end((err, res) => {
-                  res.body.length.should.be.greaterThan(0);
+                  res.body.games.length.should.be.greaterThan(0);
                   done();
                 });
           });

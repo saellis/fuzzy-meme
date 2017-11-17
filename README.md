@@ -5,3 +5,6 @@ Made using [create-react-app](https://github.com/facebookincubator/create-react-
 ## Getting Started
 
 `$ npm start`
+
+# Start server only
+`$ npm run server`

@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
-const mongo = require('./mongo');
 const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: false}));
+
+const game = require('./controller/gameController');
+const user = require('./controller/userController');
 
 app.set("port", process.env.PORT || 3001);
-
-
-
-
-
 // Express only serves static assets in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -16,21 +14,21 @@ if (process.env.NODE_ENV === "production") {
   require('dotenv').load();
 }
 
-app.get("/", (req, res) => {
-  //console.log(process.env.MLAB_URI);
-  res.sendStatus(200);
-});
 
-app.post("/games", (req, res) => {
-  mongo.createGame((result) => {
-    //console.log(result);
-    res.status(200).send(result);
-  })
-});
+app.route('/')
+  .get((req, res) => res.sendStatus(200));
+
+app.route('/games')
+  .post(game.create)
+  .get(game.get);
+
+app.route('/users')
+  .post(user.create);
+
+
 
 var server = app.listen(3001, function () {
   var port = server.address().port;
-  //console.log('Example app listening at port %s', port);
 });
 
 module.exports = {app: app, server: server};

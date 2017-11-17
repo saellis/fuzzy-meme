@@ -9,13 +9,15 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import logger from 'redux-logger';
-import ReduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 
 import ttrBase from './reducers/ttrBase';
 
+import { createUserAction } from './actions/usersActions'
+
 let store = createStore(
 	ttrBase,
-	applyMiddleware(ReduxThunk, logger));
+	applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>
@@ -23,4 +25,7 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 )
+
+store.dispatch(createUserAction());
+
 registerServiceWorker();

@@ -2,8 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 
-const User =  ({id, games}) => (
+const User =  ({id, create}) => (
+	<div>
 		<p>{id}</p>
+		<button onClick={() =>
+			create()	
+		}>
+		Click me
+		</button>
+		</div>
 	)
 
 

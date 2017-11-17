@@ -18,11 +18,11 @@ describe('Server', () => {
     server.close(done);
   });
 
-  describe('POST /games', () => {
+  describe('POST /games/create', () => {
   	describe('Successfully creates game', () =>{
   		it('Status should be 200', (done) => {
 	  		chai.request(server)
-			    .post('/games')
+			    .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({'creator': 'jnsdfb87hg345ghso89745b'})
 			    .end((err, res) => {
@@ -32,7 +32,7 @@ describe('Server', () => {
 		  });
 	  	it('Should return a new game id', (done) =>{
 	  		chai.request(server)
-			    .post('/games')
+			    .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({'creator': 'jnsdfb87hg345ghso89745b'})
 			    .end((err, res) => {
@@ -43,7 +43,7 @@ describe('Server', () => {
 
       it('Should set creator and currentPlayer', (done) => {
         chai.request(server)
-          .post('/games')
+          .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({'creator': 'jnsdfb87hg345ghso89745b'})
           .end((err, res) => {
@@ -55,7 +55,7 @@ describe('Server', () => {
 
       it('Should complain when no creator is specified', (done) => {
         chai.request(server)
-          .post('/games')
+          .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .end((err, res) => {
             res.should.have.status(400);
@@ -65,7 +65,7 @@ describe('Server', () => {
 
       it('Should add creator to list of users', (done) => {
         chai.request(server)
-          .post('/games')
+          .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({'creator': 'jnsdfb87hg345ghso89745b'})
           .end((err, res) => {
@@ -79,7 +79,7 @@ describe('Server', () => {
       it('Should get list of all games', (done) => {
 
         chai.request(server)
-          .post('/games')
+          .get('/games')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({'creator': 'get-games-creator'})
           .end((err, res) => {

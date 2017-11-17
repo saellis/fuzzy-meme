@@ -18,11 +18,11 @@ describe('Server', () => {
     server.close(done);
   });
 
-  describe('POST /users', () => {
+  describe('POST /users/create', () => {
   	describe('Successfully creates user', () =>{
   		it('Status should be 200', (done) => {
 	  		chai.request(server)
-			    .post('/users')
+			    .post('/users/create')
 			    .end((err, res) => {
 			        res.should.have.status(200);
 			      	done();
@@ -30,7 +30,7 @@ describe('Server', () => {
 		  });
 	  	it('Should return a new user id', (done) =>{
 	  		chai.request(server)
-			    .post('/users')
+			    .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
 			    .end((err, res) => {
 			        res.body._id.should.be.a('string');
@@ -40,7 +40,7 @@ describe('Server', () => {
 
       it('Should set username and password', (done) => {
         chai.request(server)
-          .post('/users')
+          .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: 'userMcUserFace', password: 'pwd'})
           .end((err, res) => {
@@ -52,7 +52,7 @@ describe('Server', () => {
 
       it('Should return an empty list of games', (done) => {
         chai.request(server)
-          .post('/users')
+          .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: 'userMcUserFace', password: 'pwd'})
           .end((err, res) => {

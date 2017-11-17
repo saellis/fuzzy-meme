@@ -1,8 +1,8 @@
 # API Doc
 ## Games
-- #### `POST` /games
+- #### `POST` /games/create
   - Creates and returns a new game
-  
+
 Params
 
 | Field | Type | Description |
@@ -20,7 +20,7 @@ Success
 
 - #### `GET` /games
   - Gets all games
-  
+
 Success
 
 | Field | Type | Description |
@@ -28,16 +28,16 @@ Success
 | games | [Game] | Array of all current game objects |
 
 ## Users
-- #### `POST` /users
+- #### `POST` /users/create
   - Creates a new user
-  
+
 Params
 
 | Field | Type | Description |
 | ------ | ---- | ------ |
 | username | String | User's username |
 | password | String | User's password |
-     
+
 Success
 
 | Field | Type | Description |

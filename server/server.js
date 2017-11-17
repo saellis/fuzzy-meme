@@ -19,10 +19,12 @@ app.route('/')
   .get((req, res) => res.sendStatus(200));
 
 app.route('/games')
-  .post(game.create)
   .get(game.get);
 
-app.route('/users')
+app.route('/games/create')
+  .post(game.create)
+
+app.route('/users/create')
   .post(user.create);
 
 

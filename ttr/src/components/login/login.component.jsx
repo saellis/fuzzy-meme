@@ -5,7 +5,7 @@ const Login =  (props) => (
 		<div>
 			<LoginFieldContainer type='loginUsername' placeholder='Username'/>
 			<LoginFieldContainer type='loginPassword' placeholder='Password'/>
-			<button onClick={()=> props.login(props.un, props.pwd)} >ASDASD</button>
+			<button onClick={()=> props.login(props.un, props.pwd)} >LOGIN</button>
 		</div>
 	)
 

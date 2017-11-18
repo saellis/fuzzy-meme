@@ -8,3 +8,7 @@ Made using [create-react-app](https://github.com/facebookincubator/create-react-
 
 # Start server only
 `$ npm run server`
+
+# Run documentation
+`$ npm i -g apidoc`
+`$ apidoc -e node_modules`

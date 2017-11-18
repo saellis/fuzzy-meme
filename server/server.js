@@ -23,7 +23,11 @@ if (process.env.NODE_ENV === "production") {
 
 app.route('/')
   .get((req, res) => res.sendStatus(200));
-
+/**
+*@api {get} /games Get all games
+*@apiName GetGames
+*@apiGroup Games
+*/
 app.route('/games')
   .get(game.get);
 

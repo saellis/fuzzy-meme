@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './root.css';
 
 import UserContainer from './containers/user.container'
 

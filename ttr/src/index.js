@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
-import App from './App';
+import Root from './root.component';
 import registerServiceWorker from './registerServiceWorker';
 
 import { Provider } from 'react-redux';
@@ -11,16 +11,16 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import ttrBase from './reducers/ttrBase';
+import baseReducer from './reducers/base.reducer';
 
 
 let store = createStore(
-	ttrBase,
+	baseReducer,
 	applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Root />
   </Provider>,
   document.getElementById('root')
 )

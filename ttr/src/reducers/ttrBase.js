@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import users from './users';
-import games from './games';
+import users from './users.reducer';
+import games from './games.reducer';
 
 export default combineReducers({
   games: games,

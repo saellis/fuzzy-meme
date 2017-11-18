@@ -9,8 +9,8 @@ app.use(
 		next();
 	;})
 
-const game = require('./controller/gameController');
-const user = require('./controller/userController');
+const game = require('./controller/game.controller');
+const user = require('./controller/user.controller');
 
 app.set("port", process.env.PORT || 3001);
 // Express only serves static assets in production

@@ -46,7 +46,7 @@ export const loginAction = (un, pw) => {
 					}else{
 						dispatch({type:LOGIN_INCORRECT, data: data})
 					}
-				}
+				},
 				error => dispatch({type:LOGIN_ERROR})
 				//maybe dispatch an action that does some sort of notification on screen?
 			);

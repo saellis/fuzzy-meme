@@ -6,7 +6,7 @@ const LoginField =  (props) => {
 	return (
 		<input type={props.type.toLowerCase().indexOf('password') !== -1 ? 'password' : 'text'} 
 					placeholder={props.placeholder}
-					onChange={(evt) => props.saveText(props.type, evt.target.value)} />
+					onChange={(evt) => props.textChange(props.type, evt.target.value)} />
 	)}
 
 

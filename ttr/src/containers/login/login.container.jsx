@@ -4,10 +4,7 @@ import user from '../../components/login/login.component';
 import { loginAction }  from '../../actions/users.actions';
 
 const mapStateToProps = state => {
-  return {
-  	un: state.users.fields.loginUsername,
-  	pw: state.users.fields.loginPassword,
-  }
+  return {}
 }
 
 const mapDispatchToProps = dispatch =>{

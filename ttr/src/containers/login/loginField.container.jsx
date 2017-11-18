@@ -8,9 +8,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch =>{
-  return { 
-    saveText: (key, text) => {dispatch(updateFieldAction(key, text))}
-  }
+  return {}
 }
 
 const LoginFieldContainer = connect(

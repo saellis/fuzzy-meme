@@ -1,6 +1,6 @@
 import * as _ from '../actions/users.actions';
 
-const users = (state = {fields:{}}, action) => {
+const users = (state = {}, action) => {
   switch (action.type) {
 
     //Section for creating user
@@ -18,13 +18,6 @@ const users = (state = {fields:{}}, action) => {
     case _.LOGIN_ERROR:
     case _.LOGIN_INCORRECT:
       return {...state, login:'yeah!'};
-
-
-    //Section for user login form
-    case _.UPDATE_FIELD:
-      var temp = state.fields;
-      temp[action.key] = action.text
-      return {...state, fields: temp}
 
     default:
       	return state;

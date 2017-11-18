@@ -1,4 +1,4 @@
-const Game = require('../model/Game');
+const Game = require('../model/game.model');
 
 var controller = {
 

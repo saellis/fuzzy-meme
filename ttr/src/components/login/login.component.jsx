@@ -10,6 +10,7 @@ const Login =  (props) => {
 
 	return(
 		<div>
+			<span>{props.syntaxErrorText}</span>
 			<LoginFieldContainer id='loginUsername' type='loginUsername' placeholder='Username' textChange={(key,value) => textChange(key,value)}/>
 			<LoginFieldContainer id='loginPassword' type='loginPassword' placeholder='Password' textChange={(key,value) => textChange(key,value)}/>
 			<button onClick={()=> props.login(fields['loginUsername'], fields['loginPassword'])} >LOGIN</button>

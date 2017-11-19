@@ -4,7 +4,9 @@ import login from '../../components/login/login.component.jsx';
 import { loginAction }  from '../../actions/users.actions';
 
 const mapStateToProps = state => {
-  return {}
+  return {
+  	  	syntaxErrorText: state.users.createUserSyntaxError
+  }
 }
 
 const mapDispatchToProps = dispatch =>{

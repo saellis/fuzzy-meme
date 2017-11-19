@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginFieldContainer from '../../containers/login/loginField.container'
+import LoginFieldContainer from '../../containers/login/loginField.container.jsx'
 
 const Login =  (props) => {
 	var fields = {};
@@ -10,11 +10,12 @@ const Login =  (props) => {
 
 	return(
 		<div>
-			<LoginFieldContainer type='loginUsername' placeholder='Username' textChange={(key,value) => textChange(key,value)}/>
-			<LoginFieldContainer type='loginPassword' placeholder='Password' textChange={(key,value) => textChange(key,value)}/>
+			<LoginFieldContainer id='loginUsername' type='loginUsername' placeholder='Username' textChange={(key,value) => textChange(key,value)}/>
+			<LoginFieldContainer id='loginPassword' type='loginPassword' placeholder='Password' textChange={(key,value) => textChange(key,value)}/>
 			<button onClick={()=> props.login(fields['loginUsername'], fields['loginPassword'])} >LOGIN</button>
 		</div>
 	)}
 
 
 export default Login;
+

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import user from '../../components/login/login.component';
+import login from '../../components/login/login.component.jsx';
 
 import { loginAction }  from '../../actions/users.actions';
 
@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch =>{
 const LoginContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(user)
+)(login)
 
 
 export default LoginContainer;

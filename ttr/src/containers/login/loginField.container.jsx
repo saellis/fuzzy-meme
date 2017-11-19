@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import user from '../../components/login/loginField.component';
+import user from '../../components/login/loginField.component.jsx';
 
 import { updateFieldAction }  from '../../actions/users.actions';
 

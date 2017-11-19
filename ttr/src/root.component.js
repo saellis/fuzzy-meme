@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import './root.css';
 
-import LoginContainer from './containers/login/login.container';
-import CreateUserContainer from './containers/login/createUser.container';
+import UserPortal from './components/login/userPortal.component.jsx';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginContainer />
-        <CreateUserContainer />
+        <UserPortal />
       </div>
     );
   }

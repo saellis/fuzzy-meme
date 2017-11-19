@@ -5,7 +5,7 @@ import { createUserAction, setCreateUserSyntaxError, clearCreateUserSyntaxError 
 
 const mapStateToProps = state => {
   return {
-  	errorText: state.users.loginErrorText
+  	errorText: state.users.createUserSyntaxError
   }
 }
 

@@ -5,7 +5,7 @@ import { loginAction }  from '../../actions/users.actions';
 
 const mapStateToProps = state => {
   return {
-  	  	syntaxErrorText: state.users.createUserSyntaxError
+  	  	syntaxErrorText: state.users.loginErrorText
   }
 }
 

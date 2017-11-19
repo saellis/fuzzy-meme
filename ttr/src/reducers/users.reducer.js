@@ -14,10 +14,22 @@ const users = (state = {}, action) => {
 
     //Section for logging in
     case _.LOGIN_PENDING:
+      return {...state, loginPending: true};
     case _.LOGIN_SUCCESS:
+      return {...state, loggedInUser:action.data, loginPending: false};
     case _.LOGIN_ERROR:
+      return {...state, loginErrorText:'Something happened.', loginPending: false};
     case _.LOGIN_INCORRECT:
-      return {...state, login:'yeah!'};
+      return {...state, loginErrorText:action.data.err, loginPending: false};
+    case _.CLEAR_LOGIN_ERROR_TEXT:
+      return {...state, loginErrorText:''};
+
+
+
+    case _.SET_CREATE_USER_SYNTAX_ERROR:
+      return {...state, createUserSyntaxError: action.text};
+    case _.CLEAR_CREATE_USER_SYNTAX_ERROR:
+      return {...state, createUserSyntaxError: ''};
 
     default:
       	return state;

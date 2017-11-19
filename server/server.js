@@ -37,6 +37,9 @@ app.route('/games/create')
 app.route('/users/create')
   .post(user.create);
 
+app.route('/users/auth')
+  .post(user.authenticate)
+
 
 
 var server = app.listen(3001, function () {

@@ -1,3 +1,5 @@
 server/test
 ttr/src/test
+ttr/src/**/__specs__
+ttr/src/**/**/__specs__
 --recursive

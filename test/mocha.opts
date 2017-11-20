@@ -1,5 +1,6 @@
 server/test
 ttr/src/test
-ttr/src/**/__specs__
-ttr/src/**/**/__specs__
+ttr/src/**/*.spec.js
+ttr/src/**/**/*.spec.js
+ttr/src/**/**/**/*.spec.js
 --recursive

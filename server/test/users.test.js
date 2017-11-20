@@ -120,6 +120,17 @@ describe('Server', () => {
         });
       });
 
+      it('Should check password lowercase', (done) => {
+        chai.request(server)
+          .post('/users/create')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uuid(), password: 'BADPASSWORD1'})
+          .end((err, res) => {
+            res.status.should.equal(400);
+            done();
+        });
+      });
+
       it('Should allow strong passwords', (done) => {
         chai.request(server)
           .post('/users/create')

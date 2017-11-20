@@ -24,7 +24,7 @@
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "4.0.0",
     "eslint-plugin-react": "6.9.0",
-    "mongoose": "^4.13.2",
+    "mongoose": "^4.13.4",
     "really-need": "^1.9.2",
     "supertest": "^3.0.0"
   },

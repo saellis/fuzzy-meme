@@ -27,7 +27,7 @@ describe('Server', () => {
 	  		chai.request(server)
 			    .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'strongpassword'})
+          .send({username: uname, password: 'Strongpassword123'})
 			    .end((err, res) => {
 			        res.body._id.should.be.a('string');
 			      	done();
@@ -39,7 +39,7 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'strongpassword'})
+          .send({username: uname, password: 'Strongpassword123'})
           .end((err, res) => {
             res.body.username.should.equal(uname);
             res.body.password.should.equal('[REDACTED]');
@@ -51,9 +51,9 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: undefined, password: 'strongpassword'})
+          .send({username: undefined, password: 'Strongpassword123'})
           .end((err, res) => {
-            res.body.err.should.equal('username invalid. must be a string of length > 0');
+            res.status.should.equal(400);
             done();
           });
       });
@@ -63,14 +63,13 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'strongpassword'})
+          .send({username: uname, password: 'Strongpassword123'})
           .end((err, res) => {
             chai.request(server)
               .post('/users/create')
               .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'strongpassword'})
+              .send({username: uname, password: 'Strongpassword123'})
               .end((err, res) => {
-                console.log(res.body)
                 res.body.err.should.equal('username already exists');
                 done();
               });
@@ -81,20 +80,64 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'strongpassword'})
+          .send({username: uuid(), password: 'Strongpassword11'})
           .end((err, res) => {
             res.body.games.should.have.length(0);
             done();
           });
       });
 
-      it('Should not allow user to have a shiity password (null or length < 8 chars)', (done) => {
+      it('Should check password length', (done) => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'badpwd'})
+          .send({username: uuid(), password: 'B1ad'})
           .end((err, res) => {
-            res.body.err.should.not.equal(null);
+            res.status.should.equal(400);
+            done();
+        });
+      });
+
+      it('Should check password capitals', (done) => {
+        chai.request(server)
+          .post('/users/create')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uuid(), password: 'b11111111'})
+          .end((err, res) => {
+            res.status.should.equal(400);
+            done();
+        });
+      });
+
+      it('Should check password numbers', (done) => {
+        chai.request(server)
+          .post('/users/create')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uuid(), password: 'Badpwdddd'})
+          .end((err, res) => {
+            res.status.should.equal(400);
+            done();
+        });
+      });
+
+      it('Should allow strong passwords', (done) => {
+        chai.request(server)
+          .post('/users/create')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uuid(), password: 'GoodPassword123'})
+          .end((err, res) => {
+            res.status.should.not.equal(400);
+            done();
+        });
+      });
+
+      it('Should not allow user to have shitty username', (done) => {
+        chai.request(server)
+          .post('/users/create')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uuid().slice(0, 4), password: 'GoodPwd1233'})
+          .end((err, res) => {
+            res.status.should.equal(400);
             done();
         });
       });
@@ -103,7 +146,7 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'gooodpwd'})
+          .send({username: uuid(), password: 'Goodpwd123123'})
           .end((err, res) => {
             res.body.password.should.equal('[REDACTED]');
             done();
@@ -115,12 +158,12 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'gooodpwd'})
+          .send({username: uname, password: 'Gooodpwd123123'})
           .end((err, res) => {
             chai.request(server)
               .post('/users/auth')
               .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'gooodpwd'})
+              .send({username: uname, password: 'Gooodpwd123123'})
               .end((err, res) => {
                 res.body.username.should.not.equal(null);
                 done();
@@ -132,14 +175,13 @@ describe('Server', () => {
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'gooodpwd'})
+          .send({username: uname, password: 'Goodpwd123123'})
           .end((err, res) => {
             chai.request(server)
               .post('/users/auth')
               .set('content-type', 'application/x-www-form-urlencoded')
               .send({username: uname, password: 'wrong password'})
               .end((err, res) => {
-              console.log(res.body)
                 res.body.err.should.equal('incorrect password');
                 done();
               });

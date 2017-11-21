@@ -16,12 +16,29 @@ export const createUserAction = (un, pw) => {
 		      }).then(res => res.json()).then(
 				data => {
 					dispatch({type:CREATE_USER_SUCCESS, data: data});
-					dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR, data: data});
+					dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR});
 
 				},
 				error => dispatch({type:CREATE_USER_ERROR})
 				//maybe dispatch an action that does some sort of notification on screen?
 			);
+	}
+}
+
+
+
+export const SET_CREATE_USER_SYNTAX_ERROR = 'SET_CREATE_USER_SYNTAX_ERROR';
+export const CLEAR_CREATE_USER_SYNTAX_ERROR = 'CLEAR_CREATE_USER_SYNTAX_ERROR';
+
+export const setCreateUserSyntaxError = (text) => {
+	return (dispatch) => {
+		dispatch({type:SET_CREATE_USER_SYNTAX_ERROR, text:text});
+	}
+}
+
+export const clearCreateUserSyntaxError = () => {
+	return (dispatch) => {
+		dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR});
 	}
 }
 
@@ -56,21 +73,6 @@ export const loginAction = (un, pw) => {
 				error => dispatch({type:LOGIN_ERROR})
 				//maybe dispatch an action that does some sort of notification on screen?
 			);
-	}
-}
-
-export const SET_CREATE_USER_SYNTAX_ERROR = 'SET_CREATE_USER_SYNTAX_ERROR';
-export const CLEAR_CREATE_USER_SYNTAX_ERROR = 'CLEAR_CREATE_USER_SYNTAX_ERROR';
-
-export const setCreateUserSyntaxError = (text) => {
-	return (dispatch) => {
-		dispatch({type:SET_CREATE_USER_SYNTAX_ERROR, text:text});
-	}
-}
-
-export const clearCreateUserSyntaxError = () => {
-	return (dispatch) => {
-		dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR});
 	}
 }
 

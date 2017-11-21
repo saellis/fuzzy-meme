@@ -52,7 +52,7 @@ export const CLEAR_LOGIN_ERROR_TEXT = 'CLEAR_LOGIN_ERROR_TEXT';
 
 export const loginAction = (un, pw) => {
 	return (dispatch)=>{
-		dispatch({type:LOGIN_PENDING, data: {un:un, pw:pw}});
+		dispatch({type:LOGIN_PENDING});
 		return fetch('http://localhost:3001/users/auth', { 
 			    method: 'post',
 			    headers: {
@@ -61,8 +61,7 @@ export const loginAction = (un, pw) => {
 			    body: `username=${un}&password=${pw}`
 		      }).then(res => res.json()).then(
 				data => {
-					console.log(data);
-					//TODO: Check to see if successful login
+					//TODO: better check here for success, maybe pass {success: true} from back end
 					if(data._id){
 						dispatch({type:LOGIN_SUCCESS, data: data})
 						dispatch({type:CLEAR_LOGIN_ERROR_TEXT})

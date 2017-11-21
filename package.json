@@ -38,6 +38,18 @@
     "lint": "eslint .",
     "test": "nyc mocha"
   },
+  "nyc": {
+    "exclude":[
+      "**/*.spec.js",
+      "**/*.test.js",
+      "coverage/**",
+      "**/test/**",
+      "test{,-*}.js",
+      "**/*.test.js",
+      "**/__tests__/**",
+      "**/__specs__/**"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/saellis/fuzzy-meme.git"

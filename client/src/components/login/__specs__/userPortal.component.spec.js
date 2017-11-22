@@ -15,7 +15,7 @@ describe('<UserPortal>', () => {
 
 	it('should have two tabs', () => {
 		wrapper.find(Tab).should.have.length(2);
-  	wrapper.find(TabPanel).should.have.length(2);
+		wrapper.find(TabPanel).should.have.length(2);
 	});
 
 	it('should have a login section', () => {

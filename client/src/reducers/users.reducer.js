@@ -4,13 +4,12 @@ const users = (state = {}, action) => {
 	switch (action.type) {
 
     //Section for creating user
-  	case _.CREATE_USER_PENDING:
-  		return {...state, createUserPending: true};
-  	case _.CREATE_USER_SUCCESS:
-  		return {...state, createUserId: action.data._id, 
-  				userGames: action.data.games, createUserPending: false};
-  	case _.CREATE_USER_ERROR:
-  		return {...state, createUserErrorMsg: 'Error creating user.', createUserPending: false};
+	case _.CREATE_USER_PENDING:
+		return {...state, createUserPending: true};
+	case _.CREATE_USER_SUCCESS:
+		return {...state, createUserId: action.data._id, userGames: action.data.games, createUserPending: false};
+	case _.CREATE_USER_ERROR:
+		return {...state, createUserErrorMsg: 'Error creating user.', createUserPending: false};
 
     //Section for logging in
 	case _.LOGIN_PENDING:
@@ -32,7 +31,7 @@ const users = (state = {}, action) => {
 		return {...state, createUserSyntaxError: ''};
 
 	default:
-      	return state;
+		return state;
 	}
 };
 

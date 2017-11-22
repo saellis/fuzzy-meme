@@ -24,7 +24,6 @@ describe('<LoginField>', () => {
 	});
 
 	it('should have change function', () => {
-		var success = false;
 		const wrapper = shallow(<LoginField type='asdsd' placeholder='testing'
 			textChange={spy}/>);
 		wrapper.find('input').simulate('change', {target:{value:'a'}});

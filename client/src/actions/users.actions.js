@@ -7,13 +7,13 @@ export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
 export const createUserAction = (un, pw) => {
 	return (dispatch)=>{
 		dispatch({type:CREATE_USER_PENDING});
-		return fetch('http://localhost:3001/users/create', { 
-			    method: 'post',
-			    headers: {
-			      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			    },
-			    body: `username=${un}&password=${pw}`
-		      }).then(res => res.json()).then(
+		return fetch('http://localhost:3001/users/create', {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			body: `username=${un}&password=${pw}`
+		}).then(res => res.json()).then(
 				data => {
 					dispatch({type:CREATE_USER_SUCCESS, data: data});
 					dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR});
@@ -53,13 +53,13 @@ export const CLEAR_LOGIN_ERROR_TEXT = 'CLEAR_LOGIN_ERROR_TEXT';
 export const loginAction = (un, pw) => {
 	return (dispatch)=>{
 		dispatch({type:LOGIN_PENDING});
-		return fetch('http://localhost:3001/users/auth', { 
-			    method: 'post',
-			    headers: {
-			      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			    },
-			    body: `username=${un}&password=${pw}`
-		      }).then(res => res.json()).then(
+		return fetch('http://localhost:3001/users/auth', {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			body: `username=${un}&password=${pw}`
+		}).then(res => res.json()).then(
 				data => {
 					//TODO: better check here for success, maybe pass {success: true} from back end
 					if(data._id){
@@ -74,5 +74,3 @@ export const loginAction = (un, pw) => {
 			);
 	};
 };
-
-

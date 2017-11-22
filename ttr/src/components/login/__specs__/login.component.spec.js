@@ -2,7 +2,6 @@ import Login from '../login.component.jsx';
 import LoginFieldContainer from '../../../containers/login/loginField.container.jsx';
 
 import React from 'react';
-import { Button } from 'react-dom'
 import { mount, shallow } from 'enzyme';
 import { loginAction }  from '../../../actions/users.actions';
 

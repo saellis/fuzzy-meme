@@ -15,7 +15,11 @@ mongoose.connect(uri, {
 var Game = new Schema({
   users: [String], //list of the game's players' IDs
   creator: String, //ID of player who created the game
-  currentPlayer: String //ID of player whose turn it currently is
+  currentPlayer: String, //ID of player whose turn it currently is
+  currentPlayerActedOnce: Boolean, //has the player made one action so far? (useful for pulling two cards, returning pathcards, etc.)
+  faceUp: [String], //the five face up cards available to the current user
+  faceDown: [String], // the stack of face down cards that the user can pull from
+  discard: [String] // the pile of cards that were played to build track
 });
 
 module.exports = mongoose.model('Game', Game);

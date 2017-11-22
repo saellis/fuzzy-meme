@@ -19,7 +19,9 @@ var controller = {
         var user = new User({
           username: req.body.username,
           password: hash,
-          games: []
+          games: [],
+          trainHand: [],
+          routeHand: []
         });
         user.save((err, result) => {
           if(err) {
@@ -34,6 +36,7 @@ var controller = {
     }
   },
 
+//todo return a session ID here so clients dont need to send username and password to server every time
   authenticate: (req, res) => {
     User.find({username: req.body.username}, (err, result) => {
       if (result.length == 1) {

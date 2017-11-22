@@ -24,7 +24,7 @@ describe('Server', () => {
 	  		chai.request(server)
 			    .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creator': 'jnsdfb87hg345ghso89745b'})
+          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
 			    .end((err, res) => {
 			        res.should.have.status(200);
 			      	done();
@@ -34,7 +34,7 @@ describe('Server', () => {
 	  		chai.request(server)
 			    .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creator': 'jnsdfb87hg345ghso89745b'})
+          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
 			    .end((err, res) => {
 			        res.body._id.should.be.a('string');
 			      	done();
@@ -45,7 +45,7 @@ describe('Server', () => {
         chai.request(server)
           .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creator': 'jnsdfb87hg345ghso89745b'})
+          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
           .end((err, res) => {
             res.body.creator.should.equal('jnsdfb87hg345ghso89745b');
             res.body.currentPlayer.should.equal('jnsdfb87hg345ghso89745b');
@@ -67,30 +67,42 @@ describe('Server', () => {
         chai.request(server)
           .post('/games/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creator': 'jnsdfb87hg345ghso89745b'})
+          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
           .end((err, res) => {
             res.body.users.should.contain('jnsdfb87hg345ghso89745b');
             done();
           });
       });
   	});
+  });
+  describe('GET /game', () => {
 
-    describe('GET /games', () => {
-      it('Should get list of all games', (done) => {
+    it('Should get a game by id', (done) => {
+      chai.request(server)
+        .post('/games/create')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
+        .end((err, res) => {
+          chai.request(server)
+            .get('/games')
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .send({'gameId': res.body._id})
+            .end((err, res) => {
+              res.body._id.should.not.equal(null);
+              done();
+            });
+        });
+    });
 
-        chai.request(server)
-          .get('/games')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creator': 'get-games-creator'})
-          .end((err, res) => {
-              chai.request(server)
-                .get('/games')
-                .end((err, res) => {
-                  res.body.games.length.should.be.greaterThan(0);
-                  done();
-                });
-          });
-      });
+    it('Should fail when getting a game w/ a bad id', (done) => {
+      chai.request(server)
+        .get('/games')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({'gameId': 'probably not a game id'})
+        .end((err, res) => {
+          res.body.err.should.not.equal(null)
+          done();
+        });
     });
   });
 });

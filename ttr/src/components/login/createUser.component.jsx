@@ -15,7 +15,6 @@ const CreateUser =  {
 	},
 
 	validateForm: (un, pw, pw2, successCallback, errorCallback) => {
-		console.log(fields, un , pw, pw2);
 		if(!un || !pw || !pw2){
 			errorCallback('please fill in all boxes');
 			return;

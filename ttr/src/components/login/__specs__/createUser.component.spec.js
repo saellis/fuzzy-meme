@@ -10,7 +10,8 @@ import { createUserAction }  from '../../../actions/users.actions';
 describe('<CreateUser>', () => {
 	var wrapper;
 	beforeEach(() => {
-		wrapper = shallow(<CreateUser.CreateUser />);
+		wrapper = shallow(<CreateUser.CreateUser createUser={()=>{}}
+							setErrorText={() => {}} />);
 	})
 	it('should have three inputs', () => {
 		expect(wrapper.find(LoginFieldContainer)).to.have.length(3);
@@ -37,7 +38,7 @@ describe('<CreateUser>', () => {
 	it('should have a button', () => {
 		const field = wrapper.find('button');
 		expect(field).to.have.length(1);
-		expect(true).to.equal(false);
+		field.at(0).simulate('click');
 	});
 
 
@@ -64,6 +65,66 @@ describe('<CreateUser>', () => {
 				(err) => success = false);
 			expect(success).to.equal(true);
 		});
+		it('invalid username', () => {
+			CreateUser.textChange('createUsername', 'aa');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});		
+		it('non-matching passwords', () => {
+			CreateUser.textChange('createPassword', 'AA111111');
+			CreateUser.textChange('createConfirmPassword', 'AA112111');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});		
+		it('no lower case', () => {
+			CreateUser.textChange('createPassword', 'AA111111');
+			CreateUser.textChange('createConfirmPassword', 'AA111111');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});		
+		it('password too short', () => {
+			CreateUser.textChange('createPassword', 'AA1111');
+			CreateUser.textChange('createConfirmPassword', 'AA1111');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});
+		it('no uppercase', () => {
+			CreateUser.textChange('createPassword', 'aa111111');
+			CreateUser.textChange('createConfirmPassword', 'aa111111');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});
+		it('no digit', () => {
+			CreateUser.textChange('createPassword', 'aAaAaAaA');
+			CreateUser.textChange('createConfirmPassword', 'aAaAaAaA');
+			CreateUser.validateForm(CreateUser.getFields()['createUsername'],
+				CreateUser.getFields()['createPassword'],
+				CreateUser.getFields()['createConfirmPassword'],
+				(un, pw) => success = true,
+				(err) => success = false);
+			expect(success).to.equal(false);
+		});
+
 	})
 
 });

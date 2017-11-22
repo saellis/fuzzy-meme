@@ -9,7 +9,7 @@ import { loginAction }  from '../../../actions/users.actions';
 describe('<Login>', function () {
 	var wrapper;
 	beforeEach(() => {
-		wrapper = shallow(<Login.Login />);
+		wrapper = shallow(<Login.Login login={() => {return 'login'}}/>);
 	})
 	it('should have two inputs', function () {
 		expect(wrapper.find(LoginFieldContainer)).to.have.length(2);
@@ -34,7 +34,7 @@ describe('<Login>', function () {
 	it('should have a button', function () {
 		const field = wrapper.find('button');
 		expect(field).to.have.length(1);
-		expect(true).to.equal(false);
+		field.at(0).simulate('click');
 	});
 
 	it('should save on keypress', () => {

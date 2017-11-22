@@ -41,6 +41,21 @@
     "test": "nyc mocha"
   },
   "nyc": {
+    "require": [
+      "babel-core/register"
+    ],
+    "include": [
+      "**/*.js",
+      "**/*.jsx"
+    ],
+    "extension": [
+      ".jsx",
+      ".js"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
     "exclude": [
       "**/*.spec.js",
       "**/*.test.js",

@@ -30,6 +30,7 @@
     "eslint-plugin-react": "6.9.0",
     "fetch-mock": "^5.13.1",
     "really-need": "^1.9.2",
+    "sinon-chai": "^2.14.0",
     "supertest": "^3.0.0"
   },
   "scripts": {

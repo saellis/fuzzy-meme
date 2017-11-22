@@ -1,4 +1,4 @@
-const User = require('../model/user.model');
+const UserManipulator = require('../model/user.manipulator');
 const bcrypt = require('bcrypt');
 
 var controller = {
@@ -16,20 +16,12 @@ var controller = {
       res.status(400).send({err: 'username invalid. must be a string of length > 6'});
     } else {
       bcrypt.hash(req.body.password, 8, (err, hash) => {
-        var user = new User({
-          username: req.body.username,
-          password: hash,
-          games: [],
-          trainHand: [],
-          routeHand: []
-        });
-        user.save((err, result) => {
-          if(err) {
-            if(err.code === 11000)
-              res.status(400).send({err: 'username already exists'})
+        UserManipulator.addUser({username: req.body.username, hash: hash}, (err, user) => {
+          if (err) {
+            res.status(400).send({err: err});
           } else {
-            result.password = '[REDACTED]';
-            res.status(200).send(result);
+            delete user.password_hash;
+            res.status(200).send(user);
           }
         });
       });
@@ -38,12 +30,15 @@ var controller = {
 
 //todo return a session ID here so clients dont need to send username and password to server every time
   authenticate: (req, res) => {
-    User.find({username: req.body.username}, (err, result) => {
-      if (result.length == 1) {
-        var user = result[0];
-        bcrypt.compare(req.body.password, user.password, (err, result) => {
+    UserManipulator.getByUsername(req.body.username, (err, user) => {
+      if (err !== null) {
+        res.status(500).send(err);
+      } else if (!user) {
+        res.status(400).send({err: 'user does not exist'});
+      } else {
+        bcrypt.compare(req.body.password, user.password_hash, (err, result) => {
           if (result) { //passwords match
-            user.password = '[REDACTED]';
+            delete user.password_hash;
             res.status(200).send(user);
           } else { //passwords dont match
             res.status(400).send({err: 'incorrect password'});

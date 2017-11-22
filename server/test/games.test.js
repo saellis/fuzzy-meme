@@ -1,11 +1,8 @@
-//During the test the env variable is set to test
-
-let mongoose = require("mongoose");
-
 //Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
+let uuid = require('uuid/v1');
 
 chai.use(chaiHttp);
 //Our parent block
@@ -19,61 +16,40 @@ describe('Server', () => {
   });
 
   describe('POST /games/create', () => {
-  	describe('Successfully creates game', () =>{
-  		it('Status should be 200', (done) => {
-	  		chai.request(server)
-			    .post('/games/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
-			    .end((err, res) => {
-			        res.should.have.status(200);
-			      	done();
-			    });
-		  });
-	  	it('Should return a new game id', (done) =>{
-	  		chai.request(server)
-			    .post('/games/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
-			    .end((err, res) => {
-			        res.body._id.should.be.a('string');
-			      	done();
-			    });
-	  	});
-
-      it('Should set creator and currentPlayer', (done) => {
+  	describe('Successfully creates game', () => {
+  		it('Should return new game object', (done) => {
+        var uname = uuid();
         chai.request(server)
-          .post('/games/create')
+          .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
+          .send({username: uname, password: 'Strongpassword123'})
           .end((err, res) => {
-            res.body.creator.should.equal('jnsdfb87hg345ghso89745b');
-            res.body.currentPlayer.should.equal('jnsdfb87hg345ghso89745b');
-            done();
+            chai.request(server)
+    			    .post('/games/create')
+              .set('content-type', 'application/x-www-form-urlencoded')
+              .send({'creatorId': uname})
+    			    .end((err, res) => {
+    			        res.should.have.status(200);
+    			        res.body._id.should.be.a('string');
+                  res.body.creator_id.should.equal(uname);
+                  res.body.current_player_id.should.equal(uname);
+                  res.body.players.should.contain(uname);
+    			      	done();
+    			    });
           });
-      });
+		  });
 
       it('Should complain when no creator is specified', (done) => {
-        chai.request(server)
-          .post('/games/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .end((err, res) => {
-            res.should.have.status(400);
-            done();
-          });
+          var uname = uuid();
+          chai.request(server)
+      			    .post('/games/create')
+                .set('content-type', 'application/x-www-form-urlencoded')
+      			    .end((err, res) => {
+                    res.should.have.status(400);
+      			      	done();
+      			    });
       });
-
-      it('Should add creator to list of users', (done) => {
-        chai.request(server)
-          .post('/games/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({'creatorId': 'jnsdfb87hg345ghso89745b'})
-          .end((err, res) => {
-            res.body.users.should.contain('jnsdfb87hg345ghso89745b');
-            done();
-          });
-      });
-  	});
+    });
   });
   describe('GET /game', () => {
 

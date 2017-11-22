@@ -91,10 +91,9 @@ app.route('/users/create')
   *     {
   *       "_id": "123",
   *       "username": "stephen120",
-  *       "password": "[REDACTED]"
-  *       "games": [],
-  *       "trainHand": [],
-  *       "routeHand": []
+  *       "game_ids": [],
+  *       "train_hand": [],
+  *       "route_hand": []
   *     }
   */
 app.route('/users/auth')

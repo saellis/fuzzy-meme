@@ -1,7 +1,3 @@
-//During the test the env variable is set to test
-
-let mongoose = require("mongoose");
-
 //Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -30,6 +26,7 @@ describe('Server', () => {
           .send({username: uname, password: 'Strongpassword123'})
 			    .end((err, res) => {
 			        res.body._id.should.be.a('string');
+              res.body.username.should.equal(uname);
 			      	done();
 			    });
 	  	});
@@ -42,7 +39,6 @@ describe('Server', () => {
           .send({username: uname, password: 'Strongpassword123'})
           .end((err, res) => {
             res.body.username.should.equal(uname);
-            res.body.password.should.equal('[REDACTED]');
             done();
           });
       });
@@ -82,7 +78,7 @@ describe('Server', () => {
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'Strongpassword11'})
           .end((err, res) => {
-            res.body.games.should.have.length(0);
+            res.body.game_ids.should.have.length(0);
             done();
           });
       });
@@ -154,12 +150,13 @@ describe('Server', () => {
       });
 
       it('Should allow users to have strong passwords', (done) => {
+        var uname = uuid();
         chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'Goodpwd123123'})
+          .send({username: uname, password: 'Goodpwd123123'})
           .end((err, res) => {
-            res.body.password.should.equal('[REDACTED]');
+            res.body.username.should.equal(uname);
             done();
           });
       });
@@ -198,6 +195,17 @@ describe('Server', () => {
               });
           });
       });
+      it('Should error if user doesnt exist', (done) => {
+        var uname = uuid();
+        chai.request(server)
+              .post('/users/auth')
+              .set('content-type', 'application/x-www-form-urlencoded')
+              .send({username: uname, password: 'doesnt matter'})
+              .end((err, res) => {
+                res.body.err.should.equal('user does not exist');
+                done();
+              });
+        });
   	});
   });
 });

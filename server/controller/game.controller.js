@@ -1,4 +1,4 @@
-const Game = require('../model/game.model');
+const GameManipulator = require('../model/game.manipulator');
 
 var controller = {
 
@@ -7,21 +7,9 @@ var controller = {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-
-    var game = new Game({
-      users: [req.body.creatorId],
-      creator: req.body.creatorId,
-      currentPlayer: req.body.creatorId,
-      currentPlayerActedOnce: false,
-      faceUp: [],
-      faceDown: [],
-      discard: []
-    });
-
-    game.save((err, result) => {
-      if(err) {
-        console.log(err);
-        res.sendStatus(500);
+    GameManipulator.createGame(req.body.creatorId, (err, result) => {
+      if(err !== null) {
+        res.status(500).send(err);
       } else {
         res.status(200).send(result);
       }
@@ -29,11 +17,13 @@ var controller = {
   },
 
   get: (req, res) => {
-    Game.find({_id: req.body.gameId}, (err, games) => {
-      if (err || !games || games.length == 0) {
-        res.status(400).send({err: 'game not found'});
+    GameManipulator.getGame(req.body.gameId, (err, game) => {
+      if (err !== null) {
+        res.status(500).send(err);
+      } else if (!game) {
+        res.status(400).send({err: 'game does not exist'});
       } else {
-        res.status(200).send(games[0]);
+        res.status(200).send(game);
       }
     });
   }

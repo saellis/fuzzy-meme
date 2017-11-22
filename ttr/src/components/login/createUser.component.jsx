@@ -4,48 +4,52 @@ import LoginFieldContainer from '../../containers/login/loginField.container.jsx
 
 const fields = {};
 
-const CreateUser =  (props) => {
+const CreateUser =  {
 
-	const textChange = (key, value) => {
+	getFields: () =>{
+		return fields;
+	},
+
+	textChange: (key, value) => {
 		fields[key] = value;
-	}
+	},
 
-	const validateForm = (un, pw, pw2) => {
-		console.log(fields, un , pw, pw2);
+	validateForm: (un, pw, pw2, successCallback, errorCallback) => {
 		if(!un || !pw || !pw2){
-			props.setErrorText('please fill in all boxes');
+			errorCallback('please fill in all boxes');
 			return;
 		}
-		if(!un.match(/[a-zA-Z0-9@\.]{6,}/)){
-			props.setErrorText("username too short");
+		if(!un.match(/[a-zA-Z0-9@.]{6,}/)){
+			errorCallback("username too short");
 		}else if(pw !== pw2){
-			props.setErrorText("pword no match")
+			errorCallback("pword no match")
 		}else{
 			if(!pw.match(/.{8,}/)){
-				props.setErrorText("too short")
+				errorCallback("too short")
 			}else if(!pw.match(/.*[A-Z].*/)){
-				props.setErrorText("uppercase pls")
+				errorCallback("uppercase pls")
 			}else if(!pw.match(/.*[a-z].*/)){
-				props.setErrorText("lowercase pls")
+				errorCallback("lowercase pls")
 			}else if(!pw.match(/.*[0-9].*/)){
-				props.setErrorText("need digit")
+				errorCallback("need digit")
 			}else{
 				//success
-				props.createUser(un, pw);
+				successCallback(un, pw);
 			}
 		}
-	}
+	},
 
-	return(
+	CreateUser: (props) =>  {return(
 		<div>
 			<span>{props.errorText}</span>
-			<LoginFieldContainer id='createUsername' type='createUsername' placeholder='Username' textChange={(key,value) => textChange(key,value)}/>
-			<LoginFieldContainer id='createPassword' type='createPassword' placeholder='Password' textChange={(key,value) => textChange(key,value)}/>
-			<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' placeholder='Confirm Password' textChange={(key,value) => textChange(key,value)}/>
-			<button onClick={()=> validateForm(fields['createUsername'], fields['createPassword'], fields['createConfirmPassword'])} >CREATE</button>
+			<LoginFieldContainer id='createUsername' type='createUsername' placeholder='Username' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<LoginFieldContainer id='createPassword' type='createPassword' placeholder='Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' placeholder='Confirm Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<button onClick={()=> CreateUser.validateForm(fields['createUsername'], fields['createPassword'], 
+				fields['createConfirmPassword'], props.createUser, props.setErrorText)}>CREATE</button>
 		</div>
 	)}
 
-
+}
 export default CreateUser;
 

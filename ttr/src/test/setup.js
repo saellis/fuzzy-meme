@@ -1,6 +1,10 @@
 "use strict";
 
+
 import chai from 'chai'
+
+import chaiParam from 'chai-param';
+
 
 global.expect = chai.expect;
 var jsdom = require('jsdom');

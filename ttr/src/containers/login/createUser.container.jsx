@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import createUser from '../../components/login/createUser.component.jsx';
+import CreateUser from '../../components/login/createUser.component.jsx';
 
 import { createUserAction, setCreateUserSyntaxError, clearCreateUserSyntaxError } from '../../actions/users.actions';
 
@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch =>{
 const CreateUserContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(createUser)
+)(CreateUser.CreateUser)
 
 
 export default CreateUserContainer;

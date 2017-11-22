@@ -4,8 +4,6 @@ import CreateUserContainer from '../../containers/login/createUser.container.jsx
 
 import { Tabs, TabPanel, TabList, Tab } from 'react-tabs'
 
-import 'react-tabs/style/react-tabs.css';
-
 const userPortal =  (props) => {
 
 	return(
@@ -21,11 +19,9 @@ const userPortal =  (props) => {
 				<TabPanel>
 					<CreateUserContainer />
 				</TabPanel>
-			</Tabs>	
+			</Tabs>
 		</div>
 	)
 }
 
-
 export default userPortal;
-

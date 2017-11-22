@@ -13,9 +13,9 @@ describe('<CreateUser>', () => {
 		props = {
 			createUser: sinon.spy(),
 			setErrorText: sinon.spy(),
-		}
+		};
 		wrapper = shallow(<CreateUser.CreateUser {...props} />);
-	})
+	});
 	it('should have three inputs', () => {
 		wrapper.find(LoginFieldContainer).should.have.length(3);
 	});
@@ -50,7 +50,7 @@ describe('<CreateUser>', () => {
 		wrapper.find(LoginFieldContainer).forEach((field) => {
 			field.props().textChange(field.props().id, 'test');
 			CreateUser.getFields()[field.props().id].should.equal('test');
-		})
+		});
 	});
 
 	describe('form validation', () => {
@@ -108,6 +108,6 @@ describe('<CreateUser>', () => {
 			props.setErrorText.should.have.been.called;
 		});
 
-	})
+	});
 
 });

@@ -11,9 +11,9 @@ describe('<Login>', () => {
 	beforeEach(() => {
 		props = {
 			login: sinon.spy()
-		}
+		};
 		wrapper = shallow(<Login.Login {...props}/>);
-	})
+	});
 
 	it('should have two inputs', () => {
 		wrapper.find(LoginFieldContainer).should.have.length(2);
@@ -46,7 +46,7 @@ describe('<Login>', () => {
 		wrapper.find(LoginFieldContainer).forEach((field) => {
 			field.props().textChange(field.props().id, 'test');
 			Login.getFields()[field.props().id].should.equal('test');
-		})
+		});
 	});
 
 });

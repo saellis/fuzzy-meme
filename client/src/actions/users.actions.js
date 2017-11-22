@@ -10,7 +10,7 @@ export const createUserAction = (un, pw) => {
 		return fetch('http://localhost:3001/users/create', { 
 			    method: 'post',
 			    headers: {
-			      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+			      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			    },
 			    body: `username=${un}&password=${pw}`
 		      }).then(res => res.json()).then(
@@ -22,8 +22,8 @@ export const createUserAction = (un, pw) => {
 				error => dispatch({type:CREATE_USER_ERROR})
 				//maybe dispatch an action that does some sort of notification on screen?
 			);
-	}
-}
+	};
+};
 
 
 
@@ -33,14 +33,14 @@ export const CLEAR_CREATE_USER_SYNTAX_ERROR = 'CLEAR_CREATE_USER_SYNTAX_ERROR';
 export const setCreateUserSyntaxError = (text) => {
 	return (dispatch) => {
 		dispatch({type:SET_CREATE_USER_SYNTAX_ERROR, text:text});
-	}
-}
+	};
+};
 
 export const clearCreateUserSyntaxError = () => {
 	return (dispatch) => {
 		dispatch({type:CLEAR_CREATE_USER_SYNTAX_ERROR});
-	}
-}
+	};
+};
 
 
 export const LOGIN_PENDING = 'LOGIN_PENDING';
@@ -56,23 +56,23 @@ export const loginAction = (un, pw) => {
 		return fetch('http://localhost:3001/users/auth', { 
 			    method: 'post',
 			    headers: {
-			      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+			      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			    },
 			    body: `username=${un}&password=${pw}`
 		      }).then(res => res.json()).then(
 				data => {
 					//TODO: better check here for success, maybe pass {success: true} from back end
 					if(data._id){
-						dispatch({type:LOGIN_SUCCESS, data: data})
-						dispatch({type:CLEAR_LOGIN_ERROR_TEXT})
+						dispatch({type:LOGIN_SUCCESS, data: data});
+						dispatch({type:CLEAR_LOGIN_ERROR_TEXT});
 					}else{
-						dispatch({type:LOGIN_INCORRECT, data: data})
+						dispatch({type:LOGIN_INCORRECT, data: data});
 					}
 				},
 				error => dispatch({type:LOGIN_ERROR})
 				//maybe dispatch an action that does some sort of notification on screen?
 			);
-	}
-}
+	};
+};
 
 

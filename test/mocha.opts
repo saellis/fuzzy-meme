@@ -1,6 +1,6 @@
 server/test
-ttr/src/test
-ttr/src/**/*.spec.js
-ttr/src/**/**/*.spec.js
-ttr/src/**/**/**/*.spec.js
+client/src/test
+client/src/**/*.spec.js
+client/src/**/**/*.spec.js
+client/src/**/**/**/*.spec.js
 --recursive

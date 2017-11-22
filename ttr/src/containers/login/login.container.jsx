@@ -3,14 +3,14 @@ import Login from '../../components/login/login.component.jsx';
 
 import { loginAction }  from '../../actions/users.actions';
 
-const mapStateToProps = state => {
+export const mapStateToProps = state => {
   return {
   	  	syntaxErrorText: state.users.loginErrorText
   }
 }
 
-const mapDispatchToProps = dispatch =>{
-  return { 
+export const mapDispatchToProps = dispatch =>{
+  return {
     login: (un, pw) => {dispatch(loginAction(un, pw))}
   }
 }

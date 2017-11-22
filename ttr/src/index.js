@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
+import 'react-tabs/style/react-tabs.css';
 import Root from './root.component';
 import registerServiceWorker from './registerServiceWorker';
 

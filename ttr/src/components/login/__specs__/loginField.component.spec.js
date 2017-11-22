@@ -5,22 +5,30 @@ import { mount, shallow } from 'enzyme';
 
 
 describe('<LoginField>', () => {
+	var spy;
+
+	beforeEach(() => {
+		spy = sinon.spy();
+	});
+
 	it('should have password style input', () => {
 		const wrapper = shallow(<LoginField type='password' placeholder='testing'
-			textChange={() => {}}/>);
-		expect(wrapper.find('input').html().indexOf('type="password"')).not.to.equal(-1);
+			textChange={spy}/>);
+		wrapper.find('input').html().indexOf('type="password"').should.not.equal(-1);
 	});
+
 	it('should have normal style input', () => {
 		const wrapper = shallow(<LoginField type='asdsd' placeholder='testing'
-			textChange={() => {}}/>);
-		expect(wrapper.find('input').html().indexOf('type="text"')).not.to.equal(-1);
+			textChange={spy}/>);
+		wrapper.find('input').html().indexOf('type="text"').should.not.equal(-1);
 	});
+
 	it('should have change function', () => {
 		var success = false;
 		const wrapper = shallow(<LoginField type='asdsd' placeholder='testing'
-			textChange={(evt) => {success = true}}/>);
+			textChange={spy}/>);
 		wrapper.find('input').simulate('change', {target:{value:'a'}});
-		expect(success).to.equal(true);
+		spy.should.have.been.called;
 	});
 
 });

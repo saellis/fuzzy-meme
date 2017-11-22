@@ -7,40 +7,45 @@ import { loginAction }  from '../../../actions/users.actions';
 
 
 describe('<Login>', () => {
-	var wrapper;
+	var wrapper, props;
 	beforeEach(() => {
-		wrapper = shallow(<Login.Login login={() => {return 'login'}}/>);
+		props = {
+			login: sinon.spy()
+		}
+		wrapper = shallow(<Login.Login {...props}/>);
 	})
+
 	it('should have two inputs', () => {
-		expect(wrapper.find(LoginFieldContainer)).to.have.length(2);
+		wrapper.find(LoginFieldContainer).should.have.length(2);
 	});
 
 	it('first input should be for username', () => {
 		const field = wrapper.find(LoginFieldContainer).at(0);
-		expect(field.props().id).to.match(/username$/i);
-		expect(field.props().type).to.match(/username$/i);
-		expect(field.props().placeholder).to.match(/username$/i);
-		expect(field.props().textChange).to.be.a('function');
+		field.props().id.should.match(/username$/i);
+		field.props().type.should.match(/username$/i);
+		field.props().placeholder.should.match(/username$/i);
+		field.props().textChange.should.be.a('function');
 	});
 
 	it('second input should be for password', () => {
 		const field = wrapper.find(LoginFieldContainer).at(1);
-		expect(field.props().id).to.match(/password$/i);
-		expect(field.props().type).to.match(/password$/i);
-		expect(field.props().placeholder).to.match(/password$/i);
-		expect(field.props().textChange).to.be.a('function');
+		field.props().id.should.match(/password$/i);
+		field.props().type.should.match(/password$/i);
+		field.props().placeholder.should.match(/password$/i);
+		field.props().textChange.should.be.a('function');
 	});
 
 	it('should have a button', () => {
 		const field = wrapper.find('button');
 		expect(field).to.have.length(1);
 		field.at(0).simulate('click');
+		props.login.should.have.been.called;
 	});
 
 	it('should save on keypress', () => {
 		wrapper.find(LoginFieldContainer).forEach((field) => {
 			field.props().textChange(field.props().id, 'test');
-			expect(Login.getFields()[field.props().id]).to.equal('test');
+			Login.getFields()[field.props().id].should.equal('test');
 		})
 	});
 

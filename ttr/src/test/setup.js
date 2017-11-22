@@ -1,12 +1,18 @@
 "use strict";
 
 
-import chai from 'chai'
+const chai = require('chai');
+global.chai = chai;
 
-import chaiParam from 'chai-param';
+const sinonChai =require('sinon-chai');
+chai.use(sinonChai);
 
+import sinon from 'sinon';
 
 global.expect = chai.expect;
+chai.should();
+global.sinon = sinon;
+
 var jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 

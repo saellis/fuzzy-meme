@@ -6,12 +6,12 @@ import { mount, shallow } from 'enzyme';
 import { loginAction }  from '../../../actions/users.actions';
 
 
-describe('<Login>', function () {
+describe('<Login>', () => {
 	var wrapper;
 	beforeEach(() => {
 		wrapper = shallow(<Login.Login login={() => {return 'login'}}/>);
 	})
-	it('should have two inputs', function () {
+	it('should have two inputs', () => {
 		expect(wrapper.find(LoginFieldContainer)).to.have.length(2);
 	});
 
@@ -31,7 +31,7 @@ describe('<Login>', function () {
 		expect(field.props().textChange).to.be.a('function');
 	});
 
-	it('should have a button', function () {
+	it('should have a button', () => {
 		const field = wrapper.find('button');
 		expect(field).to.have.length(1);
 		field.at(0).simulate('click');

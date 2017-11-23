@@ -7,3 +7,16 @@ body {
 .margin-bottom-5{
   margin-bottom: 5px;
 }
+
+.padding-top-10{
+  padding-top: 10px;
+}
+
+ul.errors {
+  list-style-type: none;
+  padding: 0px;
+}
+
+li.errors {
+  color: #a94442;
+}

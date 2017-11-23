@@ -3,7 +3,7 @@ import LoginContainer from '../../containers/login/login.container.jsx'
 import CreateUserContainer from '../../containers/login/createUser.container.jsx'
 
 import { Tabs, TabPanel, TabList, Tab } from 'react-tabs'
-import { Col } from 'react-bootstrap';
+import {  } from 'react-bootstrap';
 
 export class userPortal extends React.Component{
 	constructor(props){

@@ -4,6 +4,7 @@ import LoginFieldContainer from '../../../containers/login/loginField.container.
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { loginAction }  from '../../../actions/users.actions';
+import { Button } from 'react-bootstrap';
 
 
 describe('<Login>', () => {
@@ -36,7 +37,7 @@ describe('<Login>', () => {
 	});
 
 	it('should have a button', () => {
-		const field = wrapper.find('button');
+		const field = wrapper.find(Button);
 		expect(field).to.have.length(1);
 		field.at(0).simulate('click');
 		props.login.should.have.been.called;

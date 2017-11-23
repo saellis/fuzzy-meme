@@ -4,6 +4,7 @@ import LoginFieldContainer from '../../../containers/login/loginField.container.
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createUserAction }  from '../../../actions/users.actions';
+import { Button } from 'react-bootstrap';
 
 
 describe('<CreateUser>', () => {
@@ -39,7 +40,7 @@ describe('<CreateUser>', () => {
 	});
 
 	it('should have a button', () => {
-		const field = wrapper.find('button');
+		const field = wrapper.find(Button);
 		field.should.have.length(1);
 		field.at(0).simulate('click');
 		props.setErrorText.should.have.been.called;
@@ -59,7 +60,7 @@ describe('<CreateUser>', () => {
 			CreateUser.textChange('createUsername', 'abcabcabc');
 			CreateUser.textChange('createPassword', 'Aa111111');
 			CreateUser.textChange('createConfirmPassword', 'Aa111111');
-			field = wrapper.find('button');
+			field = wrapper.find(Button);
 		});
 
 		it('correct data', () => {

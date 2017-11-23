@@ -1,6 +1,7 @@
 import React from 'react'
 import LoginFieldContainer from '../../containers/login/loginField.container.jsx'
 
+import {Button} from 'react-bootstrap';
 
 const fields = {};
 
@@ -40,16 +41,18 @@ const CreateUser =  {
 	},
 
 	CreateUser: (props) =>  {return(
-		<div>
+		<div >
 			<span>{props.errorText}</span>
-			<LoginFieldContainer id='createUsername' type='createUsername' placeholder='Username' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<LoginFieldContainer id='createPassword' type='createPassword' placeholder='Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' placeholder='Confirm Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<button onClick={()=> CreateUser.validateForm(fields['createUsername'], fields['createPassword'], 
-				fields['createConfirmPassword'], props.createUser, props.setErrorText)}>CREATE</button>
+			<LoginFieldContainer id='createUsername' type='createUsername' label='Username: '
+				placeholder='Username' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<LoginFieldContainer id='createPassword' type='createPassword' label='Password: '
+				placeholder='Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' label='Confirm password: '
+				placeholder='Confirm Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
+			<Button block className='btn-primary' onClick={()=> CreateUser.validateForm(fields['createUsername'], fields['createPassword'],
+				fields['createConfirmPassword'], props.createUser, props.setErrorText)}>CREATE</Button>
 		</div>
 	)}
 
 }
 export default CreateUser;
-

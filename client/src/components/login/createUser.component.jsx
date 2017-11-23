@@ -1,58 +1,91 @@
 import React from 'react'
-import LoginFieldContainer from '../../containers/login/loginField.container.jsx'
+import { LoginFieldContainer } from '../../containers/login/loginField.container.jsx';
 
-import {Button} from 'react-bootstrap';
+import {regex} from '../../constants/users.constants.js';
 
-const fields = {};
+import {Button, Panel, Col} from 'react-bootstrap';
 
-const CreateUser =  {
+export class CreateUser extends React.Component{
+	constructor(props){
+			super(props);
+			this.state = {fields:{}};
+	}
 
-	getFields: () =>{
-		return fields;
-	},
-
-	textChange: (key, value) => {
-		fields[key] = value;
-	},
-
-	validateForm: (un, pw, pw2, successCallback, errorCallback) => {
+	validateForm(un, pw, pw2, successCallback, errorCallback, submit) {
 		if(!un || !pw || !pw2){
-			errorCallback('please fill in all boxes');
+			errorCallback(['Please fill in all fields']);
 			return;
 		}
-		if(!un.match(/[a-zA-Z0-9@.]{6,}/)){
-			errorCallback("username too short");
+		if(!un.match(regex.username.regex)){
+			errorCallback([regex.username.failureText]);
 		}else if(pw !== pw2){
-			errorCallback("pword no match")
+			errorCallback(['Passwords must match'])
 		}else{
-			if(!pw.match(/.{8,}/)){
-				errorCallback("too short")
-			}else if(!pw.match(/.*[A-Z].*/)){
-				errorCallback("uppercase pls")
-			}else if(!pw.match(/.*[a-z].*/)){
-				errorCallback("lowercase pls")
-			}else if(!pw.match(/.*[0-9].*/)){
-				errorCallback("need digit")
+			const errored = [];
+			regex.password.pieces.forEach((piece) => {
+				if(!pw.match(piece.regex)){
+					errored.push(piece.failureText);
+				}
+			})
+			if(errored.length > 0){
+				errorCallback(errored)
 			}else{
-				//success
-				successCallback(un, pw);
+				if(submit){
+					successCallback(un, pw);
+				}else{
+					errorCallback([]);
+				}
 			}
 		}
-	},
+	}
 
-	CreateUser: (props) =>  {return(
-		<div >
-			<span>{props.errorText}</span>
-			<LoginFieldContainer id='createUsername' type='createUsername' label='Username: '
-				placeholder='Username' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<LoginFieldContainer id='createPassword' type='createPassword' label='Password: '
-				placeholder='Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' label='Confirm password: '
-				placeholder='Confirm Password' textChange={(key,value) => CreateUser.textChange(key,value)}/>
-			<Button block className='btn-primary' onClick={()=> CreateUser.validateForm(fields['createUsername'], fields['createPassword'],
-				fields['createConfirmPassword'], props.createUser, props.setErrorText)}>CREATE</Button>
-		</div>
-	)}
+	handleChange(key, value) {
+		this.props.setFieldData(key,value);
+		this.setState((prevState) => {
+					let fields = this.state.fields;
+					fields[key] = value;
+					return {fields: fields};
+			}, () => this.doValidation(false));
+	}
+
+	doValidation(submit){
+		this.validateForm(this.state.fields['createUsername'], this.state.fields['createPassword'],
+			this.state.fields['createConfirmPassword'], this.props.createUser, this.props.setErrorText, submit);
+	}
+
+	errorPanel(){
+		return this.props.errors.length > 0 ?
+						(<Panel header='Please fix:' bsStyle='danger'>
+							<ul className='errors'>
+							{this.props.errors.map((el, index) => {
+								return(<li className='errors' key={index + el}>{el}</li>);
+							})}
+							</ul>
+						</Panel>) :
+						''
+	}
+
+	render() {
+		return(
+			<div>
+				<Col xs={10} sm={10}  md={6} lg={6} xsOffset={1} smOffset={1} mdOffset={3} lgOffset={3} >
+					<Panel bsStyle="primary">
+						<LoginFieldContainer id='createUsername' type='createUsername' label='Username:'
+							regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
+						<LoginFieldContainer id='createPassword' type='createPassword' label='Password:'
+							regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
+						<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
+							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
+						<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
+							onClick={()=> this.doValidation(true)}>CREATE</Button>
+					</Panel>
+				</Col>
+
+				<Col xs={10} sm={10}  md={3} lg={3} xsOffset={1} smOffset={1} mdOffset={0} lgOffset={0} >
+					{this.errorPanel()}
+				</Col>
+			</div>
+		)
+	}
 
 }
-export default CreateUser;

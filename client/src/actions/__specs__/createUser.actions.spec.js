@@ -13,11 +13,11 @@ describe('users creation actions', () => {
 	});
 
 	it('creates CREATE_USER_PENDING, CREATE_USER_SUCCESS, and CLEAR_CREATE_USER_SYNTAX_ERROR when creating user has been done', () => {
-    
+
 		const response = {data: {}};
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/create', response, { 
+      .postOnce('http://localhost:3001/users/create', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -40,7 +40,7 @@ describe('users creation actions', () => {
 	it('creates CREATE_USER_PENDING and CREATE_USER_ERROR when failing to create user', () => {
     //will fail without passed response parameter
 		fetchMock
-      .postOnce('http://localhost:3001/users/create', { 
+      .postOnce('http://localhost:3001/users/create', {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -64,11 +64,11 @@ describe('users creation actions', () => {
 		const text = 'hi stephen';
 
 		const expectedActions = [
-      { type: _.SET_CREATE_USER_SYNTAX_ERROR, text: text}
+      { type: _.SET_CREATE_USER_SYNTAX_ERROR, errors: [text]}
 		];
 		const store = mockStore({});
 
-		store.dispatch(_.setCreateUserSyntaxError(text));
+		store.dispatch(_.setCreateUserSyntaxError([text]));
 		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 

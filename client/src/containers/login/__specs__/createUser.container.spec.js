@@ -1,5 +1,5 @@
 import CreateUserContainer, {mapStateToProps, mapDispatchToProps} from '../createUser.container.jsx';
-import CreateUser from '../../../components/login/createUser.component.jsx';
+import {CreateUser} from '../../../components/login/createUser.component.jsx';
 import LoginFieldContainer from '../loginField.container.jsx';
 
 import React from 'react';
@@ -15,21 +15,22 @@ describe('<CreateUserContainer>', () => {
 		state = {
 			users:
 			{
-				createUserSyntaxError: 'test'
+				createUserSyntaxErrors: [],
+				fields: {}
 			}
 		};
 		store = mockStore(state);
 		wrapper = shallow(<CreateUserContainer store={store}/>);
 	});
 
-	it('should have passed error text down', () => {
-		const field = wrapper.find(CreateUser.CreateUser);
+	it('should have passed errors down', () => {
+		const field = wrapper.find(CreateUser);
 		field.should.have.length(1);
-		field.at(0).props().errorText.should.equal('test');
+		field.at(0).props().errors.should.deep.equal(state.users.createUserSyntaxErrors);
 	});
 
 	it('should have setErrorText, clearErrorText, createUser functions set', () => {
-		const field = wrapper.find(CreateUser.CreateUser);
+		const field = wrapper.find(CreateUser);
 		field.should.have.length(1);
 		field.at(0).props().setErrorText.should.be.a('function');
 		field.at(0).props().clearErrorText.should.be.a('function');
@@ -37,7 +38,7 @@ describe('<CreateUserContainer>', () => {
 	});
 
 	it('mapStateToProps should set errorText', () => {
-		mapStateToProps(state).should.deep.equal({errorText: state.users.createUserSyntaxError});
+		mapStateToProps(state).should.deep.equal({errors: state.users.createUserSyntaxErrors, fields: state.users.fields});
 	});
 
 	it('mapDispatchToProps should set three functions', () => {

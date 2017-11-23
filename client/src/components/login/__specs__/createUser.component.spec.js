@@ -1,5 +1,5 @@
-import CreateUser from '../createUser.component.jsx';
-import LoginFieldContainer from '../../../containers/login/loginField.container.jsx';
+import { CreateUser } from '../createUser.component.jsx';
+import { LoginFieldContainer } from '../../../containers/login/loginField.container.jsx';
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
@@ -14,8 +14,12 @@ describe('<CreateUser>', () => {
 		props = {
 			createUser: sinon.spy(),
 			setErrorText: sinon.spy(),
+	    clearErrorText: sinon.spy(),
+	    setFieldData: sinon.spy(),
+			errors: [],
+	    fields: {}
 		};
-		wrapper = shallow(<CreateUser.CreateUser {...props} />);
+		wrapper = shallow(<CreateUser {...props} />);
 	});
 	it('should have three inputs', () => {
 		wrapper.find(LoginFieldContainer).should.have.length(3);
@@ -50,16 +54,20 @@ describe('<CreateUser>', () => {
 	it('should save on keypress', () => {
 		wrapper.find(LoginFieldContainer).forEach((field) => {
 			field.props().textChange(field.props().id, 'test');
-			CreateUser.getFields()[field.props().id].should.equal('test');
+			wrapper.state().fields[field.props().id].should.equal('test');
 		});
 	});
 
 	describe('form validation', () => {
 		var field;
 		beforeEach(() => {
-			CreateUser.textChange('createUsername', 'abcabcabc');
-			CreateUser.textChange('createPassword', 'Aa111111');
-			CreateUser.textChange('createConfirmPassword', 'Aa111111');
+			wrapper.setState((prevState) => {
+				let newState = prevState;
+				newState.fields['createUsername'] = 'abcabcabc';
+				newState.fields['createPassword'] = 'Aa111111';
+				newState.fields['createConfirmPassword'] = 'Aa111111';
+				return newState;
+			});
 			field = wrapper.find(Button);
 		});
 
@@ -69,46 +77,68 @@ describe('<CreateUser>', () => {
 		});
 
 		it('invalid username', () => {
-			CreateUser.textChange('createUsername', 'aa');
+			wrapper.setState((prevState) => {
+				let newState = prevState;
+				newState.fields['createUsername'] = 'A1';
+				return newState;
+			});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
 
 		it('non-matching passwords', () => {
-			CreateUser.textChange('createPassword', 'AA111111');
-			CreateUser.textChange('createConfirmPassword', 'AA112111');
+			wrapper.setState((prevState) => {
+				let newState = prevState;
+				newState.fields['createPassword'] = 'AA111111';
+				newState.fields['createConfirmPassword'] = 'AA112111';
+				return newState;
+			});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
 
 		it('no lower case', () => {
-			CreateUser.textChange('createPassword', 'AA111111');
-			CreateUser.textChange('createConfirmPassword', 'AA111111');
+			wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createPassword'] = 'AA111111';
+					newState.fields['createConfirmPassword'] = 'AA111111';
+					return newState;
+				});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
 
 		it('password too short', () => {
-			CreateUser.textChange('createPassword', 'AA1111');
-			CreateUser.textChange('createConfirmPassword', 'AA1111');
+			wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createPassword'] = 'AA1111';
+					newState.fields['createConfirmPassword'] = 'AA1111';
+					return newState;
+				});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
 
 		it('no uppercase', () => {
-			CreateUser.textChange('createPassword', 'aa111111');
-			CreateUser.textChange('createConfirmPassword', 'aa111111');
+			wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createPassword'] = 'aa111111';
+					newState.fields['createConfirmPassword'] = 'aa111111';
+					return newState;
+				});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
 
 		it('no digit', () => {
-			CreateUser.textChange('createPassword', 'aAaAaAaA');
-			CreateUser.textChange('createConfirmPassword', 'aAaAaAaA');
+			wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createPassword'] = 'aAaAaAaA';
+					newState.fields['createConfirmPassword'] = 'aAaAaAaA';
+					return newState;
+				});
 			field.at(0).simulate('click');
 			props.setErrorText.should.have.been.called;
 		});
-
 	});
-
 });

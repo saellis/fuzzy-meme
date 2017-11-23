@@ -1,5 +1,5 @@
 import Login from '../login.component.jsx';
-import LoginFieldContainer from '../../../containers/login/loginField.container.jsx';
+import {LoginFieldContainer} from '../../../containers/login/loginField.container.jsx';
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';

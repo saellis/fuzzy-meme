@@ -49,6 +49,7 @@ export class CreateUser extends React.Component{
 	}
 
 	doValidation(submit){
+		console.log(this.state.fields);
 		this.validateForm(this.state.fields['createUsername'], this.state.fields['createPassword'],
 			this.state.fields['createConfirmPassword'], this.props.createUser, this.props.setErrorText, submit);
 	}

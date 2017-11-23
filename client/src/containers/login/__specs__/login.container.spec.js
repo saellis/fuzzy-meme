@@ -1,7 +1,7 @@
 /*eslint-disable no-unused-vars no-undef */
 
 import LoginContainer, {mapStateToProps, mapDispatchToProps} from '../login.container.jsx';
-import Login from '../../../components/login/login.component.jsx';
+import { Login } from '../../../components/login/login.component.jsx';
 import LoginFieldContainer from '../loginField.container.jsx';
 
 import React from 'react';
@@ -25,7 +25,7 @@ describe('<LoginContainer>', () => {
 	});
 
 	it('should have passed error text down', () => {
-		const field = wrapper.find(Login.Login);
+		const field = wrapper.find(Login);
 		field.should.have.length(1);
 		field.at(0).props().syntaxErrorText.should.equal('test');
 	});

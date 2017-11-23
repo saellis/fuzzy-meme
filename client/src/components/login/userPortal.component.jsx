@@ -5,12 +5,25 @@ import CreateUserContainer from '../../containers/login/createUser.container.jsx
 import { Tabs, TabPanel, TabList, Tab } from 'react-tabs'
 import { Col } from 'react-bootstrap';
 
-const userPortal =  (props) => {
+export class userPortal extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {tabIndex : 0}
+	}
 
-	return(
+	clearOldTab(currentTab){
+		if(currentTab === 0){
+			this.props.clearCreateUser();
+		}else if(currentTab === 1){
+			this.props.clearLogin();
+		}
+	}
 
-			<Col xs={10} sm={10}  md={6} lg={6} xsOffset={1} smOffset={1} mdOffset={3} lgOffset={3} >
-			<Tabs>
+	render(){
+		return(
+			<Tabs selectedIndex={this.state.tabIndex}
+				onSelect={tabIndex => {this.setState({ tabIndex: tabIndex });
+															this.clearOldTab(tabIndex)}}>
 				<TabList>
 					<Tab>Login</Tab>
 					<Tab>Create</Tab>
@@ -22,8 +35,8 @@ const userPortal =  (props) => {
 					<CreateUserContainer />
 				</TabPanel>
 			</Tabs>
-		</Col>
-	)
+		)
+	}
 }
 
 export default userPortal;

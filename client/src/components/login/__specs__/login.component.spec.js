@@ -1,4 +1,4 @@
-import Login from '../login.component.jsx';
+import {Login} from '../login.component.jsx';
 import {LoginFieldContainer} from '../../../containers/login/loginField.container.jsx';
 
 import React from 'react';
@@ -13,7 +13,7 @@ describe('<Login>', () => {
 		props = {
 			login: sinon.spy()
 		};
-		wrapper = shallow(<Login.Login {...props}/>);
+		wrapper = shallow(<Login {...props}/>);
 	});
 
 	it('should have two inputs', () => {
@@ -46,7 +46,7 @@ describe('<Login>', () => {
 	it('should save on keypress', () => {
 		wrapper.find(LoginFieldContainer).forEach((field) => {
 			field.props().textChange(field.props().id, 'test');
-			Login.getFields()[field.props().id].should.equal('test');
+			wrapper.state().fields[field.props().id].should.equal('test');
 		});
 	});
 

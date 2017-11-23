@@ -31,7 +31,7 @@ describe('<LoginContainer>', () => {
 	});
 
 	it('should have login function set', () => {
-		const field = wrapper.find(Login.Login);
+		const field = wrapper.find(Login);
 		field.should.have.length(1);
 		field.at(0).props().login.should.be.a('function');
 	});

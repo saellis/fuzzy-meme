@@ -13,7 +13,8 @@ export class Login extends React.Component{
 	textChange(key, value){
 		this.setState((prevState) => {
 			let newState = prevState;
-			newState.fields[key = value];
+			newState.fields[key] = value;
+			return newState;
 		})
 	}
 

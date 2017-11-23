@@ -1,6 +1,6 @@
 import * as _ from '../actions/users.actions';
 
-const users = (state = {}, action) => {
+const users = (state = {fields:{}, createUserSyntaxErrors: []}, action) => {
 	switch (action.type) {
 
     //Section for creating user
@@ -22,13 +22,20 @@ const users = (state = {}, action) => {
 		return {...state, loginErrorText:action.data.err, loginPending: false};
 	case _.CLEAR_LOGIN_ERROR_TEXT:
 		return {...state, loginErrorText:''};
-
-
+	case _.CLEAR_LOGIN:
+		return {...state, loginErrorText:'', loginPending: false, fields: {}};
 
 	case _.SET_CREATE_USER_SYNTAX_ERROR:
-		return {...state, createUserSyntaxError: action.text};
+		return {...state, createUserSyntaxErrors: action.errors};
 	case _.CLEAR_CREATE_USER_SYNTAX_ERROR:
-		return {...state, createUserSyntaxError: ''};
+		return {...state, createUserSyntaxErrors: []};
+	case _.CLEAR_CREATE_USER:
+		return {...state, createUserSyntaxErrors: [], createUserErrorMsg: '', createUserPending: false, fields: {}};
+
+	case _.SET_FIELD_DATA:
+		const newFields = state.fields;
+		newFields[action.key] = action.text;
+		return {...state, fields: {...newFields}}
 
 	default:
 		return state;

@@ -29,10 +29,11 @@ export const createUserAction = (un, pw) => {
 
 export const SET_CREATE_USER_SYNTAX_ERROR = 'SET_CREATE_USER_SYNTAX_ERROR';
 export const CLEAR_CREATE_USER_SYNTAX_ERROR = 'CLEAR_CREATE_USER_SYNTAX_ERROR';
+export const CLEAR_CREATE_USER = 'CLEAR_CREATE_USER';
 
-export const setCreateUserSyntaxError = (text) => {
+export const setCreateUserSyntaxError = (errors) => {
 	return (dispatch) => {
-		dispatch({type:SET_CREATE_USER_SYNTAX_ERROR, text:text});
+		dispatch({type:SET_CREATE_USER_SYNTAX_ERROR, errors:errors});
 	};
 };
 
@@ -42,12 +43,18 @@ export const clearCreateUserSyntaxError = () => {
 	};
 };
 
+export const clearCreateUser = () => {
+	return (dispatch) => {
+		dispatch({type:CLEAR_CREATE_USER});
+	}
+}
 
 export const LOGIN_PENDING = 'LOGIN_PENDING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_INCORRECT = 'LOGIN_INCORRECT';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const CLEAR_LOGIN_ERROR_TEXT = 'CLEAR_LOGIN_ERROR_TEXT';
+export const CLEAR_LOGIN = 'CLEAR_LOGIN';
 
 
 export const loginAction = (un, pw) => {
@@ -74,3 +81,19 @@ export const loginAction = (un, pw) => {
 			);
 	};
 };
+
+export const clearLogin = () => {
+	return (dispatch) => {
+		dispatch({type:CLEAR_LOGIN});
+	}
+}
+
+
+
+export const SET_FIELD_DATA = 'SET_FIELD_DATA';
+
+export const setFieldData = (key, text) => {
+	return (dispatch) => {
+		dispatch({type:SET_FIELD_DATA, key: key, text: text})
+	}
+}

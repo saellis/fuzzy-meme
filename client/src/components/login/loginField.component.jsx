@@ -5,7 +5,7 @@ import { FormControl, FormGroup, ControlLabel , Col} from 'react-bootstrap';
 export default class LoginField extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {value: ''};
+		this.state = {value: '', status: null};
 	}
 
 	parseType() {
@@ -21,7 +21,14 @@ export default class LoginField extends React.Component {
 		if(!this.props.regex){
 			return null;
 		}
-		return this.state.value.match(this.props.regex) ? 'success' : (this.state.value.length > 0 ? 'error' : null);
+		if(this.state.value.match(this.props.regex)){
+			this.setState({status:'success'});
+		}else if(this.state.value.length > 0){
+			this.setState({status:'error'});
+		}else{
+			this.setState({status:null});
+		}
+		return this.state.status;
 	}
 
 	render() {

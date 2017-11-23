@@ -16,7 +16,7 @@ describe('<CreateUser>', () => {
 			setErrorText: sinon.spy(),
 	    clearErrorText: sinon.spy(),
 	    setFieldData: sinon.spy(),
-			errors: [],
+			errors: ['error'],
 	    fields: {}
 		};
 		wrapper = shallow(<CreateUser {...props} />);

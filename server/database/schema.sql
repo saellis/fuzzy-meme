@@ -29,10 +29,9 @@ CREATE TABLE IF NOT EXISTS game_players (
   PRIMARY KEY(game_id, user_id)
 );
 
-
--- Static table of all available route cards
-CREATE TABLE IF NOT EXISTS route_cards (
-  _id text NOT NULL, -- the route card's unique id (to relate to)
+-- Static table of all available route cards (tickets)
+CREATE TABLE IF NOT EXISTS tickets (
+  id SERIAL,
   cityA text NOT NULL,
   cityB text NOT NULL,
   points int NOT NULL,

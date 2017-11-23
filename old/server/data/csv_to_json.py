@@ -21,12 +21,11 @@ def tickets(infile, outfile):
         for line in read:
             tokens = line.split(',')
             objects.append({
-                'cities': [tokens[0], tokens[1]],
-                'points': int(tokens[2]),
+                'cityA': tokens[0],
+                'cityB': tokens[1],
+                'points': tokens[2],
             })
-    result = {'_comment': "Auto Generated using csv_to_json.py. To Reformat JSON data, modify csv_to_json.py and run $ python csv_to_json.py tickets inputfile.csv outputfile.json"}
-    result['tickets'] = objects
-    json.dump(result, open(outfile, 'wb'))
+    json.dump(objects, open(outfile, 'wb'))
 
 if __name__ == '__main__':
     if(sys.argv[1] == 'routes'):

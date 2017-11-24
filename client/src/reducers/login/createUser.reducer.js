@@ -1,6 +1,10 @@
 import * as _ from '../../constants/users.actions.constants.js';
 
-const users = (state = {syntaxErrors: []}, action) => {
+const initialState = {
+	syntaxErrors: []
+}
+
+const users = (state = initialState, action) => {
 	switch (action.type) {
 
     //Section for creating user
@@ -9,14 +13,14 @@ const users = (state = {syntaxErrors: []}, action) => {
 	case _.CREATE_USER_SUCCESS:
 		return {...state, userId: action.data._id, userGames: action.data.games, pending: false};
 	case _.CREATE_USER_ERROR:
-		return {...state, errorText: 'Error creating user.', pending: false};
+		return {...state, errorText: `Error creating user (${action.error})`, pending: false};
 
 	case _.UPDATE_CREATE_USER_SYNTAX_ERROR:
 		return {...state, syntaxErrors: action.errors};
 	case _.CLEAR_CREATE_USER_SYNTAX_ERROR:
 		return {...state, syntaxErrors: []};
 	case _.CLEAR_CREATE_USER:
-		return {...state, syntaxErrors: [], createUserErrorMsg: '', pending: false};
+		return initialState;//{...state, syntaxErrors: [], createUserErrorMsg: '', errorText: '', pending: false};
 
 
 	default:

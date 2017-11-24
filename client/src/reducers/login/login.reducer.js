@@ -1,6 +1,9 @@
 import * as _ from '../../constants/users.actions.constants.js';
 
-const users = (state = {}, action) => {
+const initialState = {
+}
+
+const users = (state = initialState, action) => {
 	switch (action.type) {
 
     //Section for logging in
@@ -15,7 +18,7 @@ const users = (state = {}, action) => {
 	case _.CLEAR_LOGIN_ERROR_TEXT:
 		return {...state, errorText:''};
 	case _.CLEAR_LOGIN:
-		return state;//{...state, errorText:'', pending: false};
+		return initialState;//{...state, errorText:'', pending: false};
 
 	default:
 		return state;

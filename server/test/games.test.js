@@ -29,7 +29,7 @@ describe('Server', () => {
               .set('content-type', 'application/x-www-form-urlencoded')
               .send({'creatorId': uname})
     			    .end((err, res) => {
-    			        res.should.have.status(200);
+    			        res.should.have.property('status', 200);
     			        res.body._id.should.be.a('string');
                   res.body.creator_id.should.equal(uname);
                   res.body.current_player_id.should.equal(uname);
@@ -45,7 +45,7 @@ describe('Server', () => {
       			    .post('/games/create')
                 .set('content-type', 'application/x-www-form-urlencoded')
       			    .end((err, res) => {
-                    res.should.have.status(400);
+                    res.should.have.property('status', 400);
       			      	done();
       			    });
       });

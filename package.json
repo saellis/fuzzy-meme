@@ -67,7 +67,9 @@
       "test{,-*}.js",
       "**/*.test.js",
       "**/__tests__/**",
-      "**/__specs__/**"
+      "**/__specs__/**",
+      "**/containers/**",
+      "**/components/**"
     ]
   },
   "repository": {

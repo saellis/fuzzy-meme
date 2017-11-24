@@ -6,6 +6,7 @@ export default class LoginField extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {value: ''};
+		this.reset = this.reset.bind(this);
 	}
 
 	parseType() {
@@ -15,6 +16,10 @@ export default class LoginField extends React.Component {
 	handleChange(event) {
 		this.props.textChange(this.props.type, event.target.value);
 		this.setState({value: event.target.value});
+	}
+
+	reset() {
+		this.setState({value: ''});
 	}
 
 	getValidationState() {
@@ -38,7 +43,7 @@ export default class LoginField extends React.Component {
 					<ControlLabel>{this.props.label}</ControlLabel>
 				</Col>
 				<Col xs={10} sm={10}  md={8} lg={8}  className='margin-bottom-5' >
-					<FormControl type={this.parseType()}
+					<FormControl type={this.parseType()} ref={this.props.inputRef}
 						placeholder={this.props.placeholder}
 						onChange={(evt) => this.handleChange(evt)} />
 				</Col>

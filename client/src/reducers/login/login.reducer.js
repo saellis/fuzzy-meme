@@ -19,6 +19,8 @@ const users = (state = initialState, action) => {
 		return {...state, errorText:''};
 	case _.CLEAR_LOGIN:
 		return initialState;//{...state, errorText:'', pending: false};
+	case _.RESET_LOGIN_FORM:
+		return {...state, shouldResetForm: true}
 
 	default:
 		return state;

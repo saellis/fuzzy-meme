@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { LoginFieldContainer } from '../../containers/login/loginField.container.jsx';
 
 import {regex} from '../../constants/users.constants.js';
@@ -71,7 +72,31 @@ export class CreateUser extends React.Component{
 				{this.props.creationErrorText}
 			</Alert>) :
 				'';
+	}
 
+	creationSuccessAlert(){
+		return this.props.creationSuccessText && this.props.creationSuccessText.length > 0 ?
+			(<Alert bsStyle='success'>
+				{this.props.creationSuccessText}
+			</Alert>) :
+				'';
+	}
+
+	componentWillReceiveProps(nextProps){
+		if(nextProps.shouldResetForm){
+			this.resetForm();
+			this.props.resetFormComplete();
+		}
+	}
+
+	resetForm(){
+		//this.state.form.reset();
+		//this.state.un.reset();
+		let refs = ['un', 'pw1', 'pw2']
+		refs.forEach((refName)=>{
+			this.refs[refName].wrappedInstance.reset();
+			ReactDOM.findDOMNode(this.state[`${refName}Input`]).value='';
+		});
 	}
 
 	render() {
@@ -80,14 +105,21 @@ export class CreateUser extends React.Component{
 				<Col xs={10} sm={10}  md={6} lg={6} xsOffset={1} smOffset={1} mdOffset={3} lgOffset={3} >
 					<Panel bsStyle="primary">
 						{this.creationErrorAlert()}
-						<LoginFieldContainer id='createUsername' type='createUsername' label='Username:'
-							regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
-						<LoginFieldContainer id='createPassword' type='createPassword' label='Password:'
-							regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
-						<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
-							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
-						<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
-							onClick={()=> this.doValidation(true)}>Create</Button>
+						{this.creationSuccessAlert()}
+						<form ref={(el)=> {if(!this.state.form)this.setState({form: el})}}>
+							<LoginFieldContainer
+								ref='un' inputRef={input => {if(!this.state.unInput)this.setState({unInput: input})}}
+								id='createUsername' type='createUsername' label='Username:'
+								regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
+							<LoginFieldContainer inputRef={input => {if(!this.state.pw1Input)this.setState({pw1Input: input})}}
+								ref='pw1' id='createPassword' type='createPassword' label='Password:'
+								regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
+							<LoginFieldContainer inputRef={input => {if(!this.state.pw2Input)this.setState({pw2Input: input})}}
+								ref='pw2' id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
+								regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
+							<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
+								onClick={()=> {this.doValidation(true);}}>Create</Button>
+						</form>
 					</Panel>
 				</Col>
 

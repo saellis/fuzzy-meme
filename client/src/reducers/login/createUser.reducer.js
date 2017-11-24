@@ -11,7 +11,7 @@ const users = (state = initialState, action) => {
 	case _.CREATE_USER_PENDING:
 		return {...state, userPending: true};
 	case _.CREATE_USER_SUCCESS:
-		return {...state, userId: action.data._id, userGames: action.data.games, pending: false};
+		return {...state, creationSuccessText: `Successfully created user: ${action.data.username}`};
 	case _.CREATE_USER_ERROR:
 		return {...state, errorText: `Error creating user (${action.error})`, pending: false};
 
@@ -21,7 +21,10 @@ const users = (state = initialState, action) => {
 		return {...state, syntaxErrors: []};
 	case _.CLEAR_CREATE_USER:
 		return initialState;//{...state, syntaxErrors: [], createUserErrorMsg: '', errorText: '', pending: false};
-
+	case _.RESET_CREATE_FORM:
+		return {...state, shouldResetForm: true};
+	case _.RESET_CREATE_FORM_COMPLETE:
+		return {...state, shouldResetForm: false};
 
 	default:
 		return state;

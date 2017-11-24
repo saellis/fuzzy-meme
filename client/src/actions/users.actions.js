@@ -15,6 +15,7 @@ export const createUserAction = (un, pw) => {
 						dispatch({type:_.CREATE_USER_ERROR, error: data.err});
 					}else{
 						dispatch({type:_.CREATE_USER_SUCCESS, data: data});
+						dispatch({type:_.RESET_CREATE_FORM});
 						dispatch({type:_.CLEAR_CREATE_USER_SYNTAX_ERROR});
 					}
 
@@ -65,6 +66,18 @@ export const loginAction = (un, pw) => {
 			);
 	};
 };
+
+export const resetCreateForm = () => {
+	return (dispatch) => {
+		dispatch({type:_.RESET_CREATE_FORM})
+	}
+}
+
+export const resetCreateFormComplete = () => {
+	return (dispatch) => {
+		dispatch({type:_.RESET_CREATE_FORM_COMPLETE})
+	}
+}
 
 export const clearLogin = () => {
 	return dispatch => dispatch({type:_.CLEAR_LOGIN});

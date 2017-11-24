@@ -59,12 +59,12 @@ describe('users creation actions', () => {
 		});
 	});
 
-	it('creates SET_CREATE_USER_SYNTAX_ERROR when syntax error', () => {
+	it('creates UPDATE_CREATE_USER_SYNTAX_ERROR when syntax error', () => {
 
 		const text = 'hi stephen';
 
 		const expectedActions = [
-      { type: _.SET_CREATE_USER_SYNTAX_ERROR, errors: [text]}
+      { type: _.UPDATE_CREATE_USER_SYNTAX_ERROR, errors: [text]}
 		];
 		const store = mockStore({});
 
@@ -79,6 +79,24 @@ describe('users creation actions', () => {
 		];
 		const store = mockStore({});
 		store.dispatch(_.clearCreateUserSyntaxError());
+		return expect(store.getActions()).to.deep.equal(expectedActions);
+	});
+
+	it('CLEAR_CREATE_USER', () => {
+		const expectedActions = [
+      {type: _.CLEAR_CREATE_USER}
+		];
+		const store = mockStore({});
+		store.dispatch(_.clearCreateUser());
+		return expect(store.getActions()).to.deep.equal(expectedActions);
+	});
+
+	it('CLEAR_LOGIN', () => {
+		const expectedActions = [
+			{type: _.CLEAR_LOGIN}
+		];
+		const store = mockStore({});
+		store.dispatch(_.clearLogin());
 		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 });

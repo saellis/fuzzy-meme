@@ -6,7 +6,8 @@ import { createUserAction, setCreateUserSyntaxError, clearCreateUserSyntaxError 
 
 export const mapStateToProps = state => {
   return {
-  	errors: state.users.create.syntaxErrors
+  	errors: state.users.create.syntaxErrors,
+    creationErrorText: state.users.create.errorText
   }
 }
 

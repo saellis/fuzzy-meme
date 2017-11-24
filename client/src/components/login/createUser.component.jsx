@@ -3,7 +3,7 @@ import { LoginFieldContainer } from '../../containers/login/loginField.container
 
 import {regex} from '../../constants/users.constants.js';
 
-import {Button, Panel, Col} from 'react-bootstrap';
+import {Button, Panel, Col, Alert } from 'react-bootstrap';
 
 export class CreateUser extends React.Component{
 	constructor(props){
@@ -65,11 +65,21 @@ export class CreateUser extends React.Component{
 						''
 	}
 
+	creationErrorAlert(){
+		return this.props.creationErrorText && this.props.creationErrorText.length > 0 ?
+			(<Alert bsStyle='danger'>
+				{this.props.creationErrorText}
+			</Alert>) :
+				'';
+
+	}
+
 	render() {
 		return(
 			<div>
 				<Col xs={10} sm={10}  md={6} lg={6} xsOffset={1} smOffset={1} mdOffset={3} lgOffset={3} >
 					<Panel bsStyle="primary">
+						{this.creationErrorAlert()}
 						<LoginFieldContainer id='createUsername' type='createUsername' label='Username:'
 							regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
 						<LoginFieldContainer id='createPassword' type='createPassword' label='Password:'
@@ -77,7 +87,7 @@ export class CreateUser extends React.Component{
 						<LoginFieldContainer id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
 							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
 						<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
-							onClick={()=> this.doValidation(true)}>CREATE</Button>
+							onClick={()=> this.doValidation(true)}>Create</Button>
 					</Panel>
 				</Col>
 

@@ -20,3 +20,8 @@ ul.errors {
 li.errors {
   color: #a94442;
 }
+
+div.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+}

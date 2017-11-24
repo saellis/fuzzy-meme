@@ -15,7 +15,6 @@ describe('<CreateUser>', () => {
 			createUser: sinon.spy(),
 			setErrorText: sinon.spy(),
 	    clearErrorText: sinon.spy(),
-	    setFieldData: sinon.spy(),
 			errors: ['error'],
 	    fields: {}
 		};

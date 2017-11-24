@@ -40,7 +40,6 @@ export class CreateUser extends React.Component{
 	}
 
 	handleChange(key, value) {
-		this.props.setFieldData(key,value);
 		this.setState((prevState) => {
 					let fields = this.state.fields;
 					fields[key] = value;

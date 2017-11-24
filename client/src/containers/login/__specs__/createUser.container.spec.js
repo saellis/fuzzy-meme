@@ -15,8 +15,7 @@ describe('<CreateUserContainer>', () => {
 		state = {
 			users:
 			{
-				createUserSyntaxErrors: [],
-				fields: {}
+				createUserSyntaxErrors: []
 			}
 		};
 		store = mockStore(state);

@@ -11,8 +11,12 @@ export const createUserAction = (un, pw) => {
 			body: `username=${un}&password=${pw}`
 		}).then(res => res.json()).then(
 				data => {
-					dispatch({type:_.CREATE_USER_SUCCESS, data: data});
-					dispatch({type:_.CLEAR_CREATE_USER_SYNTAX_ERROR});
+					if(data.err){
+						dispatch({type:_.CREATE_USER_ERROR, error: data.err});
+					}else{
+						dispatch({type:_.CREATE_USER_SUCCESS, data: data});
+						dispatch({type:_.CLEAR_CREATE_USER_SYNTAX_ERROR});
+					}
 
 				},
 				error => dispatch({type:_.CREATE_USER_ERROR})

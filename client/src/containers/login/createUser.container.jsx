@@ -1,13 +1,12 @@
 import { connect } from 'react-redux'
 import { CreateUser } from '../../components/login/createUser.component.jsx';
 
-import { createUserAction, setCreateUserSyntaxError, clearCreateUserSyntaxError, setFieldData } from '../../actions/users.actions';
+import { createUserAction, setCreateUserSyntaxError, clearCreateUserSyntaxError } from '../../actions/users.actions';
 
 
 export const mapStateToProps = state => {
   return {
-  	errors: state.users.createUserSyntaxErrors,
-    fields: state.users.fields
+  	errors: state.users.create.syntaxErrors
   }
 }
 
@@ -16,7 +15,6 @@ export const mapDispatchToProps = dispatch =>{
     setErrorText: (errors) => {dispatch(setCreateUserSyntaxError(errors))},
     clearErrorText: () => {dispatch(clearCreateUserSyntaxError())},
     createUser: (un, pw) => {dispatch(createUserAction(un, pw))},
-    setFieldData: (key, text) => {dispatch(setFieldData(key, text))}
   }
 }
 

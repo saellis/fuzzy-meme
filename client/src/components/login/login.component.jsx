@@ -37,7 +37,7 @@ export class Login extends React.Component{
 						placeholder='Username' textChange={(key,value) => this.textChange(key,value)}/>
 					<LoginFieldContainer id='loginPassword' type='loginPassword' label='Password: '
 						placeholder='Password' textChange={(key,value) => this.textChange(key,value)}/>
-					<Button block className='btn-primary'
+					<Button block className='btn-primary' disabled={this.props.pending}
 						onClick={()=> this.props.login(this.state.fields['loginUsername'], this.state.fields['loginPassword'])} >
 						Login {this.props.pending ? (<i className="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>) : null}</Button>
 				</Panel>

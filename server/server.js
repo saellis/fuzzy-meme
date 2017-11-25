@@ -39,6 +39,11 @@ if (process.env.NODE_ENV === "production") {
 app.route('/games')
   .get(game.get);
 
+app.route('/test')
+	.get((req, res) => {
+		res.send({'This ': 'should show up if the server is online'});
+	});
+
   /**
   * @api {post} /games/create Create a game
   * @apiName CreateGame

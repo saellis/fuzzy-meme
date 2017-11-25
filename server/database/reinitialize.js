@@ -11,6 +11,7 @@
 const fs = require('fs');
 const uuid = require('uuid/v4');
 const pg = require('./query');
+const colors = require('./static/colors');
 
 var sql = 'select \'drop table if exists "\' || tablename || \'" cascade;\' as stmt from pg_tables where schemaname = \'public\';';
 
@@ -22,25 +23,33 @@ pg.query(sql, [], (err, result) => {
     });
   });
 
-  fs.readFile(__dirname + '/schema.sql', 'utf8', function (err, data) {
-    if (err) {
-      return console.log(err);
-    }
-    pg.query(data, [], (err, result) => {
-      if (err) console.log(err);
-      //now init route cards into db
-      var routeCards = JSON.parse(fs.readFileSync(__dirname + '/static/tickets.json', 'utf8'));
-      routeCards.map((card) => {
-        card.points = parseInt(card.points);
-        var sql = 'insert into tickets (cityA, cityB, points) values($1, $2, $3);';
-        var values = [card.cityA, card.cityB, card.points];
-        pg.query(sql, values, (err, res) => {
-          if(err) {
-            console.log(err);
-          }
-        });
+  var schema = fs.readFileSync(__dirname + '/schema.sql', 'utf8');
+  pg.query(schema, [], (err, result) => {
+    if (err) console.log(err);
+
+    var tickets = JSON.parse(fs.readFileSync(__dirname + '/static/tickets.json', 'utf8'));
+    tickets.map((card) => {
+      card.points = parseInt(card.points);
+      var sql = 'insert into tickets (cityA, cityB, points) values($1, $2, $3);';
+      var values = [card.cityA, card.cityB, card.points];
+      pg.query(sql, values, (err, res) => {
+        if(err) {
+          console.log(err);
+        }
       });
-      console.log('Inserted tickets to DB');
     });
+    console.log('Inserted tickets to DB');
+
+    var paths = JSON.parse(fs.readFileSync(__dirname + '/static/routes.json', 'utf8'));
+    paths.map((path) => {
+      var sql = 'insert into paths (cityA, cityB, color, length) values ($1, $2, $3, $4);';
+      var values = [path.cities[0], path.cities[1], path.color.toUpperCase(), path.length];
+      pg.query(sql, values, (err, res) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
+    console.log('Inserted paths to DB');
   });
 });

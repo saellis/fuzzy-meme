@@ -31,9 +31,26 @@ CREATE TABLE IF NOT EXISTS game_players (
 
 -- Static table of all available route cards (tickets)
 CREATE TABLE IF NOT EXISTS tickets (
-  id SERIAL,
+  _id SERIAL,
   cityA text NOT NULL,
   cityB text NOT NULL,
   points int NOT NULL,
   PRIMARY KEY(cityA, cityB)
+);
+
+-- Static table of all paths on the board
+CREATE TABLE IF NOT EXISTS paths (
+  _id SERIAL,
+  cityA text NOT NULL,
+  cityB text NOT NULL,
+  length int NOT NULL,
+  color text NOT NULL,
+  PRIMARY KEY(_id)
+);
+
+-- The list of tracks that have been laid by players
+CREATE TABLE IF NOT EXISTS laid_tracks (
+  game_id text references games(_id) NOT NULL, -- the game id
+  user_id text references users(_id) NOT NULL, -- the user id
+  path_id integer references paths(_id) NOT NULL -- the path that user laid in the game
 );

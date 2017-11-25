@@ -71,7 +71,7 @@ export class CreateUser extends React.Component{
 			(<Alert bsStyle='danger'>
 				{this.props.creationErrorText}
 			</Alert>) :
-				'';
+				null;
 	}
 
 	creationSuccessAlert(){
@@ -79,7 +79,7 @@ export class CreateUser extends React.Component{
 			(<Alert bsStyle='success'>
 				{this.props.creationSuccessText}
 			</Alert>) :
-				'';
+				null;
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -106,20 +106,18 @@ export class CreateUser extends React.Component{
 					<Panel bsStyle="primary">
 						{this.creationErrorAlert()}
 						{this.creationSuccessAlert()}
-						<form ref={(el)=> {if(!this.state.form)this.setState({form: el})}}>
-							<LoginFieldContainer
-								ref='un' inputRef={input => {if(!this.state.unInput)this.setState({unInput: input})}}
-								id='createUsername' type='createUsername' label='Username:'
-								regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
-							<LoginFieldContainer inputRef={input => {if(!this.state.pw1Input)this.setState({pw1Input: input})}}
-								ref='pw1' id='createPassword' type='createPassword' label='Password:'
-								regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
-							<LoginFieldContainer inputRef={input => {if(!this.state.pw2Input)this.setState({pw2Input: input})}}
-								ref='pw2' id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
-								regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
-							<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
-								onClick={()=> {this.doValidation(true);}}>Create</Button>
-						</form>
+						<LoginFieldContainer
+							ref='un' inputRef={input => {if(!this.state.unInput)this.setState({unInput: input})}}
+							id='createUsername' type='createUsername' label='Username:'
+							regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
+						<LoginFieldContainer inputRef={input => {if(!this.state.pw1Input)this.setState({pw1Input: input})}}
+							ref='pw1' id='createPassword' type='createPassword' label='Password:'
+							regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
+						<LoginFieldContainer inputRef={input => {if(!this.state.pw2Input)this.setState({pw2Input: input})}}
+							ref='pw2' id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
+							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
+						<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
+							onClick={()=> {this.doValidation(true);}}>Create</Button>
 					</Panel>
 				</Col>
 

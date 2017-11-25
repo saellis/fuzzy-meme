@@ -4,6 +4,7 @@ export const createUserAction = (un, pw) => {
 	return (dispatch)=>{
 		dispatch({type:_.CREATE_USER_PENDING});
 		dispatch({type:_.CLEAR_CREATE_USER_ERROR});
+		dispatch({type:_.CLEAR_CREATE_USER_SUCCESS});
 		return fetch('http://localhost:3001/users/create', {
 			method: 'post',
 			headers: {

@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
 import UserPortal from '../../components/login/userPortal.component.jsx';
 
-import { clearCreateUser, clearLogin }  from '../../actions/users.actions';
+import { clearLogin }  from '../../actions/login/login.actions';
+import { clearCreateUser }  from '../../actions/login/createUser.actions';
 
 export const mapStateToProps = state => {
   return {

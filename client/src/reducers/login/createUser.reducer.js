@@ -1,4 +1,4 @@
-import * as _ from '../../constants/users.actions.constants.js';
+import * as _ from '../../constants/login/createUser.actions.constants.js';
 
 const initialState = {
 	syntaxErrors: []

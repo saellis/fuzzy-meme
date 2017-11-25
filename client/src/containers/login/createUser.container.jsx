@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { CreateUser } from '../../components/login/createUser.component.jsx';
 
 import { createUserAction, setCreateUserSyntaxError,
-  clearCreateUserSyntaxError, resetCreateFormComplete } from '../../actions/users.actions';
+  clearCreateUserSyntaxError, resetCreateFormComplete } from '../../actions/login/createUser.actions';
 
 
 export const mapStateToProps = state => {

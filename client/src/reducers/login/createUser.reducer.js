@@ -14,6 +14,8 @@ const users = (state = initialState, action) => {
 		return {...state, creationSuccessText: `Successfully created user: ${action.data.username}`};
 	case _.CREATE_USER_ERROR:
 		return {...state, errorText: `Error creating user (${action.error})`, pending: false};
+	case _.CLEAR_CREATE_USER_ERROR:
+		return {...state, errorText: '', pending: false};
 
 	case _.UPDATE_CREATE_USER_SYNTAX_ERROR:
 		return {...state, syntaxErrors: action.errors};

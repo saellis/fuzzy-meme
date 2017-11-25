@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 
 import { FormControl, FormGroup, ControlLabel , Col} from 'react-bootstrap';
 
@@ -20,6 +21,7 @@ export default class LoginField extends React.Component {
 
 	reset() {
 		this.setState({value: ''});
+		ReactDOM.findDOMNode(this.refs[`input`]).value='';
 	}
 
 	getValidationState() {
@@ -43,7 +45,7 @@ export default class LoginField extends React.Component {
 					<ControlLabel>{this.props.label}</ControlLabel>
 				</Col>
 				<Col xs={10} sm={10}  md={8} lg={8}  className='margin-bottom-5' >
-					<FormControl type={this.parseType()} ref={this.props.inputRef}
+					<FormControl type={this.parseType()} ref='input'
 						placeholder={this.props.placeholder}
 						onChange={(evt) => this.handleChange(evt)} />
 				</Col>

@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { LoginFieldContainer } from '../../containers/login/loginField.container.jsx';
 
 import {regex} from '../../constants/users.constants.js';
@@ -49,7 +48,7 @@ export class CreateUser extends React.Component{
 	}
 
 	doValidation(submit){
-		console.log(this.state.fields);
+		//console.log(this.state.fields);
 		this.validateForm(this.state.fields['createUsername'], this.state.fields['createPassword'],
 			this.state.fields['createConfirmPassword'], this.props.createUser, this.props.setErrorText, submit);
 	}
@@ -95,7 +94,7 @@ export class CreateUser extends React.Component{
 		let refs = ['un', 'pw1', 'pw2']
 		refs.forEach((refName)=>{
 			this.refs[refName].wrappedInstance.reset();
-			ReactDOM.findDOMNode(this.state[`${refName}Input`]).value='';
+
 		});
 	}
 

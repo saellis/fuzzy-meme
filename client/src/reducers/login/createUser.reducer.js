@@ -1,7 +1,8 @@
 import * as _ from '../../constants/login/createUser.actions.constants.js';
 
 const initialState = {
-	syntaxErrors: []
+	syntaxErrors: [],
+	pending: false
 }
 
 const users = (state = initialState, action) => {
@@ -9,9 +10,9 @@ const users = (state = initialState, action) => {
 
     //Section for creating user
 	case _.CREATE_USER_PENDING:
-		return {...state, userPending: true};
+		return {...state, pending: true};
 	case _.CREATE_USER_SUCCESS:
-		return {...state, creationSuccessText: `Successfully created user: ${action.data.username}`};
+		return {...state, pending: false, creationSuccessText: `Successfully created user: ${action.data.username}`};
 	case _.CREATE_USER_ERROR:
 		return {...state, errorText: `Error creating user (${action.error})`, pending: false};
 	case _.CLEAR_CREATE_USER_ERROR:

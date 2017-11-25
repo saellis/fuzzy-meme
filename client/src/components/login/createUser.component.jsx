@@ -116,7 +116,7 @@ export class CreateUser extends React.Component{
 							ref='pw2' id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
 							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
 						<Button block className='btn-primary' disabled={this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
-							onClick={()=> {this.doValidation(true);}}>Create</Button>
+							onClick={()=> {this.doValidation(true);}}>Create {this.props.pending ? (<i className="fa fa-spinner fa-pulse fa-fwx" aria-hidden="true"></i>) : null}</Button>
 					</Panel>
 				</Col>
 

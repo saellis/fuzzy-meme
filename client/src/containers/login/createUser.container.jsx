@@ -10,7 +10,8 @@ export const mapStateToProps = state => {
   	errors: state.users.create.syntaxErrors,
     creationErrorText: state.users.create.errorText,
     creationSuccessText: state.users.create.creationSuccessText,
-    shouldResetForm: state.users.create.shouldResetForm
+    shouldResetForm: state.users.create.shouldResetForm,
+    pending: state.users.create.pending
   }
 }
 

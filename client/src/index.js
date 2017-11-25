@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import './index.css';
 import 'react-tabs/style/react-tabs.css';
+import './libs/fa/css/font-awesome.min.css';
+
 import Root from './root.component';
 import registerServiceWorker from './registerServiceWorker';
 

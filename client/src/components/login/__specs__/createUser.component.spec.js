@@ -3,7 +3,7 @@ import { LoginFieldContainer } from '../../../containers/login/loginField.contai
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import { createUserAction }  from '../../../actions/users.actions';
+import { createUserAction }  from '../../../actions/login/createUser.actions';
 import { Button } from 'react-bootstrap';
 
 

@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as _ from '../users.actions.js';
+import * as _ from '../login/login.actions.js';
 import fetchMock from 'fetch-mock';
 
 const middlewares = [thunk];
@@ -13,13 +13,13 @@ describe('users login actions', () => {
 	});
 
 	it('creates LOGIN_PENDING, LOGIN_SUCCESS, and CLEAR_LOGIN_ERROR_TEXT when logging user in has been done', () => {
-    
+
 		const response = {_id:'asdfasd'};
 		const un = 'jebediah';
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', response, { 
+      .postOnce('http://localhost:3001/users/auth', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -40,13 +40,13 @@ describe('users login actions', () => {
 	});
 
 	it('creates LOGIN_PENDING and LOGIN_INCORRECT when logging user in has had incorrect credentials', () => {
-    
+
 		const response = {err:'login didnt work'};
 		const un = 'jebediah';
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', response, { 
+      .postOnce('http://localhost:3001/users/auth', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -71,7 +71,7 @@ describe('users login actions', () => {
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', { 
+      .postOnce('http://localhost:3001/users/auth', {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},

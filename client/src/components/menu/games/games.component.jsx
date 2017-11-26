@@ -13,7 +13,7 @@ export class Games extends React.Component{
 		return(
 			<Col xs={10} sm={10}  md={6} lg={6} xsOffset={1} smOffset={1} mdOffset={3} lgOffset={3} >
 				<Panel bsStyle='warning' header='It me'>
-it me my games
+it me my games, {this.props._id}
 				</Panel>
 			</Col>
 		)}

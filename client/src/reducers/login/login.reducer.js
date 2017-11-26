@@ -1,6 +1,7 @@
 import * as _ from '../../constants/login/login.actions.constants.js';
 
 const initialState = {
+	loggedInUser: {}
 }
 
 const users = (state = initialState, action) => {

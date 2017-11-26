@@ -20,6 +20,12 @@ export class Menu extends React.Component{
 		}
 	}
 
+	componentDidMount(){
+		if(!this.props.loggedInId){
+			this.props.returnHome();
+		}
+	}
+
 	render(){
 
 		return(
@@ -34,7 +40,7 @@ export class Menu extends React.Component{
 							<Tab>Lobby</Tab>
 						</TabList>
 						<TabPanel>
-							<GamesContainer />
+							<GamesContainer _id={this.props.loggedInId} />
 						</TabPanel>
 						<TabPanel>
 							<InvitesContainer />

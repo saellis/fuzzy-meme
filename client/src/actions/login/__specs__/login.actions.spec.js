@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as _ from '../login/login.actions.js';
+import * as _ from '../login.actions.js';
 import fetchMock from 'fetch-mock';
 
 const middlewares = [thunk];

@@ -4,7 +4,7 @@ import { Col, Panel } from 'react-bootstrap';
 
 import { Tabs, TabPanel, TabList, Tab } from 'react-tabs';
 
-import { MyGamesContainer } from '../../containers/menu/games/games.container.jsx'
+import { GamesContainer } from '../../containers/menu/games/games.container.jsx'
 import { InvitesContainer } from '../../containers/menu/invites/invites.container.jsx'
 import { LobbyContainer } from '../../containers/menu/lobby/lobby.container.jsx'
 
@@ -34,7 +34,7 @@ export class Menu extends React.Component{
 							<Tab>Lobby</Tab>
 						</TabList>
 						<TabPanel>
-							<MyGamesContainer />
+							<GamesContainer />
 						</TabPanel>
 						<TabPanel>
 							<InvitesContainer />

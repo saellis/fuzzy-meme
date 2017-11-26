@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { MyGames } from '../../../components/menu/games/games.component.jsx';
+import { Games } from '../../../components/menu/games/games.component.jsx';
 
 export const mapStateToProps = state => {
   return {
@@ -11,10 +11,10 @@ export const mapDispatchToProps = dispatch =>{
   }
 }
 
-export const MyGamesContainer = connect(
+export const GamesContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(MyGames);
+)(Games);
 
 
-export default MyGamesContainer;
+export default GamesContainer;

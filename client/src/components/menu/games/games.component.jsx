@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Col, Panel } from 'react-bootstrap';
-export class MyGames extends React.Component{
+export class Games extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {}
@@ -19,4 +19,4 @@ it me my games
 		)}
 }
 
-export default MyGames;
+export default Games;

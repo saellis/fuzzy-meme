@@ -1,9 +1,13 @@
 import React from 'react'
 import { LoginFieldContainer } from '../../containers/login/loginField.container.jsx';
 
-import {regex} from '../../constants/users.constants.js';
 
 import {Button, Panel, Col, Alert } from 'react-bootstrap';
+
+import {fieldConfig} from '../../constants/login/createUser.config.js';
+
+import {regex} from '../../constants/users.constants.js';
+
 
 export class CreateUser extends React.Component{
 	constructor(props){
@@ -106,12 +110,9 @@ export class CreateUser extends React.Component{
 					<Panel bsStyle="primary">
 						{this.creationErrorAlert()}
 						{this.creationSuccessAlert()}
-						<LoginFieldContainer ref='un' id='createUsername' type='createUsername' label='Username:'
-							regex={regex.username.regex} placeholder='Username' textChange={(key,value) => this.handleChange(key, value)}/>
-						<LoginFieldContainer ref='pw1' id='createPassword' type='createPassword' label='Password:'
-							regex={regex.password.full.regex} placeholder='Password' textChange={(key,value) => this.handleChange(key, value)}/>
-						<LoginFieldContainer ref='pw2' id='createConfirmPassword' type='createConfirmPassword' label='Confirm password:'
-							regex={regex.password.full.regex} placeholder='Confirm Password' textChange={(key,value) => this.handleChange(key, value)}/>
+						{fieldConfig.map((props) => {
+							return (<LoginFieldContainer {...props} textChange={(key,value) => this.handleChange(key, value)}/>);
+						})}
 						<Button block className='btn-primary' disabled={this.props.pending || this.props.errors.length > 0 || Object.keys(this.state.fields).length === 0}
 							onClick={()=> {this.doValidation(true);}}>Create {this.props.pending ? (<i className="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>) : null}</Button>
 					</Panel>

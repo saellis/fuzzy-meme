@@ -6,6 +6,8 @@ import 'react-tabs/style/react-tabs.css';
 import './libs/fa/css/font-awesome.min.css';
 
 import UserPortalContainer from './containers/login/userPortal.container.jsx';
+import MenuContainer from './containers/menu/menu.container.jsx';
+
 import registerServiceWorker from './registerServiceWorker';
 
 import { Provider } from 'react-redux';
@@ -38,7 +40,8 @@ ReactDOM.render(
   <Provider store={store}>
 		<ConnectedRouter history={history}>
 		 <div className='text-center'>
-			 <Route exact path="/" component={UserPortalContainer}/>
+			   <Route exact path="/" component={UserPortalContainer}/>
+  		   <Route exact path="/menu" component={MenuContainer}/>
 		 </div>
 	 </ConnectedRouter>
   </Provider>,

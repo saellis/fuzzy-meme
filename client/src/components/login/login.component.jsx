@@ -25,7 +25,7 @@ export class Login extends React.Component{
 			(<Alert bsStyle='danger'>
 				{this.props.errorText}
 			</Alert>) :
-				'';
+				null;
 	}
 
 

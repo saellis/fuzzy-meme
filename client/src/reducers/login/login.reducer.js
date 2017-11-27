@@ -1,5 +1,8 @@
 import * as _ from '../../constants/login/login.actions.constants.js';
 
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/es/storage' // default: localStorage if web, AsyncStorage if react-native
+
 const initialState = {
 	loggedInUser: {}
 }
@@ -26,4 +29,11 @@ const users = (state = initialState, action) => {
 	}
 };
 
-export default users;
+const config = {
+  key: 'login',
+  storage,
+}
+
+const reducer = persistReducer(config, users);
+
+export default reducer;

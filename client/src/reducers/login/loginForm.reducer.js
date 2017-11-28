@@ -4,17 +4,16 @@ import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/es/storage' // default: localStorage if web, AsyncStorage if react-native
 
 const initialState = {
-	loggedInUser: {}
 }
 
-const users = (state = initialState, action) => {
+const loginForm = (state = initialState, action) => {
 	switch (action.type) {
 
     //Section for logging in
 	case _.LOGIN_PENDING:
 		return {...state, pending: true};
 	case _.LOGIN_SUCCESS:
-		return {...state, loggedInUser:action.data, pending: false};
+		return {...state, pending: false};
 	case _.LOGIN_ERROR:
 		return {...state, errorText:'Something happened.', pending: false};
 	case _.LOGIN_INCORRECT:
@@ -29,11 +28,5 @@ const users = (state = initialState, action) => {
 	}
 };
 
-const config = {
-  key: 'login',
-  storage,
-}
 
-const reducer = persistReducer(config, users);
-
-export default reducer;
+export default loginForm;

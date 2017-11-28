@@ -5,7 +5,7 @@ import { replace } from 'react-router-redux';
 export const loginAction = (un, pw) => {
 	return (dispatch)=>{
 		dispatch({type:_.LOGIN_PENDING});
-		return fetch('http://localhost:3001/users/auth', {
+		return fetch('/users/auth', {
 			method: 'post',
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'

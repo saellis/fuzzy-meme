@@ -2,7 +2,7 @@
   "name": "ttr",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

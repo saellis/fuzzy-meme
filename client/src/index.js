@@ -24,26 +24,28 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 
 import baseReducer from './reducers/base.reducer';
 
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/es/integration/react'
+
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory()
 
 // Build the middleware for intercepting and dispatching navigation actions
-const middleware = routerMiddleware(history)
+const middleware = routerMiddleware(history);
 
-// Add the reducer to your store on the `router` key
-// Also apply our middleware for navigating
-const store = createStore(
-  baseReducer,
-	applyMiddleware(thunk, middleware, logger));
+let store = createStore(baseReducer, applyMiddleware(thunk, middleware, logger));
+let persistor = persistStore(store);
 
 ReactDOM.render(
   <Provider store={store}>
-		<ConnectedRouter history={history}>
-		 <div className='text-center'>
-			   <Route exact path="/" component={UserPortalContainer}/>
-  		   <Route exact path="/menu" component={MenuContainer}/>
-		 </div>
-	 </ConnectedRouter>
+    <PersistGate persistor={persistor}>
+  		<ConnectedRouter history={history}>
+  		 <div className='text-center'>
+  			   <Route exact path="/" component={UserPortalContainer}/>
+    		   <Route exact path="/menu" component={MenuContainer}/>
+  		 </div>
+  	  </ConnectedRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

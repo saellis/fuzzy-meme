@@ -106,7 +106,7 @@ app.route('/users/auth')
 
 
 
-var server = app.listen(3001, function () {
+var server = app.listen(app.get('port'), function () {
   var port = server.address().port;
 });
 

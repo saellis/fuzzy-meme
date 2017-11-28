@@ -36,12 +36,13 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server/server.js",
     "server": "node server/server.js",
     "client": "node start-client.js",
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint .",
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "doc": "apidoc -e node_modules"
   },
   "nyc": {
     "require": [

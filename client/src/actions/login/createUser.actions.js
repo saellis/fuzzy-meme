@@ -5,7 +5,7 @@ export const createUserAction = (un, pw) => {
 		dispatch({type:_.CREATE_USER_PENDING});
 		dispatch({type:_.CLEAR_CREATE_USER_ERROR});
 		dispatch({type:_.CLEAR_CREATE_USER_SUCCESS});
-		return fetch('http://localhost:3001/users/create', {
+		return fetch('/users/create', {
 			method: 'post',
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'

@@ -42,7 +42,8 @@
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint .",
     "test": "nyc mocha",
-    "doc": "apidoc -e node_modules"
+    "doc": "apidoc -e node_modules",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "nyc": {
     "require": [

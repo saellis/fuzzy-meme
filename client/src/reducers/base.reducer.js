@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import users from './login/users.base.reducer';
 import games from './games.reducer';
 
-import {routerReducer} from 'react-router-redux'
+import {router} from './routes/routes.reducer.js'
 
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
@@ -13,11 +13,11 @@ const config = {
   storage,
 }
 
-const pPouterReducer = persistReducer(config, routerReducer);
+const pPouterReducer = persistReducer(config, router);
 
 export default combineReducers({
 	games: games,
 	users: users,
-	router: pPouterReducer
+	routes: pPouterReducer
 
 });

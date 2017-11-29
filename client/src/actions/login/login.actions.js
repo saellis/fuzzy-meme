@@ -1,5 +1,7 @@
 import * as _ from '../../constants/login/login.actions.constants';
 
+import * as router from '../../constants/routes.constants';
+
 import { replace } from 'react-router-redux';
 
 export const loginAction = (un, pw) => {
@@ -17,7 +19,7 @@ export const loginAction = (un, pw) => {
 					if(data._id){
 						dispatch({type:_.LOGIN_SUCCESS, data: data});
 						dispatch({type:_.CLEAR_LOGIN_ERROR_TEXT});
-						dispatch(replace('/menu'));
+						dispatch({type:router.MENU});
 					}else{
 						dispatch({type:_.LOGIN_INCORRECT, data: data});
 					}

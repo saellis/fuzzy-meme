@@ -4,7 +4,7 @@ import { returnHome } from '../../actions/util/util.actions.js'
 
 export const mapStateToProps = state => {
   return {
-    loggedInId : state.users.login.loggedInUser._id
+    loggedInId : state.users.login.user._id
   }
 }
 

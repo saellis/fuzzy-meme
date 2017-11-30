@@ -6,8 +6,8 @@ var userManipulator = {
       const client = new Client();
       client.connect();
       var id = uuid();
-      var sql = 'INSERT INTO users VALUES($1, $2, $3, $4, $5, $6) RETURNING *;';
-      var values = [id, user.username, user.hash, {}, {}, {}];
+      var sql = 'INSERT INTO users VALUES($1, $2, $3) RETURNING *;';
+      var values = [id, user.username, user.hash];
       client.query(sql, values, (err, res) => {
         if(err) {
           if(err.code === '23505') {

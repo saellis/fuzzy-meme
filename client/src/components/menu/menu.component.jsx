@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Col, Panel } from 'react-bootstrap';
+import { Col, Panel, Button } from 'react-bootstrap';
 
 import { Tabs, TabPanel, TabList, Tab } from 'react-tabs';
 
@@ -49,6 +49,7 @@ export class Menu extends React.Component{
 							<LobbyContainer />
 						</TabPanel>
 					</Tabs>
+					<Button onClick={this.props.returnHome} >Logout</Button>
 				</Panel>
 			</Col>
 		)}

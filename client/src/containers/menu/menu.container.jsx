@@ -14,7 +14,7 @@ export const mapDispatchToProps = dispatch =>{
   }
 }
 
-const MenuContainer = connect(
+export const MenuContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Menu);

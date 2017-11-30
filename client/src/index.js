@@ -5,8 +5,7 @@ import './index.css';
 import 'react-tabs/style/react-tabs.css';
 import './libs/fa/css/font-awesome.min.css';
 
-import UserPortalContainer from './containers/login/userPortal.container.jsx';
-import MenuContainer from './containers/menu/menu.container.jsx';
+import RoutesContainer from './routes/routes.container.js'
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -39,12 +38,7 @@ let persistor = persistStore(store);
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-  		<ConnectedRouter history={history}>
-  		 <div className='text-center'>
-  			   <Route exact path="/" component={UserPortalContainer}/>
-    		   <Route exact path="/menu" component={MenuContainer}/>
-  		 </div>
-  	  </ConnectedRouter>
+  		<RoutesContainer/>
     </PersistGate>
   </Provider>,
   document.getElementById('root')

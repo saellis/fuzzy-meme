@@ -1,14 +1,13 @@
 import { connect } from 'react-redux'
-import { routes } from '../../constants/routes.constants.js'
+import * as _ from '../../constants/routes.constants.js'
 
 const initialState = {
-	component: routes['HOME'].component
+	component: _.HOME
 }
 
 export const router = (state = initialState, action) => {
-	if(action.type === 'MENU'){
-		let newComponent = routes[action.type].component;
-		return {...state, component: newComponent};
+	if(action.type === 'MENU' || action.type === 'HOME'){
+		return {...state, component: action.type};
 	}else{
 		return state;
 	}

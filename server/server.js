@@ -8,7 +8,6 @@ app.use(
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		next();
 	;})
-console.log("ITS HAPPENING")
 const game = require('./controller/game.controller');
 const user = require('./controller/user.controller');
 

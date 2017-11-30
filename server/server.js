@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 * @api {get} /game Get a game
 * @apiName GetGame
 * @apiGroup Games
-* @apiParam {String} [id] ID of the game to get.
+* @apiParam {String} [gameId] ID of the game to get.
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
 *     {
@@ -35,6 +35,23 @@ if (process.env.NODE_ENV === "production") {
 *       "currentPlayerActedOnce": "false",
 *       "faceUp": ["Red", "Blue", "White", "Pink", "Wild"]
 *     }
+*/
+
+/**
+* @api {get} /game Get all games user is a part of
+* @apiName GetGame
+* @apiGroup Games
+* @apiParam {String} [userId] ID of the user whose games to get.
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     [{
+*       "_id": "001911010",
+*       "users": ["123", "321", "789"],
+*       "creator": "123",
+*       "currentPlayer": "789",
+*       "currentPlayerActedOnce": "false",
+*       "faceUp": ["Red", "Blue", "White", "Pink", "Wild"]
+*     }, ...]
 */
 app.route('/games')
   .get(game.get);
@@ -47,17 +64,20 @@ app.route('/test')
   /**
   * @api {post} /games/create Create a game
   * @apiName CreateGame
-  * @apiParam {String} [creatorID] id of the user who created the game
+  * @apiParam {String} [creatorId] id of the user who created the game
   * @apiGroup Games/Create
   * @apiSuccessExample Success-Response:
   *     HTTP/1.1 200 OK
   *     {
   *       "_id": "245789345",
-  *       "users": ["123"],
-  *       "creator": "123",
-  *       "currentPlayer": "123",
-  *       "currentPlayerActedOnce": "false",
-  *       "faceUp": ["Red", "Blue", "White", "Pink", "Wild"]
+  *       "creator_id": "123",
+  *       "current_player": "123",
+  *       "current_player_acted_once": "false",
+  *       "face_up_trains": ["Red", "Blue", "White", "Pink", "Wild"],
+	*				"face_down_trains": ["Blue", ...],
+  *  			"discarded_trains": ["White", ...],
+  *  			"route_cards": ['vw35ety6y', 'dsfg45y', ...],
+  *			  "discarded_route_cards": ['euvy46gv56', 'gv457467', ...]
   *     }
   */
 app.route('/games/create')
@@ -74,11 +94,7 @@ app.route('/games/create')
   *     HTTP/1.1 200 OK
   *     {
   *       "_id": "123",
-  *       "username": "stephen120",
-  *       "password": "[REDACTED]",
-  *       "games": [],
-  *       "trainHand": [],
-  *       "routeHand": []
+  *       "username": "stephen120"
   *     }
   */
 app.route('/users/create')
@@ -95,10 +111,7 @@ app.route('/users/create')
   *     HTTP/1.1 200 OK
   *     {
   *       "_id": "123",
-  *       "username": "stephen120",
-  *       "game_ids": [],
-  *       "train_hand": [],
-  *       "route_hand": []
+  *       "username": "stephen120"
   *     }
   */
 app.route('/users/auth')

@@ -51,7 +51,7 @@ describe('Server', () => {
       });
     });
   });
-  describe('GET /game', () => {
+  describe('GET /games', () => {
 
     it('Should get a game by id', (done) => {
       chai.request(server)
@@ -62,7 +62,7 @@ describe('Server', () => {
           chai.request(server)
             .get('/games')
             .set('content-type', 'application/x-www-form-urlencoded')
-            .send({'gameId': res.body._id})
+            .query({'gameId': res.body._id})
             .end((err, res) => {
               res.body._id.should.not.equal(null);
               done();
@@ -74,10 +74,62 @@ describe('Server', () => {
       chai.request(server)
         .get('/games')
         .set('content-type', 'application/x-www-form-urlencoded')
-        .send({'gameId': 'probably not a game id'})
+        .query({'gameId': 'probably not a game id'})
         .end((err, res) => {
-          res.body.err.should.not.equal(null)
+          res.body.err.should.equal('game does not exist');
           done();
+        });
+    });
+
+    it('Should notify client when no gameId or userId is supplied', (done) => {
+      chai.request(server)
+        .get('/games')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .end((err, res) => {
+          res.body.err.should.equal('must supply a gameId or userId');
+          done();
+        });
+    });
+
+    it('Should return an empty list when getting games for a user that has no games', (done) => {
+      var uname = uuid();
+      chai.request(server)
+        .post('/users/create')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({username: uname, password: 'Strongpassword123'})
+        .end((err, res) => {
+          chai.request(server)
+            .get('/games')
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .query({'userId': res.body._id})
+            .end((err, res) => {
+              res.body.length.should.equal(0);
+              done();
+            });
+        });
+    });
+
+    it('Should get all games that user is a part of', (done) => {
+      var uname = uuid();
+      chai.request(server)
+        .post('/users/create')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({username: uname, password: 'Strongpassword123'})
+        .end((err, res) => {
+          chai.request(server)
+            .post('/games/create')
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .send({'creatorId': res.body._id})
+            .end((err, res) => {
+              chai.request(server)
+                .get('/games')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .query({'userId': res.body.creator_id})
+                .end((err, res) => {
+                  res.body.length.should.equal(1);
+                  done();
+                });
+            });
         });
     });
   });

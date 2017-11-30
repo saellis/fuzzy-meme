@@ -1,10 +1,15 @@
+---- 1) drop and all existing tables
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+---- 2) create tables
 -- the current games across the whole service
 CREATE TABLE IF NOT EXISTS games (
   _id text PRIMARY KEY, -- unique id of the game
   creator_id text NOT NULL, -- user id of whoever created the game
   current_player_id text NOT NULL, -- user id of whoever's turn it is
   current_player_acted_once boolean NOT NULL, -- whether or not the user acted the first half of their turn (useful for pulling two cards, returning pathcards, etc.)
-  players text[],
+  players text[], --todo remove this.. dont need it
   face_up_trains text[5], -- the five face up cards available to the current user
   face_down_trains text[], -- the stack of face down cards that the user can pull from
   discarded_trains text[], -- the pile of cards that were played to build track
@@ -16,16 +21,15 @@ CREATE TABLE IF NOT EXISTS games (
 CREATE TABLE IF NOT EXISTS users (
   _id text PRIMARY KEY, -- unique id of the user
   username text UNIQUE, -- unique username
-  password_hash text NOT NULL, -- the user's hashed password (using bcrypt)
-  game_ids text[], -- the list of game ids that the user is assigned to
-  train_hand text[], -- the current train cards the player holds
-  route_hand text[] -- the current route card IDs the player holds
+  password_hash text NOT NULL -- the user's hashed password (using bcrypt)
 );
 
--- The assignments of users to games
+-- The assignments of users to games, and the players' specific individual game information
 CREATE TABLE IF NOT EXISTS game_players (
-  game_id text references games(_id) NOT NULL, -- the game id
-  user_id text references users(_id) NOT NULL, -- the user id
+  game_id text NOT NULL, -- the game id
+  user_id text NOT NULL, -- the user id
+  train_hand text[], -- the current train cards the player holds
+  route_hand text[], -- the current route card IDs the player holds
   PRIMARY KEY(game_id, user_id)
 );
 

@@ -72,17 +72,6 @@ describe('Server', () => {
           });
       });
 
-      it('Should return an empty list of games', (done) => {
-        chai.request(server)
-          .post('/users/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'Strongpassword11'})
-          .end((err, res) => {
-            res.body.game_ids.should.have.length(0);
-            done();
-          });
-      });
-
       it('Should check password length', (done) => {
         chai.request(server)
           .post('/users/create')

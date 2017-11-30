@@ -8,6 +8,5 @@ export const routes_constants = {
   MENU: MenuContainer
 
 }
-console.log(routes_constants['HOME']);
 export const HOME = 'HOME';
 export const MENU = 'MENU';

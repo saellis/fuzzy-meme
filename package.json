@@ -36,13 +36,8 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
-<<<<<<< HEAD
 "start": "concurrently \"npm run server\" \"npm run client\"",
  "server": "node server/server.js",
-=======
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server/server.js",
->>>>>>> master
     "client": "node start-client.js",
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint .",

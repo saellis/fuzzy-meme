@@ -1,9 +1,8 @@
 import * as _ from '../../constants/util/util.actions.constants';
-
-import { replace } from 'react-router-redux';
+import * as router from '../../constants/routes.constants';
 
 export const returnHome = () => {
 	return (dispatch)=>{
-		dispatch(replace('/'));
+		dispatch({type:router.HOME});
 	}
 };

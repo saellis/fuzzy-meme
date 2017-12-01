@@ -27,7 +27,9 @@ let persistor = persistStore(store);
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-  		<RoutesContainer/>
+      <div className='text-center'>
+  		    <RoutesContainer />
+      </div>
     </PersistGate>
   </Provider>,
   document.getElementById('root')

@@ -1,4 +1,5 @@
 import * as _ from '../../../constants/menu/games/menu.games.actions.constants.js';
+import * as router from '../../../constants/routes.constants.js'
 
 const initialState = {
   gameList: []
@@ -24,6 +25,8 @@ const games = (state = initialState, action) => {
 		return {...state, errorText:'Something happened.', pending: false};
 
 
+  case router.HOME:
+    return initialState;
 
 
 	default:

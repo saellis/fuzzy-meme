@@ -1,8 +1,5 @@
 import * as _ from '../../constants/login/login.actions.constants.js';
 
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/es/storage' // default: localStorage if web, AsyncStorage if react-native
-
 const initialState = {
 }
 

@@ -2,7 +2,6 @@ import * as _ from '../../constants/login/login.actions.constants';
 
 import * as router from '../../constants/routes.constants';
 
-import { replace } from 'react-router-redux';
 
 export const loginAction = (un, pw) => {
 	return (dispatch)=>{

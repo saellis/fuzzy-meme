@@ -8,6 +8,7 @@ export default class LoginField extends React.Component {
 		super(props);
 		this.state = {value: ''};
 		this.reset = this.reset.bind(this);
+		this.getValidationState = this.getValidationState.bind(this);
 	}
 
 	parseType() {

@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as _ from '../createUser.actions.js';
+import * as actions from '../createUser.actions.js';
+import * as _ from '../../../constants/login/createUser.actions.constants.js';
 import fetchMock from 'fetch-mock';
 
 const middlewares = [thunk];
@@ -12,26 +13,29 @@ describe('users creation actions', () => {
 		fetchMock.restore();
 	});
 
-	it('creates CREATE_USER_PENDING, CREATE_USER_SUCCESS, and CLEAR_CREATE_USER_SYNTAX_ERROR when creating user has been done', () => {
+	it('creates correct actions when creating user has been done', () => {
 
 		const response = {data: {}};
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/create', response, {
+      .postOnce('/users/create', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
 	body: 'username=jebediah&password=jones' });
 
 		const expectedActions = [
-      { type: _.CREATE_USER_PENDING},
-      { type: _.CREATE_USER_SUCCESS, data: response},
-      { type: _.CLEAR_CREATE_USER_SYNTAX_ERROR},
+			{type:_.CREATE_USER_PENDING},
+			{type:_.CLEAR_CREATE_USER_ERROR},
+			{type:_.CLEAR_CREATE_USER_SUCCESS},
+			{type:_.CREATE_USER_SUCCESS, data: response},
+			{type:_.RESET_CREATE_FORM},
+			{type:_.CLEAR_CREATE_USER_SYNTAX_ERROR}
 
 		];
 		const store = mockStore({});
 
-		return store.dispatch(_.createUserAction()).then(() => {
+		return store.dispatch(actions.createUserAction()).then(() => {
       // return of async actions
 			expect(store.getActions()).to.deep.equal(expectedActions);
 		});
@@ -40,7 +44,7 @@ describe('users creation actions', () => {
 	it('creates CREATE_USER_PENDING and CREATE_USER_ERROR when failing to create user', () => {
     //will fail without passed response parameter
 		fetchMock
-      .postOnce('http://localhost:3001/users/create', {
+      .postOnce('/users/create', {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -48,12 +52,14 @@ describe('users creation actions', () => {
 
 		const expectedActions = [
       { type: _.CREATE_USER_PENDING},
+      { type: _.CLEAR_CREATE_USER_ERROR},
+      { type: _.CLEAR_CREATE_USER_SUCCESS},
       { type: _.CREATE_USER_ERROR},
 
 		];
 		const store = mockStore({});
 
-		return store.dispatch(_.createUserAction()).then(() => {
+		return store.dispatch(actions.createUserAction()).then(() => {
       // return of async actions
 			expect(store.getActions()).to.deep.equal(expectedActions);
 		});
@@ -68,7 +74,7 @@ describe('users creation actions', () => {
 		];
 		const store = mockStore({});
 
-		store.dispatch(_.setCreateUserSyntaxError([text]));
+		store.dispatch(actions.setCreateUserSyntaxError([text]));
 		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 
@@ -78,7 +84,7 @@ describe('users creation actions', () => {
       { type: _.CLEAR_CREATE_USER_SYNTAX_ERROR}
 		];
 		const store = mockStore({});
-		store.dispatch(_.clearCreateUserSyntaxError());
+		store.dispatch(actions.clearCreateUserSyntaxError());
 		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 
@@ -87,16 +93,7 @@ describe('users creation actions', () => {
       {type: _.CLEAR_CREATE_USER}
 		];
 		const store = mockStore({});
-		store.dispatch(_.clearCreateUser());
-		return expect(store.getActions()).to.deep.equal(expectedActions);
-	});
-
-	it('CLEAR_LOGIN', () => {
-		const expectedActions = [
-			{type: _.CLEAR_LOGIN}
-		];
-		const store = mockStore({});
-		store.dispatch(_.clearLogin());
+		store.dispatch(actions.clearCreateUser());
 		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 });

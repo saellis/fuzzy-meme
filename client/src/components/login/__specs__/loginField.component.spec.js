@@ -44,14 +44,18 @@ describe('<LoginField>', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'a'}});
-		(wrapper.state('status')+"").should.equal('null');
+
+		(wrapper.instance().getValidationState()+"").should.equal('null');
+    //
+		// console.log(wrapper.state);
+		// (wrapper.state('status')+"").should.equal('null');
 	});
 
 	it('should have success when matching regex', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={/.*/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'a'}});
-		(wrapper.state('status')+"").should.equal('success');
+		(wrapper.instance().getValidationState()+"").should.equal('success');
 	});
 
 	it('should have error when mismatching regex', () => {
@@ -59,13 +63,13 @@ describe('<LoginField>', () => {
 			textChange={spy} regex={/\d+/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'aaaaaa'}});
 		wrapper.find(FormControl).simulate('change', {target:{value:'aaaaaab'}});
-		(wrapper.state('status')+"").should.equal('error');
+		(wrapper.instance().getValidationState()+"").should.equal('error');
 	});
 
 	it('should have null when empty', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={/.{2,}/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:''}});
-		(wrapper.state('status')+"").should.equal('null');
+		(wrapper.instance().getValidationState()+"").should.equal('null');
 	});
 });

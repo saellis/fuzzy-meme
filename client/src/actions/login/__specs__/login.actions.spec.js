@@ -1,6 +1,10 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as _ from '../login.actions.js';
+import * as actions from '../login.actions.js';
+import * as _ from '../../../constants/login/login.actions.constants.js';
+
+import * as router from '../../../constants/routes.constants';
+
 import fetchMock from 'fetch-mock';
 
 const middlewares = [thunk];
@@ -12,14 +16,14 @@ describe('users login actions', () => {
 		fetchMock.restore();
 	});
 
-	it('creates LOGIN_PENDING, LOGIN_SUCCESS, and CLEAR_LOGIN_ERROR_TEXT when logging user in has been done', () => {
+	it('creates LOGIN_PENDING, LOGIN_SUCCESS, and CLEAR_LOGIN_ERROR_TEXT, MENU when logging user in has been done', () => {
 
 		const response = {_id:'asdfasd'};
 		const un = 'jebediah';
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', response, {
+      .postOnce('/users/auth', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -29,11 +33,12 @@ describe('users login actions', () => {
       { type: _.LOGIN_PENDING,},
       { type: _.LOGIN_SUCCESS, data: response},
       { type: _.CLEAR_LOGIN_ERROR_TEXT},
+      { type: router.MENU},
 
 		];
 		const store = mockStore({});
 
-		return store.dispatch(_.loginAction(un, pw)).then(() => {
+		return store.dispatch(actions.loginAction(un, pw)).then(() => {
       // return of async actions
 			expect(store.getActions()).to.deep.equal(expectedActions);
 		});
@@ -46,7 +51,7 @@ describe('users login actions', () => {
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', response, {
+      .postOnce('/users/auth', response, {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -59,7 +64,7 @@ describe('users login actions', () => {
 		];
 		const store = mockStore({});
 
-		return store.dispatch(_.loginAction(un, pw)).then(() => {
+		return store.dispatch(actions.loginAction(un, pw)).then(() => {
       // return of async actions
 			expect(store.getActions()).to.deep.equal(expectedActions);
 		});
@@ -71,7 +76,7 @@ describe('users login actions', () => {
 		const pw = 'jones';
 
 		fetchMock
-      .postOnce('http://localhost:3001/users/auth', {
+      .postOnce('/users/auth', {
 	headers: {
 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	},
@@ -84,10 +89,19 @@ describe('users login actions', () => {
 		];
 		const store = mockStore({});
 
-		return store.dispatch(_.loginAction(un, pw)).then(() => {
+		return store.dispatch(actions.loginAction(un, pw)).then(() => {
       // return of async actions
 			expect(store.getActions()).to.deep.equal(expectedActions);
 		});
+	});
+
+	it('CLEAR_LOGIN', () => {
+		const expectedActions = [
+			{type: _.CLEAR_LOGIN}
+		];
+		const store = mockStore({});
+		store.dispatch(actions.clearLogin());
+		return expect(store.getActions()).to.deep.equal(expectedActions);
 	});
 
 });

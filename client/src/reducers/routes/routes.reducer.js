@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import * as _ from '../../constants/routes.constants.js'
 
 const initialState = {

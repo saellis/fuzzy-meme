@@ -17,7 +17,12 @@ describe('<LoginContainer>', () => {
 		state = {
 			users:
 			{
-				loginErrorText: 'test'
+				login:{
+					form:{
+						errorText: 'test',
+						pending: false
+					}
+				}
 			}
 		};
 		store = mockStore(state);
@@ -27,7 +32,7 @@ describe('<LoginContainer>', () => {
 	it('should have passed error text down', () => {
 		const field = wrapper.find(Login);
 		field.should.have.length(1);
-		field.at(0).props().syntaxErrorText.should.equal('test');
+		field.at(0).props().errorText.should.equal('test');
 	});
 
 	it('should have login function set', () => {
@@ -37,7 +42,8 @@ describe('<LoginContainer>', () => {
 	});
 
 	it('mapStateToProps should set syntaxErrorText', () => {
-		mapStateToProps(state).should.deep.equal({syntaxErrorText: state.users.loginErrorText});
+		mapStateToProps(state).should.deep.equal({errorText: state.users.login.form.errorText,
+			pending: state.users.login.form.pending});
 	});
 
 	it('mapDispatchToProps should set three functions', () => {

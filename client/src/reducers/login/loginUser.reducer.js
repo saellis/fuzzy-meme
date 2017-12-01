@@ -1,4 +1,5 @@
 import * as _ from '../../constants/login/login.actions.constants.js';
+import * as router from '../../constants/routes.constants.js'
 
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/es/storage' // default: localStorage if web, AsyncStorage if react-native
@@ -13,6 +14,9 @@ const loginUser = (state = initialState, action) => {
 	case _.CLEAR_LOGIN:
 		return initialState;//{...state, errorText:'', pending: false};
 
+  case router.HOME:
+    return initialState;
+		
 	default:
 		return state;
 	}

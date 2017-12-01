@@ -1,2 +1,6 @@
 server/test
+client/src/test
+client/src/**/*.spec.js
+client/src/**/**/*.spec.js
+client/src/**/**/**/*.spec.js
 --recursive

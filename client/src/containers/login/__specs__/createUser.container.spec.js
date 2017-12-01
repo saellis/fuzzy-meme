@@ -15,7 +15,13 @@ describe('<CreateUserContainer>', () => {
 		state = {
 			users:
 			{
-				createUserSyntaxErrors: []
+				create:{
+				  	syntaxErrors: [],
+				    errorText: 'errorText',
+				    creationSuccessText: 'successText',
+				    shouldResetForm: false,
+				    pending: false
+				}
 			}
 		};
 		store = mockStore(state);
@@ -25,7 +31,7 @@ describe('<CreateUserContainer>', () => {
 	it('should have passed errors down', () => {
 		const field = wrapper.find(CreateUser);
 		field.should.have.length(1);
-		field.at(0).props().errors.should.deep.equal(state.users.createUserSyntaxErrors);
+		field.at(0).props().errors.should.deep.equal(state.users.create.syntaxErrors);
 	});
 
 	it('should have setErrorText, clearErrorText, createUser functions set', () => {
@@ -34,10 +40,17 @@ describe('<CreateUserContainer>', () => {
 		field.at(0).props().setErrorText.should.be.a('function');
 		field.at(0).props().clearErrorText.should.be.a('function');
 		field.at(0).props().createUser.should.be.a('function');
+		field.at(0).props().resetFormComplete.should.be.a('function');
 	});
 
 	it('mapStateToProps should set errorText', () => {
-		mapStateToProps(state).should.deep.equal({errors: state.users.createUserSyntaxErrors, fields: state.users.fields});
+		mapStateToProps(state).should.deep.equal(
+			{
+		  	errors: state.users.create.syntaxErrors,
+		    creationErrorText: state.users.create.errorText,
+		    creationSuccessText: state.users.create.creationSuccessText,
+		    shouldResetForm: state.users.create.shouldResetForm,
+		    pending: state.users.create.pending});
 	});
 
 	it('mapDispatchToProps should set three functions', () => {

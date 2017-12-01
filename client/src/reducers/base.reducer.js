@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import users from './login/users.base.reducer';
 import games from './games.reducer';
+import menu from './menu/menu.base.reducer';
 
 import {router} from './routes/routes.reducer.js'
 
@@ -18,6 +19,7 @@ const pPouterReducer = persistReducer(config, router);
 export default combineReducers({
 	games: games,
 	users: users,
-	routes: pPouterReducer
+	routes: pPouterReducer,
+  menu: menu
 
 });

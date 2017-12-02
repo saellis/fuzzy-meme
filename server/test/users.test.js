@@ -3,6 +3,8 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
 let uuid = require('uuid/v1');
+import 'babel-polyfill';
+import to from 'await-to-js';
 
 chai.use(chaiHttp);
 
@@ -18,182 +20,161 @@ describe('Server', () => {
 
   describe('POST /users/create', () => {
   	describe('Successfully creates user', () => {
-	  	it('Should return a new user id', (done) => {
+	  	it('Should return a new user id', async () => {
         var uname = uuid();
-	  		chai.request(server)
+	  		var res = await chai.request(server)
 			    .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'})
-			    .end((err, res) => {
-			        res.body._id.should.be.a('string');
-              res.body.username.should.equal(uname);
-			      	done();
-			    });
-	  	});
+          .send({username: uname, password: 'Strongpassword123'});
+        res.body._id.should.be.a('string');
+        res.body.username.should.equal(uname);
+        return;
+	  	}).timeout(2000);
 
-      it('Should set username and password', (done) => {
+      it('Should set username and password', async () => {
         var uname = uuid();
-        chai.request(server)
+        var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'})
-          .end((err, res) => {
-            res.body.username.should.equal(uname);
-            done();
-          });
+          .send({username: uname, password: 'Strongpassword123'});
+
+        res.body.username.should.equal(uname);
+        return;
       });
 
-      it('Should error when invalid username is given', (done) => {
-        chai.request(server)
+      it('Should error when invalid username is given', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: undefined, password: 'Strongpassword123'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-          });
+          .send({username: undefined, password: 'Strongpassword123'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should not allow client to create a new user with existing username', (done) => {
+      it('Should not allow client to create a new user with existing username', async () => {
         var uname = uuid();
-        chai.request(server)
+        await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'})
-          .end((err, res) => {
-            chai.request(server)
+          .send({username: uname, password: 'Strongpassword123'});
+        var [err, res] = await to(chai.request(server)
               .post('/users/create')
               .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'Strongpassword123'})
-              .end((err, res) => {
-                res.body.err.should.equal('username already exists');
-                done();
-              });
-          });
+              .send({username: uname, password: 'Strongpassword123'}));
+
+        err.response.body.err.should.equal('username already exists');
+        return;
       });
 
-      it('Should check password length', (done) => {
-        chai.request(server)
+      it('Should check password length', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'B1ad'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-        });
+          .send({username: uuid(), password: 'B1ad'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should check password capitals', (done) => {
-        chai.request(server)
+      it('Should check password capitals', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'b11111111'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-        });
+          .send({username: uuid(), password: 'b11111111'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should check password numbers', (done) => {
-        chai.request(server)
+      it('Should check password numbers', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'Badpwdddd'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-        });
+          .send({username: uuid(), password: 'Badpwdddd'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should check password lowercase', (done) => {
-        chai.request(server)
+      it('Should check password lowercase', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'BADPASSWORD1'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-        });
+          .send({username: uuid(), password: 'BADPASSWORD1'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should allow strong passwords', (done) => {
-        chai.request(server)
+      it('Should allow strong passwords', async () => {
+        var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid(), password: 'GoodPassword123'})
-          .end((err, res) => {
-            res.status.should.not.equal(400);
-            done();
-        });
+          .send({username: uuid(), password: 'GoodPassword123'});
+
+        res.status.should.not.equal(400);
+        return;
       });
 
-      it('Should not allow user to have shitty username', (done) => {
-        chai.request(server)
+      it('Should not allow user to have shitty username', async () => {
+        var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uuid().slice(0, 4), password: 'GoodPwd1233'})
-          .end((err, res) => {
-            res.status.should.equal(400);
-            done();
-        });
+          .send({username: uuid().slice(0, 4), password: 'GoodPwd1233'}));
+
+        err.status.should.equal(400);
+        return;
       });
 
-      it('Should allow users to have strong passwords', (done) => {
+      it('Should allow users to have strong passwords', async () => {
         var uname = uuid();
-        chai.request(server)
+        var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Goodpwd123123'})
-          .end((err, res) => {
-            res.body.username.should.equal(uname);
-            done();
-          });
+
+        res.body.username.should.equal(uname);
+        return;
       });
 
-      it('Should authenticate user on correct password', (done) => {
+      it('Should authenticate user on correct password', async () => {
         var uname = uuid();
-        chai.request(server)
+        await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Gooodpwd123123'})
-          .end((err, res) => {
-            chai.request(server)
-              .post('/users/auth')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'Gooodpwd123123'})
-              .end((err, res) => {
-                res.body.username.should.not.equal(null);
-                done();
-              });
-          });
+          .send({username: uname, password: 'Gooodpwd123123'});
+
+        var res = await chai.request(server)
+          .post('/users/auth')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uname, password: 'Gooodpwd123123'});
+
+        //should the be should.equal(uname)?
+        res.body.username.should.not.equal(null);
+        return;
       });
-      it('Should not auth user on incorrect password', (done) => {
+      it('Should not auth user on incorrect password', async () => {
         var uname = uuid();
-        chai.request(server)
+        await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Goodpwd123123'})
-          .end((err, res) => {
-            chai.request(server)
-              .post('/users/auth')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'wrong password'})
-              .end((err, res) => {
-                res.body.err.should.equal('incorrect password');
-                done();
-              });
-          });
+          .send({username: uname, password: 'Goodpwd123123'});
+        var [err, res] = await to(chai.request(server)
+          .post('/users/auth')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({username: uname, password: 'wrong password'}));
+
+        err.response.body.err.should.equal('incorrect password');
+        return;
       });
-      it('Should error if user doesnt exist', (done) => {
+      it('Should error if user doesnt exist', async () => {
         var uname = uuid();
-        chai.request(server)
+        var [err, res] = await to(chai.request(server)
               .post('/users/auth')
               .set('content-type', 'application/x-www-form-urlencoded')
-              .send({username: uname, password: 'doesnt matter'})
-              .end((err, res) => {
-                res.body.err.should.equal('user does not exist');
-                done();
-              });
+              .send({username: uname, password: 'doesnt matter'}));
+        err.response.body.err.should.equal('user does not exist');
         });
   	});
   });

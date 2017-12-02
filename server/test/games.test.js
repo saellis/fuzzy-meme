@@ -80,7 +80,6 @@ describe('Server', () => {
       var [err, res] = await to(chai.request(server)
         .get('/games')
         .set('content-type', 'application/x-www-form-urlencoded'))
-      console.log(err.response);
       err.response.body.err.should.equal('must supply a gameId or userId');
       return;
     });

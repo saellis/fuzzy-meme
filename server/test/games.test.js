@@ -36,7 +36,6 @@ describe('Server', () => {
         res.body._id.should.be.a('string');
         res.body.creator_id.should.equal(uname);
         res.body.current_player_id.should.equal(uname);
-        res.body.players.should.contain(uname);
         return;
 		  }).timeout(5000);
 

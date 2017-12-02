@@ -3,20 +3,26 @@ import query from '../database/query';
 
 var gameManipulator = {
 
-  createGame: async (creatorId) => {
+  createGame: async (creatorId, name) => {
       var id = uuid();
-      var sql = 'INSERT INTO games VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;';
-      var values = [id, creatorId, creatorId, false, {}, {}, {}, {}, {}];
+      var sql = 'INSERT INTO games VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;';
+      var values = [id, name, creatorId, creatorId, false, {}, {}, {}, {}, {}];
 
       var [err, result] = await query(sql, values);
       if(err) {
-        throw new Error(err);
+        if(err.code === '23505') {
+          return {err: 'game name is already taken'}
+        } else {
+          console.log(err);
+          throw new Error(err);
+        }
       } else {
         sql = 'INSERT INTO game_players VALUES($1, $2, $3, $4);';
         values = [id, creatorId, {}, {}];
         var res;
         [err, res] = await query(sql, values);
         if(err) {
+          console.log(err);
           throw new Error(err);
         } else {
           return result.rows[0];
@@ -29,6 +35,7 @@ var gameManipulator = {
     var values = [gameId];
     var [err, res] = await query(sql, values);
     if(err) {
+      console.log(err);
       throw new Error(err);
     }
     return res.rows[0];

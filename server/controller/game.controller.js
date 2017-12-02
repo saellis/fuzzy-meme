@@ -1,5 +1,6 @@
 import GameManipulator from '../model/game.manipulator';
 import to from 'await-to-js';
+import Haikunator from 'haikunator' ;
 
 var controller = {
 
@@ -8,9 +9,11 @@ var controller = {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-    var [err, game] = await to(GameManipulator.createGame(req.body.creatorId));
+    var haikunator = new Haikunator();
+    var name = req.body.name || haikunator.haikunate({tokenLength: 4});
+    var [err, game] = await to(GameManipulator.createGame(req.body.creatorId, name));
     if(err !== null) {
-      res.status(500).send(err);
+      res.status(400).send(err);
     } else {
       res.status(200).send(game);
     }
@@ -41,7 +44,5 @@ var controller = {
 
   }
 };
-
-//todo add await (game) => { /* clean up game (remove nonclient data) */ }
 
 module.exports = controller;

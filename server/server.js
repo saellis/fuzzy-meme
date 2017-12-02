@@ -65,11 +65,13 @@ app.route('/test')
   * @api {post} /games/create Create a game
   * @apiName CreateGame
   * @apiParam {String} [creatorId] id of the user who created the game
+	* @apiParam {String} [name] name of the game. if not supplied, server will randomly generate one and send it back.
   * @apiGroup Games/Create
   * @apiSuccessExample Success-Response:
   *     HTTP/1.1 200 OK
   *     {
   *       "_id": "245789345",
+	*       "name": "My First Game",
   *       "creator_id": "123",
   *       "current_player": "123",
   *       "current_player_acted_once": "false",

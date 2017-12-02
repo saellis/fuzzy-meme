@@ -6,10 +6,10 @@ CREATE SCHEMA public;
 -- the current games across the whole service
 CREATE TABLE IF NOT EXISTS games (
   _id text PRIMARY KEY, -- unique id of the game
+  name text UNIQUE, -- user supplied, or randomly generated name
   creator_id text NOT NULL, -- user id of whoever created the game
   current_player_id text NOT NULL, -- user id of whoever's turn it is
   current_player_acted_once boolean NOT NULL, -- whether or not the user acted the first half of their turn (useful for pulling two cards, returning pathcards, etc.)
-  players text[], --todo remove this.. dont need it
   face_up_trains text[5], -- the five face up cards available to the current user
   face_down_trains text[], -- the stack of face down cards that the user can pull from
   discarded_trains text[], -- the pile of cards that were played to build track

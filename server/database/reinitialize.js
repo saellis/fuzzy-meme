@@ -10,34 +10,38 @@
  */
 const fs = require('fs');
 const uuid = require('uuid/v4');
-const pg = require('./query');
+import query from './query';
 const colors = require('./static/colors');
 
-var schema = fs.readFileSync(__dirname + '/schema.sql', 'utf8');
-pg.query(schema, [], (err, result) => {
+(async function() {
+  var schema = fs.readFileSync(__dirname + '/schema.sql', 'utf8');
+  var [err, result] = await query(schema, []);
   if (err) console.log(err);
   else console.log('Dropped and reinserted all tables');
   var tickets = JSON.parse(fs.readFileSync(__dirname + '/static/tickets.json', 'utf8'));
-  tickets.map((card) => {
-    card.points = parseInt(card.points);
-    var sql = 'insert into tickets (cityA, cityB, points) values($1, $2, $3);';
-    var values = [card.cityA, card.cityB, card.points];
-    pg.query(sql, values, (err, res) => {
-      if(err) {
-        console.log(err);
-      }
-    });
-  });
+  tickets.map(await insertTicket);
   console.log('Inserted tickets to DB');
+
   var paths = JSON.parse(fs.readFileSync(__dirname + '/static/routes.json', 'utf8'));
-  paths.map((path) => {
-    var sql = 'insert into paths (cityA, cityB, color, length) values ($1, $2, $3, $4);';
-    var values = [path.cities[0], path.cities[1], path.color.toUpperCase(), path.length];
-    pg.query(sql, values, (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
+  paths.map(await insertPath);
   console.log('Inserted paths to DB');
-});
+})();
+
+var insertPath = async (path) => {
+  var sql = 'insert into paths (cityA, cityB, color, length) values ($1, $2, $3, $4);';
+  var values = [path.cities[0], path.cities[1], path.color.toUpperCase(), path.length];
+  var [err, res] = await query(sql, values);
+  if (err) {
+    console.log(err);
+  }
+};
+
+var insertTicket = async (card) => {
+  card.points = parseInt(card.points);
+  var sql = 'insert into tickets (cityA, cityB, points) values($1, $2, $3);';
+  var values = [card.cityA, card.cityB, card.points];
+  var [err, res] = await query(sql, values);
+  if(err) {
+    console.log(err);
+  }
+};

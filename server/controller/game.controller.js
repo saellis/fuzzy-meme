@@ -1,25 +1,25 @@
-const GameManipulator = require('../model/game.manipulator');
+import GameManipulator from '../model/game.manipulator';
+import to from 'await-to-js';
 
 var controller = {
 
-  create: (req, res) => {
+  create: async(req, res) => {
     if(!req.body.creatorId) {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-    GameManipulator.createGame(req.body.creatorId, (err, result) => {
-      if(err !== null) {
-        res.status(500).send(err);
-      } else {
-        res.status(200).send(result);
-      }
-    });
+    var [err, game] = await to(GameManipulator.createGame(req.body.creatorId));
+    if(err !== null) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(game);
+    }
   },
 
-  get: (req, res) => {
+  get: async(req, res) => {
 
     if(req.query.gameId) {
-      GameManipulator.getGame(req.query.gameId, (err, game) => {
+      var [err,game] = await to(GameManipulator.getGame(req.query.gameId));
         if (err !== null) {
           res.status(500).send(err);
         } else if (!game) {
@@ -27,15 +27,14 @@ var controller = {
         } else {
           res.status(200).send(game);
         }
-      });
     } else if(req.query.userId) {
-      GameManipulator.getGamesForUser(req.query.userId, (err, games) => {
-        if (err !== null) {
+
+        var [err, games] = await to(GameManipulator.getGamesForUser(req.query.userId));
+        if (err) {
           res.status(500).send(err);
         } else {
           res.status(200).send(games);
         }
-      });
     } else {
       res.status(400).send({err: 'must supply a gameId or userId'});
     }

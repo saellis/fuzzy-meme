@@ -5,6 +5,7 @@
   "description": "Made using [create-react-app](https://github.com/facebookincubator/create-react-app)",
   "main": "server/server.js",
   "dependencies": {
+    "await-to-js": "^2.0.1",
     "babel-core": "6.14.0",
     "bcrypt": "0.8.7",
     "body-parser": "^1.18.2",
@@ -21,6 +22,10 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
     "chai-http": "^3.0.0",
     "chai-param": "^0.1.2",
     "concurrently": "3.1.0",
@@ -31,19 +36,34 @@
     "eslint-plugin-jsx-a11y": "4.0.0",
     "eslint-plugin-react": "^6.9.0",
     "fetch-mock": "^5.13.1",
+    "nodemon": "^1.12.1",
     "really-need": "^1.9.2",
     "sinon-chai": "^2.14.0",
     "supertest": "^3.0.0"
   },
   "scripts": {
-"start": "concurrently \"npm run server\" \"npm run client\"",
- "server": "node server/server.js",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon  server/server.js --exec babel-node",
     "client": "node start-client.js",
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint .",
-    "test": "nyc mocha",
+    "test": "BABEL_ENV=test mocha --compilers js:babel-core/register",
     "doc": "apidoc -e node_modules",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          "env",
+          "stage-2"
+        ]
+      }
+    },
+    "presets": [
+      "env",
+      "stage-2"
+    ]
   },
   "nyc": {
     "require": [

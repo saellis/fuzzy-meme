@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+import to from 'await-to-js';
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -6,13 +7,11 @@ if (process.env.NODE_ENV === "production") {
   require('dotenv').load();
 }
 
-module.exports = {
-   query: function(text, values, cb) {
+export default async function(text, values, cb){
      var client = new Client();
      client.connect();
-     client.query(text, values, function(err, result) {
-          cb(err, result);
-          client.end();
-     });
-    }
+     var err, result;
+     [err, result] = await to(client.query(text, values));
+     client.end();
+     return [err,result];
 }

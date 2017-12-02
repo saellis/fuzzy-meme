@@ -10,5 +10,7 @@ Made using [create-react-app](https://github.com/facebookincubator/create-react-
 `$ npm run server`
 
 # Run documentation
-`$ npm i -g apidoc`
 `$ apidoc -e node_modules`
+
+# Reinitialize database (from root)
+`$ npx babel-node server/database/reinitialize`

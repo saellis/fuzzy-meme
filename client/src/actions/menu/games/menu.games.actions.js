@@ -18,25 +18,7 @@ export const createGameAction = (uid, name) => {
     	dispatch(loadGamesAction(uid));
 			return res;
 		}
-		// }).json();
-		// return fetch('/games/create', {
-		// 	method: 'post',
-		// 	headers: {
-		// 		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-		// 	},
-		// 	body: `creatorId=${uid}`
-		// }).then(res => res.json()).then(
-		// 		data => {
-    //       console.log(data);
-    //     	dispatch({type:_.CREATE_GAME_SUCCESS});
-    //     	dispatch(loadGamesAction(uid));
-    //
-		// 		},
-		// 		error => {
-    //       console.log(error);
-    //
-		// 		}//maybe dispatch an action that does some sort of notification on screen?
-		// 	);
+
 	};
 };
 

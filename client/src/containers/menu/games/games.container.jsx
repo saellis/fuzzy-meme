@@ -4,7 +4,8 @@ import { createGameAction, loadGamesAction } from '../../../actions/menu/games/m
 
 export const mapStateToProps = state => {
   return {
-    gamesList: state.menu.games.gameList
+    gamesList: state.menu.games.gameList,
+    createPending: state.menu.games.createPending
   }
 }
 

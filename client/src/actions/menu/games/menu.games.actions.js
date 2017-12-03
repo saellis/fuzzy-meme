@@ -1,7 +1,7 @@
 import * as _ from '../../../constants/menu/games/menu.games.actions.constants';
 import to from 'await-to-js';
 
-export const createGameAction = (uid) => {
+export const createGameAction = (uid, name) => {
 	return async (dispatch)=>{
 		dispatch({type:_.CREATE_GAME_PENDING});
 		var [err, res] = await to(fetch('/games/create', {
@@ -9,13 +9,11 @@ export const createGameAction = (uid) => {
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
-			body: `creatorId=${uid}`}));
+			body: `creatorId=${uid}${name && name.length > 0 ? `&name=${name}` : ''}`}));
 		if(err){
-			console.log(err);
 			dispatch({type:_.CREATE_GAME_ERROR});
 			throw new Error(err);
 		}else{
-			console.log(res);
     	dispatch({type:_.CREATE_GAME_SUCCESS});
     	dispatch(loadGamesAction(uid));
 			return res;

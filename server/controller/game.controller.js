@@ -9,8 +9,7 @@ var controller = {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-    var haikunator = new Haikunator();
-    var name = req.body.name || haikunator.haikunate({tokenLength: 4});
+    var name = req.body.name || new Haikunator().haikunate({tokenLength: 4});
     var [err, game] = await to(GameManipulator.createGame(req.body.creatorId, name));
     if(err !== null) {
       res.status(400).send(err);

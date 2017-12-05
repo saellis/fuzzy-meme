@@ -1,31 +1,31 @@
 import * as _ from '../../constants/login/login.actions.constants';
 
 import * as router from '../../constants/routes.constants';
+import to from 'await-to-js';
 
 
 export const loginAction = (un, pw) => {
-	return (dispatch)=>{
+	return async (dispatch)=>{
 		dispatch({type:_.LOGIN_PENDING});
-		return fetch('/users/auth', {
+		var [err, res] = await to(fetch('/users/auth', {
 			method: 'post',
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
 			body: `username=${un}&password=${pw}`
-		}).then(res => res.json()).then(
-				data => {
-					//TODO: better check here for success, maybe pass {success: true} from back end
-					if(data._id){
-						dispatch({type:_.LOGIN_SUCCESS, data: data});
-						dispatch({type:_.CLEAR_LOGIN_ERROR_TEXT});
-						dispatch({type:router.MENU});
-					}else{
-						dispatch({type:_.LOGIN_INCORRECT, data: data});
-					}
-				},
-				error => dispatch({type:_.LOGIN_ERROR})
-				//maybe dispatch an action that does some sort of notification on screen?
-			);
+		}));
+		if(err){
+			dispatch({type:_.LOGIN_ERROR})
+		}else{
+			let data = await res.json();
+			if(data._id){
+				dispatch({type:_.LOGIN_SUCCESS, data: data});
+				dispatch({type:_.CLEAR_LOGIN_ERROR_TEXT});
+				dispatch({type:router.MENU});
+			}else{
+				dispatch({type:_.LOGIN_INCORRECT, data: data});
+			}
+		}
 	};
 };
 

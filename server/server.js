@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(
 	(req, res, next) => {
@@ -83,7 +84,7 @@ app.route('/test')
   *     }
   */
 app.route('/games/create')
-  .post(game.create)
+  .post(game.create);
 
 
   /**
@@ -117,7 +118,7 @@ app.route('/users/create')
   *     }
   */
 app.route('/users/auth')
-  .post(user.authenticate)
+  .post(user.authenticate);
 
 
 

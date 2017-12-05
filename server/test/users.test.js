@@ -62,7 +62,6 @@ describe('Server', () => {
               .post('/users/create')
               .set('content-type', 'application/x-www-form-urlencoded')
               .send({username: uname, password: 'Strongpassword123'}));
-
         err.response.body.err.should.equal('username already exists');
         return;
       });
@@ -72,7 +71,7 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'B1ad'}));
-
+        err.response.body.err.should.equal('password invalid. must be a string of length >= 8');
         err.status.should.equal(400);
         return;
       });
@@ -82,7 +81,7 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'b11111111'}));
-
+        err.response.body.err.should.equal('password invalid. must have capital letters.');
         err.status.should.equal(400);
         return;
       });
@@ -92,7 +91,7 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'Badpwdddd'}));
-
+        err.response.body.err.should.equal('password invalid. must have digits.');
         err.status.should.equal(400);
         return;
       });
@@ -102,7 +101,9 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'BADPASSWORD1'}));
-
+          //have to split this up because it errors if you dont... how fun
+        var body = err.response.body;
+        body.err.should.equal('password invalid. must have lowercase letters.');
         err.status.should.equal(400);
         return;
       });
@@ -112,7 +113,6 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'GoodPassword123'});
-
         res.status.should.not.equal(400);
         return;
       });
@@ -122,7 +122,9 @@ describe('Server', () => {
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid().slice(0, 4), password: 'GoodPwd1233'}));
-
+          //have to split this up because it errors if you dont... how fun
+        var body = err.response.body;
+        body.err.should.equal('username invalid. must be a string of length > 6');
         err.status.should.equal(400);
         return;
       });
@@ -150,8 +152,7 @@ describe('Server', () => {
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Gooodpwd123123'});
 
-        //should the be should.equal(uname)?
-        res.body.username.should.not.equal(null);
+        res.body.username.should.equal(uname);
         return;
       });
       it('Should not auth user on incorrect password', async () => {
@@ -164,11 +165,10 @@ describe('Server', () => {
           .post('/users/auth')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'wrong password'}));
-
         err.response.body.err.should.equal('incorrect password');
         return;
       });
-      it('Should error if user doesnt exist', async () => {
+      it('Should error if user to be auth\'d doesnt exist', async () => {
         var uname = uuid();
         var [err, res] = await to(chai.request(server)
               .post('/users/auth')

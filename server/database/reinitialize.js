@@ -13,6 +13,8 @@ const uuid = require('uuid/v4');
 import query from './query';
 const colors = require('./static/colors');
 
+process.on('unhandledRejection', error => {});
+
 (async function() {
   var schema = fs.readFileSync(__dirname + '/schema.sql', 'utf8');
   var [err, result] = await query(schema, []);

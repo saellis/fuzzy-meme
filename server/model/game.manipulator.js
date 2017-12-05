@@ -1,5 +1,6 @@
 const uuid = require('uuid/v4');
 import query from '../database/query';
+import to from 'await-to-js';
 
 var gameManipulator = {
 
@@ -11,7 +12,7 @@ var gameManipulator = {
       var [err, result] = await query(sql, values);
       if(err) {
         if(err.code === '23505') {
-          return {err: 'game name is already taken'}
+          throw new Error('game name is already taken');
         } else {
           console.log(err);
           throw new Error(err);
@@ -19,18 +20,17 @@ var gameManipulator = {
       } else {
         sql = 'INSERT INTO game_players VALUES($1, $2, $3, $4);';
         values = [id, creatorId, {}, {}];
-        var res;
-        [err, res] = await query(sql, values);
+        var [err, res] = await query(sql, values);
         if(err) {
           console.log(err);
-          throw new Error(err);
+          throw new Error(err.message);
         } else {
           return result.rows[0];
         }
       }
   },
 
-  getGame: async (gameId, callback) => {
+  getGame: async (gameId) => {
     var sql = 'SELECT * FROM games WHERE _id = $1;';
     var values = [gameId];
     var [err, res] = await query(sql, values);
@@ -57,7 +57,6 @@ var gameManipulator = {
           throw new Error(err);
         } else if (res.rows.length === 0) {
           return [];
-          //callback(err, []);
         } else {
           var ids = '{';
           res.rows.forEach((gameObj) => {

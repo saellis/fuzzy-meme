@@ -1,42 +1,46 @@
-const { Client } = require('pg')
 const uuid = require('uuid/v4');
+import query from '../database/query';
+import to from 'await-to-js';
 
 var userManipulator = {
-  addUser: (user, callback) => {
-      const client = new Client();
-      client.connect();
+  addUser: async (user, callback) => {
       var id = uuid();
       var sql = 'INSERT INTO users VALUES($1, $2, $3) RETURNING *;';
       var values = [id, user.username, user.hash];
-      client.query(sql, values, (err, res) => {
-        if(err) {
-          if(err.code === '23505') {
-            callback('username already exists');
-          } else {
-            callback(err);
-          }
+      var [err, res] = await query(sql, values);
+      if(err) {
+        if(err.code === '23505') {
+          throw new Error('username already exists');
         } else {
-          callback(err, res.rows[0]);
+          console.log(err.message);
+          throw new Error(err.message);
         }
-        client.end();
-      });
+      } else {
+        return res.rows[0];
+      }
   },
 
-  getByUsername: (username, callback) => {
-    const client = new Client();
-    client.connect();
+  getByUserId: async (userId) => {
+    var sql = 'SELECT * FROM users WHERE _id = $1;';
+    var [err, res] = await query(sql, [userId]);
+    if(err !== null) {
+      console.log(err);
+      throw new Error(err);
+    } else {
+      return res.rows;
+    }
+  },
+
+  getByUsername: async (userName) => {
     var sql = 'SELECT * FROM users WHERE username = $1;';
-    var values = [username];
-    client.query(sql, values, (err, res) => {
-      if(err !== null) {
-        console.log(err);
-        callback(err);
-      } else {
-        callback(err, res.rows[0]);
-      }
-      client.end();
-    });
-  }
+    var [err, res] = await query(sql, [userName]);
+    if(err !== null) {
+      console.log(err);
+      throw new Error(err);
+    } else {
+      return res.rows[0];
+    }
+  },
 }
 
 module.exports = userManipulator;

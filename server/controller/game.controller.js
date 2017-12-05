@@ -10,17 +10,12 @@ var controller = {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-<<<<<<< HEAD
     var userExists = await UserController.doesUserExist(req.body.creatorId);
     if (!userExists) {
       res.status(400).send({err: 'user does not exist'});
       return;
     }
-    var haikunator = new Haikunator();
-    var name = req.body.name || haikunator.haikunate({tokenLength: 4});
-=======
     var name = req.body.name || new Haikunator().haikunate({tokenLength: 4});
->>>>>>> 28434f713a87f6461e77f2352a1982f719e59464
     var [err, game] = await to(GameManipulator.createGame(req.body.creatorId, name));
     if(err) {
       res.status(400).send({err: err.message});

@@ -10,17 +10,16 @@ var controller = {
       res.status(400).send({err: 'creator parameter cannot be blank'})
       return;
     }
-    var userExists = await UserController.doesUserExist(req.body.creatorId);
-    if (!userExists) {
-      res.status(400).send({err: 'user does not exist'});
-      return;
-    }
     var name = req.body.name || new Haikunator().haikunate({tokenLength: 4});
     var [err, game] = await to(GameManipulator.createGame(req.body.creatorId, name));
-    if(err) {
-      res.status(400).send({err: err.message});
-    } else {
+    if(game) {
       res.status(200).send(game);
+    } else if(err.code === '23503') { // foreign key constraint
+      res.status(400).send({err: 'user does not exist'});
+    } else if(err.code === '23505') {
+      res.status(400).send({err: 'game already exists'});
+    } else {
+        res.status(400).send({err: err.message});
     }
   },
 

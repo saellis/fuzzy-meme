@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- The assignments of users to games, and the players' specific individual game information
 CREATE TABLE IF NOT EXISTS game_players (
-  game_id text NOT NULL, -- the game id
-  user_id text NOT NULL, -- the user id
+  game_id text references games(_id) NOT NULL, -- the game id
+  user_id text references users(_id) NOT NULL, -- the user id
   train_hand text[], -- the current train cards the player holds
   route_hand text[], -- the current route card IDs the player holds
   PRIMARY KEY(game_id, user_id)

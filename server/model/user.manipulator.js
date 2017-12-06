@@ -9,12 +9,7 @@ var userManipulator = {
       var values = [id, user.username, user.hash];
       var [err, res] = await query(sql, values);
       if(err) {
-        if(err.code === '23505') {
-          throw new Error('username already exists');
-        } else {
-          console.log(err.message);
-          throw new Error(err.message);
-        }
+        throw err;
       } else {
         return res.rows[0];
       }
@@ -24,8 +19,7 @@ var userManipulator = {
     var sql = 'SELECT * FROM users WHERE _id = $1;';
     var [err, res] = await query(sql, [userId]);
     if(err !== null) {
-      console.log(err);
-      throw new Error(err);
+      throw err;
     } else {
       return res.rows;
     }
@@ -35,8 +29,7 @@ var userManipulator = {
     var sql = 'SELECT * FROM users WHERE username = $1;';
     var [err, res] = await query(sql, [userName]);
     if(err !== null) {
-      console.log(err);
-      throw new Error(err);
+      throw err;
     } else {
       return res.rows[0];
     }

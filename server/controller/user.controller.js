@@ -19,9 +19,11 @@ var controller = {
       await bcrypt.hash(req.body.password, 8).then(async (hash) => {
         var [err, user] = await to(UserManipulator.addUser({username: req.body.username, hash: hash}));
         if (err) {
-          //error occured while adding user
-          console.log(err.message);
-          res.status(400).send({err: err.message});
+          if(err.code === '23505') {
+            res.status(400).send({err: 'username already exists'});
+          } else {
+            res.status(400).send({err: err.message});
+          }
         } else {
           delete user.password_hash;
           res.status(200).send(user);

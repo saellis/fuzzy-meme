@@ -1,5 +1,5 @@
 const uuid = require('uuid/v4');
-import query from '../database/query';
+import {query} from '../database/query';
 import to from 'await-to-js';
 
 var gameManipulator = {

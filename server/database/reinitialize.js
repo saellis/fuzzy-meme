@@ -10,7 +10,7 @@
  */
 const fs = require('fs');
 const uuid = require('uuid/v4');
-import query from './query';
+import {query} from './query';
 const colors = require('./static/colors');
 
 process.on('unhandledRejection', error => {});

@@ -7,11 +7,31 @@ if (process.env.NODE_ENV === "production") {
   require('dotenv').load();
 }
 
-export default async function(text, values, cb){
-     var client = new Client();
-     client.connect();
-     var err, result;
-     [err, result] = await to(client.query(text, values));
-     client.end();
-     return [err,result];
-}
+var query = async function(text, values) {
+  var client = new Client();
+  client.connect();
+  var err, result;
+  [err, result] = await to(client.query(text, values));
+  client.end();
+  return [err,result];
+};
+
+var transact = async function(queries) {
+  var client = new Client();
+  client.connect();
+  try {
+    await to(client.query('BEGIN'));
+    queries.forEach(async query => {
+      await client.query(query.sql, query.values);
+    });
+    client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
+
+export {query, transact};

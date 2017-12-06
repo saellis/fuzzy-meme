@@ -36,7 +36,7 @@ export class CreateUser extends React.Component{
 				errorCallback(errored)
 			}else{
 				if(submit){
-					var [err, res] = await to(this.props.createUser(un, pw));
+					var [err, res] = await to(successCallback(un, pw));
 					if(!err){
 							this.resetForm();
 					}

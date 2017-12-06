@@ -18,18 +18,21 @@ var query = async function(text, values) {
 
 var transact = async function(queries) {
   var client = new Client();
-  client.connect();
+  await client.connect();
   try {
-    await to(client.query('BEGIN'));
-    queries.forEach(async query => {
-      await client.query(query.sql, query.values);
-    });
-    client.query('COMMIT');
+    await client.query('BEGIN');
+    for(var i = 0; i < queries.length; i ++) {
+      var [err, res] = await to(client.query(queries[i].sql, queries[i].values))
+      if (err) {
+        throw err;
+      }
+    }
+    await client.query('COMMIT');
   } catch (e) {
-    await client.query('ROLLBACK');
+    await client.query('ROLLBACK')
     throw e;
   } finally {
-    client.release();
+    await client.end();
   }
 };
 

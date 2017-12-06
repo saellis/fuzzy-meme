@@ -1,26 +1,31 @@
 const uuid = require('uuid/v4');
-import {query} from '../database/query';
+import {query, transact} from '../database/query';
 import to from 'await-to-js';
 
 var gameManipulator = {
 
   createGame: async (creatorId, name) => {
-      var id = uuid();
-      var sql = 'INSERT INTO games VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;';
-      var values = [id, name, creatorId, creatorId, false, {}, {}, {}, {}, {}];
-      var [err, result] = await query(sql, values);
+    var queries = [];
+    var id = uuid();
+    var sql = 'INSERT INTO games VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;';
+    var values = [id, name, creatorId, creatorId, false, {}, {}, {}, {}, {}];
+    queries.push({sql: sql, values: values});
+    sql = 'INSERT INTO game_players VALUES($1, $2, $3, $4);';
+    values = [id, creatorId, {}, {}];
+    queries.push({sql: sql, values: values});
+    var [err, res] = await to(transact(queries));
+    if (err) {
+      throw err;
+    } else {
+      var sql = 'SELECT * FROM games WHERE _id = $1;';
+      var values = [id];
+      var [err, res] = await query(sql, values);
       if(err) {
         throw err;
       } else {
-        sql = 'INSERT INTO game_players VALUES($1, $2, $3, $4);';
-        values = [id, creatorId, {}, {}];
-        var [err, res] = await query(sql, values);
-        if(err) {
-          throw err;
-        } else {
-          return result.rows[0];
-        }
+        return res.rows[0];
       }
+    }
   },
 
   getGame: async (gameId) => {

@@ -6,48 +6,37 @@ import { mount, shallow } from 'enzyme';
 import { loginAction }  from '../../../actions/login/login.actions';
 import { Button } from 'react-bootstrap';
 
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
 
-describe('<Login>', () => {
-	var wrapper, props;
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe.only('<Login>', () => {
+	let wrapper, props;
 	beforeEach(() => {
-		props = {
-			login: sinon.spy()
-		};
-		wrapper = shallow(<Login {...props}/>);
+		wrapper = renderer.create(<Provider store={mockStore({})}><Login {...props}/></Provider>);
 	});
 
-	it('should have two inputs', () => {
-		wrapper.find(LoginFieldContainer).should.have.length(2);
+	test('~~snapshot', () => {
+		expect(wrapper.toJSON()).toMatchSnapshot();
 	});
-
-	it('first input should be for username', () => {
-		const field = wrapper.find(LoginFieldContainer).at(0);
-		field.props().id.should.match(/username$/i);
-		field.props().type.should.match(/username$/i);
-		field.props().placeholder.should.match(/username$/i);
-		field.props().textChange.should.be.a('function');
-	});
-
-	it('second input should be for password', () => {
-		const field = wrapper.find(LoginFieldContainer).at(1);
-		field.props().id.should.match(/password$/i);
-		field.props().type.should.match(/password$/i);
-		field.props().placeholder.should.match(/password$/i);
-		field.props().textChange.should.be.a('function');
-	});
-
-	it('should have a button', () => {
-		const field = wrapper.find(Button);
-		expect(field).to.have.length(1);
-		field.at(0).simulate('click');
-		props.login.should.have.been.called;
-	});
-
-	it('should save on keypress', () => {
-		wrapper.find(LoginFieldContainer).forEach((field) => {
-			field.props().textChange(field.props().id, 'test');
-			wrapper.state().fields[field.props().id].should.equal('test');
+	describe('functionality', () => {
+		beforeEach(() => {
+			props = {
+				login: jest.fn()
+			};
+			wrapper = shallow(<Login {...props}/>);
 		});
-	});
+
+		test('should save on keypress', () => {
+			wrapper.find(LoginFieldContainer).forEach((field) => {
+				field.props().textChange(field.props().id, 'test');
+				expect(wrapper.state().fields[field.props().id]).toBe('test');
+			});
+		});
+	})
 
 });

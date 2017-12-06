@@ -16,92 +16,104 @@ describe('users login actions', () => {
 		fetchMock.restore();
 	});
 
-	it('creates LOGIN_PENDING, LOGIN_SUCCESS, and CLEAR_LOGIN_ERROR_TEXT, MENU when logging user in has been done', () => {
+	test(
+        'creates LOGIN_PENDING, LOGIN_SUCCESS, and CLEAR_LOGIN_ERROR_TEXT, MENU when logging user in has been done',
+        () => {
 
-		const response = {_id:'asdfasd'};
-		const un = 'jebediah';
-		const pw = 'jones';
+            const response = {
+              data:'asd',
+               _id:'dfdf'
+             };
+            const un = 'jebediah';
+            const pw = 'jones';
 
-		fetchMock
-      .postOnce('/users/auth', response, {
-	headers: {
-		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	},
-	body: `username=${un}&password=${pw}` });
+            fetchMock
+          .postOnce('/users/auth', response, {
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: `username=${un}&password=${pw}` });
 
-		const expectedActions = [
-      { type: _.LOGIN_PENDING,},
-      { type: _.LOGIN_SUCCESS, data: response},
-      { type: _.CLEAR_LOGIN_ERROR_TEXT},
-      { type: router.MENU},
+            const expectedActions = [
+          { type: _.LOGIN_PENDING,},
+          { type: _.LOGIN_SUCCESS, data: response},
+          { type: _.CLEAR_LOGIN_ERROR_TEXT},
+          { type: router.MENU},
 
-		];
-		const store = mockStore({});
+            ];
+            const store = mockStore({});
 
-		return store.dispatch(actions.loginAction(un, pw)).then(() => {
-      // return of async actions
-			expect(store.getActions()).to.deep.equal(expectedActions);
-		});
-	});
+            return store.dispatch(actions.loginAction(un, pw)).then(() => {
+          // return of async actions
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+        }
+    );
 
-	it('creates LOGIN_PENDING and LOGIN_INCORRECT when logging user in has had incorrect credentials', () => {
+	test(
+        'creates LOGIN_PENDING and LOGIN_INCORRECT when logging user in has had incorrect credentials',
+        () => {
 
-		const response = {err:'login didnt work'};
-		const un = 'jebediah';
-		const pw = 'jones';
+            const response = {err:'login didnt work'};
+            const un = 'jebediah';
+            const pw = 'jones';
 
-		fetchMock
-      .postOnce('/users/auth', response, {
-	headers: {
-		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	},
-	body: `username=${un}&password=${pw}` });
+            fetchMock
+          .postOnce('/users/auth', response, {
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: `username=${un}&password=${pw}` });
 
-		const expectedActions = [
-      { type: _.LOGIN_PENDING,},
-      { type: _.LOGIN_INCORRECT, data: response},
+            const expectedActions = [
+          { type: _.LOGIN_PENDING,},
+          { type: _.LOGIN_INCORRECT, data: response},
 
-		];
-		const store = mockStore({});
+            ];
+            const store = mockStore({});
 
-		return store.dispatch(actions.loginAction(un, pw)).then(() => {
-      // return of async actions
-			expect(store.getActions()).to.deep.equal(expectedActions);
-		});
-	});
+            return store.dispatch(actions.loginAction(un, pw)).then(() => {
+          // return of async actions
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+        }
+    );
 
-	it('creates LOGIN_PENDING and LOGIN_ERROR when error occurs to log in user', () => {
-    //will fail without passed response parameter
-		const un = 'jebediah';
-		const pw = 'jones';
+	test(
+        'creates LOGIN_PENDING and LOGIN_ERROR when error occurs to log in user',
+        () => {
+        //will fail without passed response parameter
+            const un = 'jebediah';
+            const pw = 'jones';
 
-		fetchMock
-      .postOnce('/users/auth', {
-	headers: {
-		'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	},
-	body: `username=${un}&password=${pw}` });
+            fetchMock
+          .postOnce('/users/auth', {throws: 'error'},{
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: `username=${un}&password=${pw}` });
 
-		const expectedActions = [
-      { type: _.LOGIN_PENDING},
-      { type: _.LOGIN_ERROR},
+            const expectedActions = [
+          { type: _.LOGIN_PENDING},
+          { type: _.LOGIN_ERROR},
 
-		];
-		const store = mockStore({});
+            ];
+            const store = mockStore({});
 
-		return store.dispatch(actions.loginAction(un, pw)).then(() => {
-      // return of async actions
-			expect(store.getActions()).to.deep.equal(expectedActions);
-		});
-	});
+            return store.dispatch(actions.loginAction(un, pw)).then(() => {
+          // return of async actions
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+        }
+    );
 
-	it('CLEAR_LOGIN', () => {
+	test('CLEAR_LOGIN', () => {
 		const expectedActions = [
 			{type: _.CLEAR_LOGIN}
 		];
 		const store = mockStore({});
 		store.dispatch(actions.clearLogin());
-		return expect(store.getActions()).to.deep.equal(expectedActions);
+		return expect(store.getActions()).toEqual(expectedActions);
 	});
 
 });

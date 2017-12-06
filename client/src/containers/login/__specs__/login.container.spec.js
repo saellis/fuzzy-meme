@@ -29,28 +29,28 @@ describe('<LoginContainer>', () => {
 		wrapper = shallow(<LoginContainer store={store}/>);
 	});
 
-	it('should have passed error text down', () => {
+	test('should have passed error text down', () => {
 		const field = wrapper.find(Login);
-		field.should.have.length(1);
-		field.at(0).props().errorText.should.equal('test');
+		expect(field).toHaveLength(1);
+		expect(field.at(0).props().errorText).toBe('test');
 	});
 
-	it('should have login function set', () => {
+	test('should have login function set', () => {
 		const field = wrapper.find(Login);
-		field.should.have.length(1);
-		field.at(0).props().login.should.be.a('function');
+		expect(field).toHaveLength(1);
+		expect(typeof field.at(0).props().login).toBe('function');
 	});
 
-	it('mapStateToProps should set syntaxErrorText', () => {
-		mapStateToProps(state).should.deep.equal({errorText: state.users.login.form.errorText,
+	test('mapStateToProps should set syntaxErrorText', () => {
+		expect(mapStateToProps(state)).toEqual({errorText: state.users.login.form.errorText,
 			pending: state.users.login.form.pending});
 	});
 
-	it('mapDispatchToProps should set three functions', () => {
-		const dispatch = sinon.spy();
+	test('mapDispatchToProps should set three functions', () => {
+		const dispatch = jest.fn();
 		const funcs = mapDispatchToProps(dispatch);
 		funcs['login']('un','pw');
-		dispatch.should.have.callCount(1);
+		expect(dispatch.mock.calls.length).toBe(1);
 	});
 
 

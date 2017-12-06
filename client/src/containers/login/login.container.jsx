@@ -16,7 +16,7 @@ export const mapDispatchToProps = dispatch =>{
   }
 }
 
-const LoginContainer = connect(
+export const LoginContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Login);

@@ -24,7 +24,7 @@ export const mapDispatchToProps = dispatch =>{
   }
 }
 
-const CreateUserContainer = connect(
+export const CreateUserContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateUser)

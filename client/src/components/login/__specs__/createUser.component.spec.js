@@ -6,138 +6,127 @@ import { mount, shallow } from 'enzyme';
 import { createUserAction }  from '../../../actions/login/createUser.actions';
 import { Button } from 'react-bootstrap';
 
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
 
-describe('<CreateUser>', () => {
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe.only('<CreateUser>', () => {
 	var wrapper;
 	var props;
+
 	beforeEach(() => {
 		props = {
-			createUser: sinon.spy(),
-			setErrorText: sinon.spy(),
-	    clearErrorText: sinon.spy(),
+			createUser: jest.fn(),
+			setErrorText: jest.fn(),
+			clearErrorText: jest.fn(),
 			errors: ['error'],
-	    fields: {}
+			fields: {}
 		};
-		wrapper = shallow(<CreateUser {...props} />);
-	});
-	it('should have three inputs', () => {
-		wrapper.find(LoginFieldContainer).should.have.length(3);
+		wrapper = renderer.create(<Provider store={mockStore({})}><CreateUser {...props}/></Provider>);
 	});
 
-	it('first input should be for username', () => {
-		const field = wrapper.find(LoginFieldContainer).at(0);
-		field.props().id.should.match(/username$/i);
-		field.props().type.should.match(/username$/i);
-		field.props().placeholder.should.match(/username$/i);
-		field.props().textChange.should.be.a('function');
+	test('~~snapshot', () => {
+		expect(wrapper.toJSON()).toMatchSnapshot();
 	});
-
-	it('second and third input should be for password', () => {
-		for(var i = 1; i < 2; i++){
-			const field = wrapper.find(LoginFieldContainer).at(1);
-			field.props().id.should.match(/password$/i);
-			field.props().type.should.match(/password$/i);
-			field.props().placeholder.should.match(/password$/i);
-			field.props().textChange.should.be.a('function');
-		}
-	});
-
-	it('should have a button', () => {
-		const field = wrapper.find(Button);
-		field.should.have.length(1);
-		field.at(0).simulate('click');
-		props.setErrorText.should.have.been.called;
-	});
-
-
-	it('should save on keypress', () => {
-		wrapper.find(LoginFieldContainer).forEach((field) => {
-			field.props().textChange(field.props().id, 'test');
-			wrapper.state().fields[field.props().id].should.equal('test');
-		});
-	});
-
-	describe('form validation', () => {
-		var field;
+	describe('functionality', () => {
 		beforeEach(() => {
-			wrapper.setState((prevState) => {
-				let newState = prevState;
-				newState.fields['createUsername'] = 'abcabcabc';
-				newState.fields['createPassword'] = 'Aa111111';
-				newState.fields['createConfirmPassword'] = 'Aa111111';
-				return newState;
+			wrapper = shallow(<CreateUser {...props}/>);
+		});
+
+		test('should save on keypress', () => {
+			wrapper.find(LoginFieldContainer).forEach((field) => {
+				field.props().textChange(field.props().id, 'test');
+				expect(wrapper.state().fields[field.props().id]).toBe('test');
 			});
-			field = wrapper.find(Button);
 		});
 
-		it('correct data', () => {
-			field.at(0).simulate('click');
-			props.createUser.should.have.been.called;
-		});
-
-		it('invalid username', () => {
-			wrapper.setState((prevState) => {
-				let newState = prevState;
-				newState.fields['createUsername'] = 'A1';
-				return newState;
+		describe('form validation', () => {
+			var field;
+			beforeEach(() => {
+				wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createUsername'] = 'abcabcabc';
+					newState.fields['createPassword'] = 'Aa111111';
+					newState.fields['createConfirmPassword'] = 'Aa111111';
+					return newState;
+				});
+				field = wrapper.find(Button);
 			});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
-		});
 
-		it('non-matching passwords', () => {
-			wrapper.setState((prevState) => {
-				let newState = prevState;
-				newState.fields['createPassword'] = 'AA111111';
-				newState.fields['createConfirmPassword'] = 'AA112111';
-				return newState;
+			test('correct data', () => {
+				field.at(0).simulate('click');
+				expect(props.createUser.mock.calls.length).toBeGreaterThan(0);
 			});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
-		});
 
-		it('no lower case', () => {
-			wrapper.setState((prevState) => {
+			test('invalid username', () => {
+				wrapper.setState((prevState) => {
+					let newState = prevState;
+					newState.fields['createUsername'] = 'A1';
+					return newState;
+				});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
+
+			test('non-matching passwords', () => {
+				wrapper.setState((prevState) => {
 					let newState = prevState;
 					newState.fields['createPassword'] = 'AA111111';
-					newState.fields['createConfirmPassword'] = 'AA111111';
+					newState.fields['createConfirmPassword'] = 'AA112111';
 					return newState;
 				});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
-		});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
 
-		it('password too short', () => {
-			wrapper.setState((prevState) => {
-					let newState = prevState;
-					newState.fields['createPassword'] = 'AA1111';
-					newState.fields['createConfirmPassword'] = 'AA1111';
-					return newState;
-				});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
-		});
+			test('no lower case', () => {
+				wrapper.setState((prevState) => {
+						let newState = prevState;
+						newState.fields['createPassword'] = 'AA111111';
+						newState.fields['createConfirmPassword'] = 'AA111111';
+						return newState;
+					});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
 
-		it('no uppercase', () => {
-			wrapper.setState((prevState) => {
-					let newState = prevState;
-					newState.fields['createPassword'] = 'aa111111';
-					newState.fields['createConfirmPassword'] = 'aa111111';
-					return newState;
-				});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
-		});
+			test('password too short', () => {
+				wrapper.setState((prevState) => {
+						let newState = prevState;
+						newState.fields['createPassword'] = 'AA1111';
+						newState.fields['createConfirmPassword'] = 'AA1111';
+						return newState;
+					});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
 
-		it('no digit', () => {
-			wrapper.setState((prevState) => {
-					let newState = prevState;
-					newState.fields['createPassword'] = 'aAaAaAaA';
-					newState.fields['createConfirmPassword'] = 'aAaAaAaA';
-					return newState;
-				});
-			field.at(0).simulate('click');
-			props.setErrorText.should.have.been.called;
+			test('no uppercase', () => {
+				wrapper.setState((prevState) => {
+						let newState = prevState;
+						newState.fields['createPassword'] = 'aa111111';
+						newState.fields['createConfirmPassword'] = 'aa111111';
+						return newState;
+					});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
+
+			test('no digit', () => {
+				wrapper.setState((prevState) => {
+						let newState = prevState;
+						newState.fields['createPassword'] = 'aAaAaAaA';
+						newState.fields['createConfirmPassword'] = 'aAaAaAaA';
+						return newState;
+					});
+				field.at(0).simulate('click');
+				expect(props.setErrorText.mock.calls.length).toBeGreaterThan(0);
+			});
 		});
-	});
+	})
+
 });

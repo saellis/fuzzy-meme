@@ -26,10 +26,6 @@ const users = (state = initialState, action) => {
 		return {...state, syntaxErrors: []};
 	case _.CLEAR_CREATE_USER:
 		return initialState;//{...state, syntaxErrors: [], createUserErrorMsg: '', errorText: '', pending: false};
-	case _.RESET_CREATE_FORM:
-		return {...state, shouldResetForm: true};
-	case _.RESET_CREATE_FORM_COMPLETE:
-		return {...state, shouldResetForm: false};
 
 	default:
 		return state;

@@ -13,17 +13,17 @@ describe('<UserPortal>', () => {
 		wrapper = shallow(<UserPortal />);
 	});
 
-	it('should have two tabs', () => {
-		wrapper.find(Tab).should.have.length(2);
-		wrapper.find(TabPanel).should.have.length(2);
+	test('should have two tabs', () => {
+		expect(wrapper.find(Tab)).toHaveLength(2);
+		expect(wrapper.find(TabPanel)).toHaveLength(2);
 	});
 
-	it('should have a login section', () => {
-		wrapper.find(LoginContainer).should.have.length(1);
+	test('should have a login section', () => {
+		expect(wrapper.find(LoginContainer)).toHaveLength(1);
 	});
 
-	it('should have a create user section', () => {
-		wrapper.find(CreateUserContainer).should.have.length(1);
+	test('should have a create user section', () => {
+		expect(wrapper.find(CreateUserContainer)).toHaveLength(1);
 	});
 
 

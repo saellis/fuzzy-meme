@@ -28,38 +28,40 @@ describe('<CreateUserContainer>', () => {
 		wrapper = shallow(<CreateUserContainer store={store}/>);
 	});
 
-	it('should have passed errors down', () => {
+	test('should have passed errors down', () => {
 		const field = wrapper.find(CreateUser);
-		field.should.have.length(1);
-		field.at(0).props().errors.should.deep.equal(state.users.create.syntaxErrors);
+		expect(field).toHaveLength(1);
+		expect(field.at(0).props().errors).toEqual(state.users.create.syntaxErrors);
 	});
 
-	it('should have setErrorText, clearErrorText, createUser functions set', () => {
-		const field = wrapper.find(CreateUser);
-		field.should.have.length(1);
-		field.at(0).props().setErrorText.should.be.a('function');
-		field.at(0).props().clearErrorText.should.be.a('function');
-		field.at(0).props().createUser.should.be.a('function');
-		field.at(0).props().resetFormComplete.should.be.a('function');
+	test(
+        'should have setErrorText, clearErrorText, createUser functions set',
+        () => {
+            const field = wrapper.find(CreateUser);
+            expect(field).toHaveLength(1);
+            expect(typeof field.at(0).props().setErrorText).toBe('function');
+            expect(typeof field.at(0).props().clearErrorText).toBe('function');
+            expect(typeof field.at(0).props().createUser).toBe('function');
+            expect(typeof field.at(0).props().resetFormComplete).toBe('function');
+        }
+    );
+
+	test('mapStateToProps should set errorText', () => {
+		expect(mapStateToProps(state)).toEqual({
+        errors: state.users.create.syntaxErrors,
+        creationErrorText: state.users.create.errorText,
+        creationSuccessText: state.users.create.creationSuccessText,
+        shouldResetForm: state.users.create.shouldResetForm,
+        pending: state.users.create.pending});
 	});
 
-	it('mapStateToProps should set errorText', () => {
-		mapStateToProps(state).should.deep.equal(
-			{
-		  	errors: state.users.create.syntaxErrors,
-		    creationErrorText: state.users.create.errorText,
-		    creationSuccessText: state.users.create.creationSuccessText,
-		    shouldResetForm: state.users.create.shouldResetForm,
-		    pending: state.users.create.pending});
-	});
-
-	it('mapDispatchToProps should set three functions', () => {
-		const dispatch = sinon.spy();
+	test('mapDispatchToProps should set three functions', () => {
+		const dispatch = jest.fn()
 		const funcs = mapDispatchToProps(dispatch);
 		funcs['setErrorText']('test');
 		funcs['clearErrorText']();
 		funcs['createUser']('un','pw');
-		dispatch.should.have.callCount(3);
+		expect(dispatch.mock.calls.length).toBe(3);
 	});
 
 

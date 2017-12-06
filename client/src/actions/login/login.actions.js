@@ -26,6 +26,7 @@ export const loginAction = (un, pw) => {
 				dispatch({type:_.LOGIN_INCORRECT, data: data});
 			}
 		}
+		return;
 	};
 };
 

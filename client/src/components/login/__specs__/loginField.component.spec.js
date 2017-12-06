@@ -7,69 +7,74 @@ import { mount, shallow } from 'enzyme';
 
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
 
 describe('<LoginField>', () => {
 	var spy;
 
 	beforeEach(() => {
-		spy = sinon.spy();
+		spy = jest.fn();
 	});
 
-	it('should have password style input', () => {
+	test('should have password style input', () => {
 		const wrapper = shallow(<LoginField type='password' placeholder='testing'
 			textChange={spy} regex={regex.username.regex}/>);
-		wrapper.find(FormControl).html().indexOf('type="password"').should.not.equal(-1);
+		expect(wrapper.find(FormControl).html().indexOf('type="password"')).not.toBe(-1);
 	});
 
-	it('should have normal style input', () => {
+	test('should have normal style input', () => {
 		const wrapper = shallow(<LoginField type='asdadas' placeholder='testing'
 			textChange={spy} regex={regex.username.regex} />);
-		wrapper.find(FormControl).html().indexOf('type="text"').should.not.equal(-1);
+		expect(wrapper.find(FormControl).html().indexOf('type="text"')).not.toBe(-1);
 	});
 
-	it('should have change function', () => {
+	test('should have change function', () => {
 		const wrapper = shallow(<LoginField type='asdasfasd' placeholder='testing'
 			textChange={spy} regex={regex.username.regex} />);
 		wrapper.find(FormControl).simulate('change', {target:{value:'a'}});
-		spy.should.have.been.called;
+		expect(spy.mock.calls.length).toBeGreaterThan(0);
 	});
 
-	it('should have accept label', () => {
+	test('should have accept label', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={regex.username.regex} label='asddsa'/>);
-		wrapper.find(ControlLabel).html().indexOf('asddsa').should.not.equal(-1);
+		expect(wrapper.find(ControlLabel).html().indexOf('asddsa')).not.toBe(-1);
 	});
 
-	it('should have accept no regex', () => {
+	test('should have accept no regex', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'a'}});
 
-		(wrapper.instance().getValidationState()+"").should.equal('null');
-    //
-		// console.log(wrapper.state);
-		// (wrapper.state('status')+"").should.equal('null');
+		expect(wrapper.instance().getValidationState()+"").toBe('null');
 	});
 
-	it('should have success when matching regex', () => {
+	test('should have success when matching regex', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={/.*/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'a'}});
-		(wrapper.instance().getValidationState()+"").should.equal('success');
+		expect(wrapper.instance().getValidationState()+"").toBe('success');
 	});
 
-	it('should have error when mismatching regex', () => {
+	test('should have error when mismatching regex', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={/\d+/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:'aaaaaa'}});
 		wrapper.find(FormControl).simulate('change', {target:{value:'aaaaaab'}});
-		(wrapper.instance().getValidationState()+"").should.equal('error');
+		expect(wrapper.instance().getValidationState()+"").toBe('error');
 	});
 
-	it('should have null when empty', () => {
+	test('should have null when empty', () => {
 		const wrapper = shallow(<LoginField type='asdasd' placeholder='testing'
 			textChange={spy} regex={/.{2,}/} label='asddsa'/>);
 		wrapper.find(FormControl).simulate('change', {target:{value:''}});
-		(wrapper.instance().getValidationState()+"").should.equal('null');
+		expect(wrapper.instance().getValidationState()+"").toBe('null');
 	});
 });

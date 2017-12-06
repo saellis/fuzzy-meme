@@ -7,24 +7,28 @@ export const createUserAction = (un, pw) => {
 		dispatch({type:_.CREATE_USER_PENDING});
 		dispatch({type:_.CLEAR_CREATE_USER_ERROR});
 		dispatch({type:_.CLEAR_CREATE_USER_SUCCESS});
-		let [err, res] = await to(fetch('/users/create', {
-			method: 'post',
-			headers: {
-				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			},
-			body: `username=${un}&password=${pw}`
-		}))
-		if(err){
-			dispatch({type:_.CREATE_USER_ERROR})
-		}else{
+		try{
+			let res = await fetch('/users/create', {
+				method: 'post',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				body: `username=${un}&password=${pw}`
+			});
+
 			let data = await res.json();
 			if(data.err){
 				dispatch({type:_.CREATE_USER_ERROR, error: data.err});
+				throw new Error(data.err);
 			}else{
 				dispatch({type:_.CREATE_USER_SUCCESS, data: data});
-				dispatch({type:_.RESET_CREATE_FORM});
 				dispatch({type:_.CLEAR_CREATE_USER_SYNTAX_ERROR});
+				return data;
 			}
+		}catch(err){
+				console.log('sdf')
+				dispatch({type:_.CREATE_USER_ERROR})
+				throw new Error(err);
 		}
 	};
 };
@@ -43,16 +47,4 @@ export const clearCreateUserSyntaxError = () => {
 
 export const clearCreateUser = () => {
 	return dispatch => dispatch({type:_.CLEAR_CREATE_USER})
-}
-
-export const resetCreateForm = () => {
-	return (dispatch) => {
-		dispatch({type:_.RESET_CREATE_FORM})
-	}
-}
-
-export const resetCreateFormComplete = () => {
-	return (dispatch) => {
-		dispatch({type:_.RESET_CREATE_FORM_COMPLETE})
-	}
 }

@@ -7,6 +7,7 @@ import {Button, Panel, Col, Alert } from 'react-bootstrap';
 import {fieldConfig} from '../../constants/login/createUser.config.js';
 
 import {regex} from '../../constants/users.constants.js';
+import to from 'await-to-js';
 
 
 export class CreateUser extends React.Component{
@@ -15,7 +16,7 @@ export class CreateUser extends React.Component{
 			this.state = {fields:{}};
 	}
 
-	validateForm(un, pw, pw2, successCallback, errorCallback, submit) {
+	async validateForm(un, pw, pw2, successCallback, errorCallback, submit) {
 		if(!un || !pw || !pw2){
 			errorCallback(['Please fill in all fields']);
 			return;
@@ -35,7 +36,10 @@ export class CreateUser extends React.Component{
 				errorCallback(errored)
 			}else{
 				if(submit){
-					successCallback(un, pw);
+					var [err, res] = await to(this.props.createUser(un, pw));
+					if(!err){
+							this.resetForm();
+					}
 				}else{
 					errorCallback([]);
 				}
@@ -85,13 +89,6 @@ export class CreateUser extends React.Component{
 				null;
 	}
 
-	componentWillReceiveProps(nextProps){
-		if(nextProps.shouldResetForm){
-			this.resetForm();
-			this.props.resetFormComplete();
-		}
-	}
-
 	resetForm(){
 		//this.state.form.reset();
 		//this.state.un.reset();
@@ -99,7 +96,6 @@ export class CreateUser extends React.Component{
 		let refs = ['un', 'pw1', 'pw2']
 		refs.forEach((refName)=>{
 			this.refs[refName].wrappedInstance.reset();
-
 		});
 	}
 

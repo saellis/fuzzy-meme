@@ -36,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha --opts src/test/mocha.opts src/**/__specs__/*.spec.js src/**/**/__specs__/*.spec.js",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

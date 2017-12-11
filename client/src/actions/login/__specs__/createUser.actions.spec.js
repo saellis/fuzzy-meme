@@ -29,7 +29,6 @@ describe('users creation actions', () => {
 			{type:_.CLEAR_CREATE_USER_ERROR},
 			{type:_.CLEAR_CREATE_USER_SUCCESS},
 			{type:_.CREATE_USER_SUCCESS, data: response},
-			{type:_.RESET_CREATE_FORM},
 			{type:_.CLEAR_CREATE_USER_SYNTAX_ERROR}
 
 		];
@@ -43,7 +42,7 @@ describe('users creation actions', () => {
 
 	test(
         'creates CREATE_USER_PENDING and CREATE_USER_ERROR when failing to create user',
-        () => {
+        async () => {
         //will fail without passed response parameter
             fetchMock
           .postOnce('/users/create', {throws: 'error'}, {
@@ -60,11 +59,12 @@ describe('users creation actions', () => {
 
             ];
             const store = mockStore({});
+						try{
+							await store.dispatch(actions.createUserAction());
+						}catch(err){}
 
-            return store.dispatch(actions.createUserAction()).then(() => {
-          // return of async actions
-                expect(store.getActions()).toEqual(expectedActions);
-            });
+						expect(store.getActions()).toEqual(expectedActions);
+						return;
         }
     );
 

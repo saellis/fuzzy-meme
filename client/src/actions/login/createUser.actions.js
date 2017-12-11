@@ -26,7 +26,6 @@ export const createUserAction = (un, pw) => {
 				return data;
 			}
 		}catch(err){
-				console.log('sdf')
 				dispatch({type:_.CREATE_USER_ERROR})
 				throw new Error(err);
 		}

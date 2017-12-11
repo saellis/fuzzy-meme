@@ -42,7 +42,6 @@ describe('<CreateUserContainer>', () => {
             expect(typeof field.at(0).props().setErrorText).toBe('function');
             expect(typeof field.at(0).props().clearErrorText).toBe('function');
             expect(typeof field.at(0).props().createUser).toBe('function');
-            expect(typeof field.at(0).props().resetFormComplete).toBe('function');
         }
     );
 

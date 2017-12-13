@@ -1,182 +1,182 @@
-//Require the dev-dependencies
+// Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let should = chai.should();
 let uuid = require('uuid/v1');
 import 'babel-polyfill';
 import to from 'await-to-js';
+ chai.use(chaiHttp);
+ //Our parent block
+ describe('Server', () => {
+   var server;
+   beforeEach(function () {
+     server = require('../server', { bustCache: true }).server;
+   });
+   afterEach(function (done) {
+     server.close(done);
+   });
+   //
+   describe('POST /games/create', () => {
+   	describe('Successfully creates game', () => {
+   		test('Should return new game object', async () => {
+         var uname = uuid();
+         var [err, res] = await to(chai.request(server)
+           .post('/users/create')
+           .set('content-type', 'application/x-www-form-urlencoded')
+           .send({username: uname, password: 'Strongpassword123'}));
+         var creatorId = res.body._id;
+         [err, res] = await to(chai.request(server)
+     			    .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded')
+               .send({'creatorId': creatorId}));
+         expect(typeof res.body._id).toBe('string');
+         expect(res.body.creator_id).toBe(creatorId);
+         expect(res.body.current_player_id).toBe(creatorId);
+         return;
+ 		  })
 
-chai.use(chaiHttp);
-//Our parent block
-describe('Server', () => {
-  var server;
-  beforeEach(function () {
-    server = require('../server', { bustCache: true }).server;
-  });
-  afterEach(function (done) {
-    server.close(done);
-  });
+       test('Should store game name in database', async () => {
+           var uname = uuid();
+           var gamename = uuid();
+           var res = await chai.request(server)
+             .post('/users/create')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .send({username: uname, password: 'Strongpassword123'});
 
-  describe('POST /games/create', () => {
-  	describe('Successfully creates game', () => {
-  		it('Should return new game object', async () => {
-        var uname = uuid();
-        var [err, res] = await to(chai.request(server)
-          .post('/users/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'}));
-        var creatorId = res.body._id;
-        [err, res] = await to(chai.request(server)
-    			    .post('/games/create')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({'creatorId': creatorId}));
-        res.body._id.should.be.a('string');
-        res.body.creator_id.should.equal(creatorId);
-        res.body.current_player_id.should.equal(creatorId);
-        return;
-		  }).timeout(10000);
+           var res = await chai.request(server)
+       			    .post('/games/create')
+                 .set('content-type', 'application/x-www-form-urlencoded')
+                 .send({'creatorId': res.body._id, 'name': gamename});
+           expect(res.body.name).toBe(gamename);
+           return;
+   		  })
 
-      it('Should store game name in database', async () => {
-          var uname = uuid();
-          var gamename = uuid();
-          var res = await chai.request(server)
-            .post('/users/create')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .send({username: uname, password: 'Strongpassword123'});
+       test('Should generate a random name if one is not supplied', async () => {
+         var uname = uuid();
+         var res = await chai.request(server)
+           .post('/users/create')
+           .set('content-type', 'application/x-www-form-urlencoded')
+           .send({username: uname, password: 'Strongpassword123'});
+         var res = await chai.request(server)
+               .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded')
+               .send({'creatorId': res.body._id});
+         expect(res.body.name).toContain('-');
+         return;
+       })
 
-          var res = await chai.request(server)
-      			    .post('/games/create')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .send({'creatorId': res.body._id, 'name': gamename});
-          res.body.name.should.equal(gamename);
-          return;
-  		  }).timeout(10000);
+       test('Should complain if the game name already exists', async () => {
+         var uname = uuid();
+         var gamename = uuid();
+         var res = await chai.request(server)
+           .post('/users/create')
+           .set('content-type', 'application/x-www-form-urlencoded')
+           .send({username: uname, password: 'Strongpassword123'});
+         await chai.request(server)
+               .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded')
+               .send({'creatorId': res.body._id, 'name': gamename});
+         var [err, res] = await to(chai.request(server)
+               .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded')
+               .send({'creatorId': res.body._id, 'name': gamename}));
+         expect(err.status).toBe(400);
+         return;
+       })
 
-      it('Should generate a random name if one is not supplied', async () => {
-        var uname = uuid();
-        var res = await chai.request(server)
-          .post('/users/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'});
-        var res = await chai.request(server)
-              .post('/games/create')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({'creatorId': res.body._id});
-        res.body.name.should.contain('-');
-        return;
-      }).timeout(10000);
+       test('Should complain when no creator is specified', async () => {
+         var uname = uuid();
+         var [err, res] = await to(chai.request(server)
+                   .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded'));
+         expect(err.status).toBeGreaterThanOrEqual(400);
+         expect(err.status).toBeLessThanOrEqual(401);
+         return;
+       })
 
-      it('Should complain if the game name already exists', async () => {
-        var uname = uuid();
-        var gamename = uuid();
-        var res = await chai.request(server)
-          .post('/users/create')
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .send({username: uname, password: 'Strongpassword123'});
-        await chai.request(server)
-              .post('/games/create')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({'creatorId': res.body._id, 'name': gamename});
-        var [err, res] = await to(chai.request(server)
-              .post('/games/create')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({'creatorId': res.body._id, 'name': gamename}));
-        err.status.should.equal(400);
-        return;
-      }).timeout(10000);
+       test('Should complain when creatorId does not map to an existing user', async () => {
+         var uname = uuid();
+         var [err, res] = await to(chai.request(server)
+               .post('/games/create')
+               .set('content-type', 'application/x-www-form-urlencoded')
+               .send({'creatorId': uname}));
 
-      it('Should complain when no creator is specified', async () => {
-          var uname = uuid();
-          var [err, res] = await to(chai.request(server)
-      			    .post('/games/create')
-                .set('content-type', 'application/x-www-form-urlencoded'));
-          err.status.should.be.within(400, 401);
-          return;
-      }).timeout(10000);
+         expect(err.response.body.err).toBe('user does not exist');
+         return;
+       })
+     });
+   });
+   describe('GET /games', () => {
 
-      it('Should complain when creatorId does not map to an existing user', async () => {
-        var uname = uuid();
-        var [err, res] = await to(chai.request(server)
-              .post('/games/create')
-              .set('content-type', 'application/x-www-form-urlencoded')
-              .send({'creatorId': uname}));
+     test('Should get a game by id', async () => {
+       var uname = uuid();
+       var res = await chai.request(server)
+         .post('/users/create')
+         .set('content-type', 'application/x-www-form-urlencoded')
+         .send({username: uname, password: 'Strongpassword123'});
+       res = await chai.request(server)
+         .post('/games/create')
+         .set('content-type', 'application/x-www-form-urlencoded')
+         .send({'creatorId': res.body._id});
+       res = await chai.request(server)
+             .get('/games')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .query({'gameId': res.body._id});
 
-        err.response.body.err.should.equal('user does not exist');
-        return;
-      }).timeout(10000);
-    });
-  });
-  describe('GET /games', () => {
+       expect(res.body._id).not.toBe(null);
+       return;
+     })
 
-    it('Should get a game by id', async () => {
-      var uname = uuid();
-      var res = await chai.request(server)
-        .post('/users/create')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({username: uname, password: 'Strongpassword123'});
-      res = await chai.request(server)
-        .post('/games/create')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({'creatorId': res.body._id});
-      res = await chai.request(server)
-            .get('/games')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .query({'gameId': res.body._id});
+     test('Should fail when getting a game w/ a bad id', async () => {
+       var [err, res] = await to(chai.request(server)
+         .get('/games')
+         .set('content-type', 'application/x-www-form-urlencoded')
+         .query({'gameId': 'probably not a game id'}));
+       expect(err.status).toBeGreaterThanOrEqual(400);
+       expect(err.status).toBeLessThanOrEqual(401);
+       return;
+     });
 
-      res.body._id.should.not.equal(null);
-      return;
-    }).timeout(5000);
+     test('Should notify client when no gameId or userId is supplied', async () => {
+       var [err, res] = await to(chai.request(server)
+         .get('/games')
+         .set('content-type', 'application/x-www-form-urlencoded'))
+       expect(err.response.body.err).toBe('must supply a gameId or userId');
+       return;
+     });
 
-    it('Should fail when getting a game w/ a bad id', async () => {
-      var [err, res] = await to(chai.request(server)
-        .get('/games')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .query({'gameId': 'probably not a game id'}));
-      err.status.should.be.within(400, 401);
-      return;
-    });
+     test('Should return an empty list when getting games for a user that has no games', async () => {
+       var uname = uuid();
+       var res = await chai.request(server)
+         .post('/users/create')
+         .set('content-type', 'application/x-www-form-urlencoded')
+         .send({username: uname, password: 'Strongpassword123'});
 
-    it('Should notify client when no gameId or userId is supplied', async () => {
-      var [err, res] = await to(chai.request(server)
-        .get('/games')
-        .set('content-type', 'application/x-www-form-urlencoded'))
-      err.response.body.err.should.equal('must supply a gameId or userId');
-      return;
-    });
+       res = await chai.request(server)
+             .get('/games')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .query({'userId': res.body._id})
 
-    it('Should return an empty list when getting games for a user that has no games', async () => {
-      var uname = uuid();
-      var res = await chai.request(server)
-        .post('/users/create')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({username: uname, password: 'Strongpassword123'});
+       expect(res.body.length).toBe(0);
+       return;
+     })
 
-      res = await chai.request(server)
-            .get('/games')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .query({'userId': res.body._id})
+     test('Should get all games that user is a part of', async () => {
+       var uname = uuid();
+       var res = await chai.request(server)
+             .post('/users/create')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .send({username: uname, password: 'Strongpassword123'});
+       res = await chai.request(server)
+             .post('/games/create')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .send({'creatorId': res.body._id});
+       res = await chai.request(server)
+             .get('/games')
+             .set('content-type', 'application/x-www-form-urlencoded')
+             .query({'userId': res.body.creator_id});
 
-      res.body.length.should.equal(0);
-      return;
-    }).timeout(10000);
-
-    it('Should get all games that user is a part of', async () => {
-      var uname = uuid();
-      var res = await chai.request(server)
-            .post('/users/create')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .send({username: uname, password: 'Strongpassword123'});
-      res = await chai.request(server)
-            .post('/games/create')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .send({'creatorId': res.body._id});
-      res = await chai.request(server)
-            .get('/games')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .query({'userId': res.body.creator_id});
-
-      res.body.length.should.equal(1);
-      return;
-    }).timeout(10000);
-  });
-});
+       expect(res.body.length).toBe(1);
+       return;
+     })
+   });
+ });

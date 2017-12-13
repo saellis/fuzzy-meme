@@ -1,5 +1,5 @@
 const UserManipulator = require('../model/user.manipulator');
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 import to from 'await-to-js';
 
 var controller = {

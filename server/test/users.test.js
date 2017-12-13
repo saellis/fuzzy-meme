@@ -1,7 +1,6 @@
 //Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let should = chai.should();
 let uuid = require('uuid/v1');
 import 'babel-polyfill';
 import to from 'await-to-js';
@@ -20,39 +19,39 @@ describe('Server', () => {
 
   describe('POST /users/create', () => {
   	describe('Successfully creates user', () => {
-	  	it('Should return a new user id', async () => {
+	  	test('Should return a new user id', async () => {
         var uname = uuid();
 	  		var res = await chai.request(server)
 			    .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Strongpassword123'});
-        res.body._id.should.be.a('string');
-        res.body.username.should.equal(uname);
+        expect(typeof res.body._id).toBe('string');
+        expect(res.body.username).toBe(uname);
         return;
-	  	}).timeout(2000);
+	  	})
 
-      it('Should set username and password', async () => {
+      test('Should set username and password', async () => {
         var uname = uuid();
         var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Strongpassword123'});
 
-        res.body.username.should.equal(uname);
+        expect(res.body.username).toBe(uname);
         return;
       });
 
-      it('Should error when invalid username is given', async () => {
+      test('Should error when invalid username is given', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: undefined, password: 'Strongpassword123'}));
 
-        err.status.should.equal(400);
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should not allow client to create a new user with existing username', async () => {
+      test('Should not allow client to create a new user with existing username', async () => {
         var uname = uuid();
         await chai.request(server)
           .post('/users/create')
@@ -62,85 +61,85 @@ describe('Server', () => {
               .post('/users/create')
               .set('content-type', 'application/x-www-form-urlencoded')
               .send({username: uname, password: 'Strongpassword123'}));
-        err.response.body.err.should.equal('username already exists');
+        expect(err.response.body.err).toBe('username already exists');
         return;
       });
 
-      it('Should check password length', async () => {
+      test('Should check password length', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'B1ad'}));
-        err.response.body.err.should.equal('password invalid. must be a string of length >= 8');
-        err.status.should.equal(400);
+        expect(err.response.body.err).toBe('password invalid. must be a string of length >= 8');
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should check password capitals', async () => {
+      test('Should check password capitals', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'b11111111'}));
-        err.response.body.err.should.equal('password invalid. must have capital letters.');
-        err.status.should.equal(400);
+        expect(err.response.body.err).toBe('password invalid. must have capital letters.');
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should check password numbers', async () => {
+      test('Should check password numbers', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'Badpwdddd'}));
-        err.response.body.err.should.equal('password invalid. must have digits.');
-        err.status.should.equal(400);
+        expect(err.response.body.err).toBe('password invalid. must have digits.');
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should check password lowercase', async () => {
+      test('Should check password lowercase', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'BADPASSWORD1'}));
           //have to split this up because it errors if you dont... how fun
         var body = err.response.body;
-        body.err.should.equal('password invalid. must have lowercase letters.');
-        err.status.should.equal(400);
+        expect(body.err).toBe('password invalid. must have lowercase letters.');
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should allow strong passwords', async () => {
+      test('Should allow strong passwords', async () => {
         var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid(), password: 'GoodPassword123'});
-        res.status.should.not.equal(400);
+        expect(res.status).not.toBe(400);
         return;
       });
 
-      it('Should not allow user to have shitty username', async () => {
+      test('Should not allow user to have shitty username', async () => {
         var [err, res] = await to(chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uuid().slice(0, 4), password: 'GoodPwd1233'}));
           //have to split this up because it errors if you dont... how fun
         var body = err.response.body;
-        body.err.should.equal('username invalid. must be a string of length > 6');
-        err.status.should.equal(400);
+        expect(body.err).toBe('username invalid. must be a string of length > 6');
+        expect(err.status).toBe(400);
         return;
       });
 
-      it('Should allow users to have strong passwords', async () => {
+      test('Should allow users to have strong passwords', async () => {
         var uname = uuid();
         var res = await chai.request(server)
           .post('/users/create')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Goodpwd123123'})
 
-        res.body.username.should.equal(uname);
+        expect(res.body.username).toBe(uname);
         return;
       });
 
-      it('Should authenticate user on correct password', async () => {
+      test('Should authenticate user on correct password', async () => {
         var uname = uuid();
         await chai.request(server)
           .post('/users/create')
@@ -152,10 +151,10 @@ describe('Server', () => {
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'Gooodpwd123123'});
 
-        res.body.username.should.equal(uname);
+        expect(res.body.username).toBe(uname);
         return;
       });
-      it('Should not auth user on incorrect password', async () => {
+      test('Should not auth user on incorrect password', async () => {
         var uname = uuid();
         await chai.request(server)
           .post('/users/create')
@@ -165,16 +164,16 @@ describe('Server', () => {
           .post('/users/auth')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({username: uname, password: 'wrong password'}));
-        err.response.body.err.should.equal('incorrect password');
+        expect(err.response.body.err).toBe('incorrect password');
         return;
       });
-      it('Should error if user to be auth\'d doesnt exist', async () => {
+      test('Should error if user to be auth\'d doesnt exist', async () => {
         var uname = uuid();
         var [err, res] = await to(chai.request(server)
               .post('/users/auth')
               .set('content-type', 'application/x-www-form-urlencoded')
               .send({username: uname, password: 'doesnt matter'}));
-        err.response.body.err.should.equal('user does not exist');
+        expect(err.response.body.err).toBe('user does not exist');
         });
   	});
   });

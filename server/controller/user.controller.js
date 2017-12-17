@@ -73,6 +73,20 @@ var controller = {
     } else {
       res.status(200).send(users);
     }
+  },
+
+  invite: async (req, res) => {
+    var [err, invites] = await to(UserManipulator.newInvites(req.body.inviteIds, req.body.inviterId, req.body.gameId));
+
+    if (err !== null) {
+      //console.log(err)
+      res.status(500).send(err);
+    }
+    else if (!invites) {
+      res.status(400).send({err: 'invites error'});
+    } else {
+      res.status(200).send({text: 'successfully invited'});
+    }
   }
 };
 

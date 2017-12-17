@@ -24,9 +24,10 @@ export class Games extends React.Component{
 		this.setState({createModalShow: false});
 	}
 
-	async createFromModal(name){
+	async createFromModal(name, invites){
 		try{
-			await this.props.createGame(this.props._id,name);
+			console.log(invites);
+			await this.props.createGame(this.props._id,name, invites);
 			this.createModalOff();
 		}catch(err){
 			console.log(err);
@@ -56,7 +57,7 @@ export class Games extends React.Component{
 					{this.gamesList()}
 					<Button block className='btn-success' onClick={() => this.createModalOn()}>Create</Button>
 					<CreateGameModalContainer show={this.state.createModalShow} pending={this.props.createPending}
-						createGame={(name) => this.createFromModal(name)} close={() => this.createModalOff()}/>
+						createGame={(name, invites) => this.createFromModal(name, invites)} close={() => this.createModalOff()}/>
 				</Panel>
 			</Col>
 		)}

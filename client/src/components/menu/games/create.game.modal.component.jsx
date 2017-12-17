@@ -6,9 +6,13 @@ import { Button, Modal, FormControl, FormGroup, ButtonGroup, ControlLabel,
 export class CreateGameModal extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = {name: '', invites: {}};
+		this.state = {name: '', invites: []};
 		this.props.loadUsersList();
-	}
+  }
+
+  onChange = (invites) => {
+    this.setState({ invites });
+  };
 
 	render(){
 
@@ -30,9 +34,12 @@ export class CreateGameModal extends React.Component{
 
 							<ControlLabel>Invite:</ControlLabel>
 					    <ButtonToolbar>
-					      <ToggleButtonGroup type="checkbox">
+					      <ToggleButtonGroup type="checkbox"
+					        value={this.state.invites}
+					        onChange={this.onChange}>
 									{this.props.usersList.map((el, index) => {
-										return (<ToggleButton value={index}>{el.username}</ToggleButton>);
+										return (<ToggleButton key={`${index}InviteList`}
+											value={el._id}>{el.username}</ToggleButton>);
 									})}
 					      </ToggleButtonGroup>
 					    </ButtonToolbar>
@@ -41,7 +48,10 @@ export class CreateGameModal extends React.Component{
           <Modal.Footer>
 						<ButtonGroup>
 							<Button onClick={this.props.close} className='btn-danger'>Close</Button>
-            	<Button onClick={() => this.props.createGame(this.state.name)} disabled={this.props.pending} className='btn-success'>Create</Button>
+            	<Button onClick={() => {
+									console.log(this.state);
+									this.props.createGame(this.state.name,this.state.invites)
+								}} disabled={this.props.pending} className='btn-success'>Create</Button>
 						</ButtonGroup>
           </Modal.Footer>
         </Modal>

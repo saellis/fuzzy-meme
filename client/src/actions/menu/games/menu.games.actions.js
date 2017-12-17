@@ -1,7 +1,8 @@
 import * as _ from '../../../constants/menu/games/menu.games.actions.constants';
+import { createInvites } from '../invites/menu.invites.actions';
 import to from 'await-to-js';
 
-export const createGameAction = (uid, name) => {
+export const createGameAction = (uid, name, inviteIds) => {
 	return async (dispatch)=>{
 		dispatch({type:_.CREATE_GAME_PENDING});
 		var [err, res] = await to(fetch('/games/create', {
@@ -15,6 +16,8 @@ export const createGameAction = (uid, name) => {
 			throw new Error(err);
 		}else{
     	dispatch({type:_.CREATE_GAME_SUCCESS});
+			res = await(res.json());
+			dispatch(createInvites(inviteIds, uid, res._id));
     	dispatch(loadGamesAction(uid));
 			return res;
 		}

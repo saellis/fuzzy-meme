@@ -11,7 +11,7 @@ export const mapStateToProps = state => {
 
 export const mapDispatchToProps = dispatch =>{
   return {
-    createGame: (uid, name) => dispatch(createGameAction(uid, name)),
+    createGame: (uid, name, invites) => dispatch(createGameAction(uid, name, invites)),
     loadGames: (uid) => dispatch(loadGamesAction(uid))
   }
 }

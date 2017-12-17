@@ -121,6 +121,10 @@ app.route('/users/auth')
   .post(user.authenticate);
 
 
+app.route('/users/list')
+	.get(user.list);
+
+
 
 var server = app.listen(app.get('port'), function () {
   var port = server.address().port;

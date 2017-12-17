@@ -61,6 +61,18 @@ var controller = {
         res.status(400).send(err);
       });
     }
+  },
+
+  list: async (req, res) => {
+    var [err, users] = await to(UserManipulator.getUsers());
+    if (err !== null) {
+      res.status(500).send(err);
+    }
+    else if (!users) {
+      res.status(400).send({err: 'users error'});
+    } else {
+      res.status(200).send(users);
+    }
   }
 };
 

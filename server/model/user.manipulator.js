@@ -15,6 +15,16 @@ var userManipulator = {
       }
   },
 
+  getUsers: async () => {
+    var sql = 'select * from users where username not like \'%-%-%-%-%\'';
+    var [err, res] = await query(sql, []);
+    if(err !== null) {
+      throw err;
+    } else {
+      return res.rows;
+    }
+  },
+
   getByUserId: async (userId) => {
     var sql = 'SELECT * FROM users WHERE _id = $1;';
     var [err, res] = await query(sql, [userId]);

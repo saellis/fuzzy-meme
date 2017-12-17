@@ -1,6 +1,6 @@
 import * as _ from '../../constants/login/createUser.actions.constants';
 
-import to from 'await-to-js';
+//import to from 'await-to-js';
 
 export const createUserAction = (un, pw) => {
 	return async (dispatch)=>{

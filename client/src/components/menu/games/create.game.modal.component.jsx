@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Col, Panel, Button, Modal, FormControl, FormGroup, ControlLabel, ButtonGroup } from 'react-bootstrap';
+import { Button, Modal, FormControl, FormGroup, ButtonGroup } from 'react-bootstrap';
 
 export class CreateGameModal extends React.Component{
 	constructor(props){

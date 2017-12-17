@@ -7,7 +7,6 @@ import {Button, Panel, Col, Alert } from 'react-bootstrap';
 import {fieldConfig} from '../../constants/login/createUser.config.js';
 
 import {regex} from '../../constants/users.constants.js';
-import to from 'await-to-js';
 
 
 export class CreateUser extends React.Component{
@@ -36,10 +35,12 @@ export class CreateUser extends React.Component{
 				errorCallback(errored)
 			}else{
 				if(submit){
-					var [err, res] = await to(successCallback(un, pw));
-					if(!err){
-							this.resetForm();
+					try{
+						await successCallback(un, pw);
+					}catch(e){
+						return;
 					}
+					this.resetForm();
 				}else{
 					errorCallback([]);
 				}

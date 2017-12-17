@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Col, Panel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroupItem } from 'react-bootstrap';
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Col, Panel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Col, Panel, Button, ListGroup } from 'react-bootstrap';
 
 import { CreateGameModalContainer } from '../../../containers/menu/games/create.game.modal.container.jsx';
 import { GamesListItem } from './games.listItem.component.jsx'

@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Button, Modal, FormControl, FormGroup, ButtonGroup } from 'react-bootstrap';
+import { Button, Modal, FormControl, FormGroup, ButtonGroup, ControlLabel,
+	ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
 export class CreateGameModal extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {name: '', invites: {}};
+		this.props.loadUsersList();
 	}
 
 	render(){
@@ -18,9 +20,22 @@ export class CreateGameModal extends React.Component{
           </Modal.Header>
           <Modal.Body>
 						<FormGroup>
+
+							<ControlLabel>Name your game:</ControlLabel>
 							<FormControl type='text' ref='createGamesInput'
-								placeholder='Name' disabled={this.props.pending}
+								placeholder='Name (optional)' disabled={this.props.pending}
 								onChange={(event) => this.setState({name: event.target.value})} />
+
+							<br />
+
+							<ControlLabel>Invite:</ControlLabel>
+					    <ButtonToolbar>
+					      <ToggleButtonGroup type="checkbox">
+									{this.props.usersList.map((el, index) => {
+										return (<ToggleButton value={index}>{el.username}</ToggleButton>);
+									})}
+					      </ToggleButtonGroup>
+					    </ButtonToolbar>
 						</FormGroup>
           </Modal.Body>
           <Modal.Footer>

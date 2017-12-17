@@ -27,6 +27,10 @@ process.on('unhandledRejection', error => {});
   var paths = JSON.parse(fs.readFileSync(__dirname + '/static/routes.json', 'utf8'));
   paths.map(await insertPath);
   console.log('Inserted paths to DB');
+
+  var invite_statuses = JSON.parse(fs.readFileSync(__dirname + '/static/inviteStatuses.json', 'utf8'));
+  invite_statuses.map(await insertInviteStatus);
+  console.log('Inserted invite statuses');
 })();
 
 var insertPath = async (path) => {
@@ -47,3 +51,12 @@ var insertTicket = async (card) => {
     console.log(err);
   }
 };
+
+var insertInviteStatus = async (status) => {
+  var sql = 'insert into invite_statuses (status_text, status_code) values($1, $2);';
+  var values = [status.text, status.code];
+  var [err, res] = await query(sql, values);
+  if(err) {
+    console.log(err);
+  }
+}

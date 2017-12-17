@@ -1,0 +1,14 @@
+[
+  {
+    "code": "P",
+    "text": "PENDING"
+  },
+  {
+    "code": "D",
+    "text": "DECLINED"
+  },
+  {
+    "code": "A",
+    "text": "ACCEPTED"
+  }
+]

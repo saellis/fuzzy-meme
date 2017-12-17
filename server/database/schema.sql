@@ -58,3 +58,18 @@ CREATE TABLE IF NOT EXISTS laid_tracks (
   user_id text references users(_id) NOT NULL, -- the user id
   path_id integer references paths(_id) NOT NULL -- the path that user laid in the game
 );
+
+-- Static table of invite statuses
+CREATE TABLE IF NOT EXISTS invite_statuses (
+  status_text text not null,
+  status_code text not null,
+  PRIMARY KEY(status_code)
+);
+
+-- The list of invites that have sent
+CREATE TABLE IF NOT EXISTS game_invites (
+  game_id text references games(_id) NOT NULL, -- the game id
+  user_id text references users(_id) NOT NULL, -- the user id
+  inviter_id text references users(_id) NOT NULL, -- the inviter user id
+  status text references invite_statuses(status_code) NOT NULL -- the status
+);
